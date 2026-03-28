@@ -1,0 +1,282 @@
+;#Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+#SingleInstance force
+
+#Include exitspawn.ahk
+#Include detections.ahk
+#Include controls.ahk
+#Include movesets.ahk
+#Include ugcarrermovesets.ahk
+snowball := 1
+
+perkX := 587
+perkY := 145
+DifY := 59
+DifX := 53
+slotX := 76 + 37
+slotY := 541 + 37
+slotSpace := 75
+
+searchX := 938
+searchY := 660
+
+width := A_ScreenWidth
+height := A_ScreenHeight
+
+listfile := A_ScriptDir "\PrestigeQueueList.txt"
+setupfile := A_ScriptDir "\PerkSetup.txt"
+viewerFile := ""
+viewerMode := ""
+viewerTitle := ""
+perkName = ""
+Column := 1
+color := 0
+
+Gui, Color, 0x52fadb,  0x20a0e6
+Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or f11)
+Gui, Show, x1030 y0 w300 h60, Career Macro
+Gui, Add, Button, x10 y15 w72 h22 gstartmacro vstartmacro, Start Macro
+Gui, Add, Button, x82 y15 w72 h22 gperksetup vperksetup, Perk setup
+Gui, Add, Text, x156 y20 w100 h22 vsnowtext, Snowball(0/1)
+Gui, Add, Edit, x225 y15 w20 h22 vsnowball, % snowball
+Gui, Add, Text, x246 y20 w25 h22 vtimetext center, Time
+Gui, Add, Edit, x270 y15 w20 h22 vsearchtimer, 1
+
+Gui, Add, Text, x5 y14 w290 h14 vWaiting,
+Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro Settings
+Gui, Add, Button, x130 y37 w100 h22 gQueue vQueue, Queue Lv4 Perks
+Gui, Add, Button, x230 y37 w60 h22 gMode vMode, Modes
+Gui, Add, Text, x5 y28 w290 h13 vDebug1,
+Gui, Add, Text, x41 y41 w290 h13 vDebug2,
+
+if WinExist("Career Macro") {
+    WinActivate
+    WinSet, AlwaysOnTop, On, Career Macro
+	CoordMode, Mouse, Screen
+	CoordMode, Pixel, Screen
+}
+
+
+t:=1.33
+return
+
+#Include perkviewer.ahk
+#Include perkgui.ahk
+
+Mode:
+
+return
+
+startmacro:
+chick(width/2,height/2)
+wave := 1
+t:=1.33
+readyup()
+exitspawn(1)
+wheeldowns(6)
+doortostair()
+sleep, 5000
+stairtoshop()
+send, f ;exit shop
+place(width/2,height/2,4) ;sentry
+walktoladder()
+waitfordawn()
+
+readyup()
+sleep, 1000
+send, f ;ladder
+sleep, 500
+leftsentryw1()
+sleep, 4000
+place(width/2,height/2,4) ;sentry
+walktocenter()
+wheeldowns(8)
+waitfordawn()
+
+readyup()
+placespawnfl()
+wheelups(8)
+rightsentry()
+place(width/2,height/2,4) ;sentry
+respawn()
+sleep, 20000
+respawn()
+exitspawn(1)
+wheeldowns(6)
+
+readyup()
+send, f ;exit spawn
+doortostair()
+stairtoshop()
+shoptomines()
+setupleftmines()
+ns(10000) ;walk back to shoptomines()
+nd(600) ;recenter
+nw(50) ;idk
+shoptomines()
+setuprightminesandfl()
+w(20000)
+
+readyup()
+
+
+*/
+;stairtomines()
+;setupleftmines()
+
+
+return
+
+F1::
+chick(width/2,height/2)
+exitspawn(1)
+return
+F2::
+wheeldowns(6)
+setuprightminesandfl()
+return
+F3::
+Dllmove(0,2000)
+sleep, 50
+DllMove(0,-540)
+sleep, 1000
+Dllmove(0,2000)
+return
+F11::
+ExitApp
+return
+GuiClose: ;fafa00
+ExitApp
+return
+
+settingadjust:
+chick(A_ScreenWidth/2,A_ScreenHeight/2)
+chick(1137, 750) ;settings
+sleep, 100
+chick(487, 184) ;options
+chick(A_ScreenWidth/2,A_ScreenHeight/2)
+wheelups(15)
+sleep 300
+
+chick(653, 533) ;fov 100
+chick(716, 531) ;ADS 10%
+
+wheeldowns(5)
+sleep, 250
+chick(887, 241) ;recoil recovery on
+chick(467, 306) ;exit ADS off
+chick(467, 379) ;toggle ADS off
+chick(467, 447) ;toggle sprint off
+
+chick(687, 183) ;keyboard
+chick(643, 269) ;interact default
+chick(641, 316) ;sprint default
+chick(933, 269) ;melee default
+chick(933, 319) ;menu default
+
+
+sleep, 100
+send, {Esc}
+sleep, 500
+chick(518, 107) ;settings
+sleep, 200
+chick(478, 407) ;allow scrolling
+l:=0
+while (l<20) {
+	wheeldowns(3)
+	sleep, 250
+	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
+	if (x){
+		chick(x,y+13)
+		send, 0.36 {Enter}
+		GuiControl, text, settingadjust, Success! Don't forget to turn off shiftlock!
+		break
+	}
+	l++
+	if (l==20)
+		GuiControl, text, settingadjust, manually change sensitivity to 0.36!
+}
+return
+
+maxlvperk(){
+	l:=0
+	PixelGetColor, c, 54, 131, alt RGB
+	while not (c = 0xD3302B or c = 0xFF302B or c = 0x122D64 or c = 0x122D78 or c = 0x337D35 or c = 0x339635 or c = 0xE1D635 or c = 0xFFF235 or c = 0x963C96 or c = 0xBE4BBE or l>100){
+		chick(149, 488) ;upgrade/prestige
+		PixelGetColor, c, 54, 131, alt RGB
+		sleep, 20
+		l++
+		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+		if (not a)
+			return 1
+	} return 0
+}
+checkEquip(Lslot){
+	global slotSpace
+	global slotX
+	global slotY
+	l:=0
+	PixelGetColor, c, slotX + slotSpace*Mod(Lslot,6), slotY + slotSpace*Floor(Lslot/6), Alt RGB
+	while (l<160){ ;perk is equipped?
+		PixelGetColor, c, slotX + slotSpace*Mod(Lslot,6), slotY + slotSpace*Floor(Lslot/6), Alt RGB
+		chick(149, 488) ;upgrade/prestige
+		if (c == 0x101010 or c == 0x100810 or c == 0x100000 or c == 0x000010 or c == 0x001000 or c == 0x101000){
+			l++
+			sleep, 20
+		} else
+			break
+	}
+}
+
+prestige:
+send, m
+l=0
+loop{ ;white PLAY
+    sleep, 200
+    PixelSearch, x,, 651, 733, 652, 734, 0xFFFFFF, 1, Fast RGB ;no
+    if (x)
+        break
+    if (l>25 or faultcheck(0))
+        return
+    l++
+}
+
+sleep, 100
+l := 0
+PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+while (!a){
+
+	chick(438, 732) ;Unlocks/no
+	sleep, 200
+	l++
+	if (l>10)
+		return
+	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+}
+chick(1115, 108) ;prestige section
+sleep, 100
+PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+if (a){
+	filereadline, line, %listfile%, 1
+
+	parts := StrSplit(line, "|")
+    perkName := parts[1]
+	column := parts[2]
+    color := parts[3]
+
+	chick(searchX, searchY)
+	send, %perkName%
+	chick(perkX + difX*column, perkY + DifY*color)
+	sleep, 100
+	;chick(149, 488) ;upgrade/prestige
+
+	PopFirstLine(listfile)
+	guicontrol,, settingadjust, % d
+}
+sleep, 100
+return
+
+
+
+
