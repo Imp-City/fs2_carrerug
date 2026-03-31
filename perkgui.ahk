@@ -63,7 +63,7 @@ gui, add, text, x15 y13 h13 w110, Perk Name:
 gui, add, text, x185 y13 h14 w40, Column:
 gui, add, text, x235 y13 h14 w40, Color:
 
-gui, add, Edit, x10 y26 h17 w180 vperkName,
+gui, add, Edit, x10 y26 h17 w175 vperkName,
 gui, add, Edit, x185 y26 h17 w50 vcolumn, 1
 gui, add, Edit, x235 y26 h17 w50 vcolor, r
 
@@ -106,6 +106,9 @@ if (v = "Success!")
 	FileAppend, % perkName "|" column "|" color "`n", %listfile%
 sleep, 500
 GuiControl, text, add, Add Perk
+if WinExist("Prestige Queue Viewer"){
+	ShowFileViewer(viewerFile, viewerTitle, viewerMode)
+}
 return
 
 add2:
@@ -118,6 +121,9 @@ if (v = "Success!")
 	FileAppend, % perkName "|" column "|" color "|" slot "`n", %setupfile%
 sleep, 500
 GuiControl, text, add2, Add Perk
+if WinExist("Perk Setup Viewer"){
+	ShowFileViewer(viewerFile, viewerTitle, viewerMode)
+}
 return
 
 viewqueue:

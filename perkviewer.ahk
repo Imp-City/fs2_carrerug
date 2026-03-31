@@ -180,9 +180,9 @@ MoveViewerRow(filePath, title, mode, direction){
 	newContent := ""
 	for index, line in lines
 	{
+		newContent .= line
 		if (newContent != "")
 			newContent .= "`n"
-		newContent .= line
 	}
 
 	FileDelete, %filePath%

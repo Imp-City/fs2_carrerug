@@ -80,7 +80,7 @@ dllmove(-600,0)
 waitformorning()
 DllMove(0, 2000)
 Sleep, 50
-DllMove(0, -560)
+DllMove(0, -540)
 sleep, 50
 Loop { ;red finder
     PixelSearch, x,, (A_ScreenWidth/2)-25, 0, (A_ScreenWidth/2)+25, A_ScreenHeight, 0xBA200B, 10, Fast RGB ;normal

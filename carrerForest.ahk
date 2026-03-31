@@ -46,7 +46,7 @@ Gui, Add, Edit, x270 y15 w20 h22 vsearchtimer, 1
 Gui, Add, Text, x5 y14 w290 h14 vWaiting,
 Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro Settings
 Gui, Add, Button, x130 y37 w100 h22 gQueue vQueue, Queue Lv4 Perks
-Gui, Add, Button, x230 y37 w60 h22 gMode vMode, Modes
+Gui, Add, Button, x230 y37 w60 h22 gMode vMode, --WIP--
 Gui, Add, Text, x5 y28 w290 h13 vDebug1,
 Gui, Add, Text, x41 y41 w290 h13 vDebug2,
 
@@ -70,6 +70,16 @@ return
 
 startmacro:
 chick(width/2,height/2)
+privategame()
+chick(843, 346)
+chick(329, 523) ;ug (to enable scrolling)
+wheeldowns(20)
+chick(329, 523) ;ug
+chick(457, 654) ;Create Private
+waitforplaybutton(1)
+sleep, 1000
+chick(686, 734) ;PLAY
+
 wave := 1
 t:=1.33
 readyup()
@@ -83,6 +93,7 @@ place(width/2,height/2,4) ;sentry
 walktoladder()
 waitfordawn()
 
+wave := 2
 readyup()
 sleep, 1000
 send, f ;ladder
@@ -91,40 +102,115 @@ leftsentryw1()
 sleep, 4000
 place(width/2,height/2,4) ;sentry
 walktocenter()
+nw(400)
 wheeldowns(8)
 waitfordawn()
 
+wave := 3
 readyup()
 placespawnfl()
 wheelups(8)
 rightsentry()
 place(width/2,height/2,4) ;sentry
-respawn()
-sleep, 20000
-respawn()
-exitspawn(1)
-wheeldowns(6)
+sleep, 100
+walkrightsentrytoshop()
 
+wave := 4
 readyup()
-send, f ;exit spawn
-doortostair()
+shoptostair() ;realign
 stairtoshop()
 shoptomines()
+wheelups(50)
+sleep, 100
+wheeldowns(6)
 setupleftmines()
 ns(10000) ;walk back to shoptomines()
 nd(600) ;recenter
-nw(50) ;idk
+nw(50) ;adjust
 shoptomines()
 setuprightminesandfl()
-w(20000)
 
+wave := 5
 readyup()
+ns(30000) 
 
+wave := 6
+readyup()
+shoptostair()
+stairtoupgs()
+send, f
+nextsection(3)
+buy()
+waitfordawn()
+upgrade(4,1)
+nextsection(-2)
+upgrade(2,1)
+upgrade(3,1)
+upgrade(4,1)
+wave := 7
+while (wave<10){ ;skip to wave 10
+	readyup()
+	waitfordawn()
+	upgrade(2,1)
+	upgrade(3,1)
+	upgrade(4,1)
+	waitformorning()
+	wave++
+}
+upgstostair()
+readyup()
+refillandcliff()
+firetillmorning(2000)
+;10-16
+wave:=11
+while (wave<17){
+	readywithweapon()
+	firetillmorning(2000)
+	wave++
+} respawn()
+;17-20
+doortostair()
+readyup()
+refillandcliff()
+firetillmorning(2000)
+wave:=18
+while (wave<20){
+	readywithweapon()
+	firetillmorning(2000)
+	wave++
+} readywithweapon()
+firetillmorning(1000)
+;21-23
+respawn()
+doortostair()
+readyup()
+refillandcliff()
+wave:=22
+while (wave<24){
+	readywithweapon()
+	firetillmorning(0)
+	wave++
+}
+	;gunning till end
+    runWaveBlock(11, 16, 2000)
 
-*/
-;stairtomines()
-;setupleftmines()
+    prepRefill()
+    runWaveBlock(17, 20, 2000)
 
+    prepRefill()
+    runWaveBlock(21, 23, 1000)
+
+    prepRefill()
+    runWaveBlock(24, 25, 1000)
+
+    prepRefill()
+    runWaveBlock(26, 27, 0)
+
+    prepRefill()
+    runWaveBlock(28, 29, 0)
+
+    prepRefill()
+    runWaveBlock(30, 30, 0)
 
 return
 
@@ -133,15 +219,11 @@ chick(width/2,height/2)
 exitspawn(1)
 return
 F2::
-wheeldowns(6)
-setuprightminesandfl()
+firetillmorning(1000)
 return
-F3::
-Dllmove(0,2000)
-sleep, 50
-DllMove(0,-540)
-sleep, 1000
-Dllmove(0,2000)
+F3:: 
+nextsection(3)
+
 return
 F11::
 ExitApp
@@ -170,6 +252,7 @@ chick(467, 379) ;toggle ADS off
 chick(467, 447) ;toggle sprint off
 
 chick(687, 183) ;keyboard
+chick(644, 220) ;ads default
 chick(643, 269) ;interact default
 chick(641, 316) ;sprint default
 chick(933, 269) ;melee default

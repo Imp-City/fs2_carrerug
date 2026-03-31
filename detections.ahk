@@ -25,6 +25,21 @@ waitformorning(){
         sleep, 50
     }
 }
+privategame(){
+    loop{
+        PixelSearch, x,, 63, 575, 297, 594, 0xFFFFFF,0, Fast RGB 
+        if (x)
+            break
+        sleep, 500
+    }
+    loop{
+        chick(155, 585) ;PRIVATE GAME
+        sleep, 1000
+        PixelSearch, x,, 1018, 621, 1019, 682, 0xCD0C0B,3, Fast RGB 
+        if (x)
+            Return
+    }
+}
 readyup(){
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
@@ -94,13 +109,26 @@ faultcheck(force){ ;insert for all endless loop
 	*/
 	return 0
 }
-
+waitforplaybutton(appear){
+    ; 0: wait play to appear
+    ; 1: wait play to disappear
+    loop{
+        PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
+        if (boolean(x) == boolean(appear))
+            break 
+        sleep, 100
+    }   
+}
 waitforplacement(){
+    l:=0
     loop{
         PixelSearch, x,y, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB 
         PixelSearch, x2,y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
         if (x or x2)
-            break 
+            return 1
         sleep, 50
+        if (l>100){
+            return 0
+        } l++
     }   
 }

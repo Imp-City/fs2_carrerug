@@ -18,3 +18,10 @@ rightsentry(){
 	nd(2200)
 	ns(800)
 }
+walkrightsentrytoshop(){
+	nd(1500)
+	ns(19200)
+	SendInput, {a down}
+	ns(4800)
+	SendInput, {a up}
+}

@@ -97,6 +97,19 @@ chicks(x,y, c){
 		l++
 	}
 }
+chickstill() {
+    Click down
+    Sleep, 50
+    Click up
+    Sleep, 50
+}
+
+reload() {
+    Send, {r down}
+    Sleep, 50
+    Send, {r up}
+    Sleep, 50
+}
 
 respawn(){
     i=0
@@ -129,3 +142,42 @@ wheelups(times){
     }
 }
 
+upgrade(selection, count){
+    lowerselection(2)
+    selection--
+    chicks(432 + 243*mod(selection, 3), 407 + 109*Floor(selection/3), count)
+}
+buy(){
+    chick(964,378) 
+}
+lowerselection(n){
+    chick(434 + 125*n, 667)
+    /*
+    0: <<BACK<<
+    1: STATS
+    2: UPGRADES
+    3: SKINS
+    4: >>NEXT>>
+    */
+}
+nextsection(n){
+    while (n<0){
+        lowerselection(0)
+        n++
+    }
+    while (n>0){
+        lowerselection(4)
+        n--
+    }
+}
+readywithweapon(){
+    send, 1
+    sleep, 100
+    send, 1
+    wheeldowns(1)
+    readyup()
+    wheelups(1)
+    send, 3 ;m32
+    sleep, 100
+    send, e
+}
