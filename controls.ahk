@@ -176,8 +176,5 @@ readywithweapon(){
     send, 1
     wheeldowns(1)
     readyup()
-    wheelups(1)
-    send, 3 ;m32
-    sleep, 100
-    send, e
+    wheelups(10)
 }

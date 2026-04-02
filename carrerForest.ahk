@@ -65,7 +65,8 @@ return
 #Include perkgui.ahk
 
 Mode:
-
+chick(width/2,height/2)
+exitspawn(1)
 return
 
 startmacro:
@@ -79,12 +80,12 @@ chick(457, 654) ;Create Private
 waitforplaybutton(1)
 sleep, 1000
 chick(686, 734) ;PLAY
-
+waitforplaybutton(0)
 wave := 1
 t:=1.33
-readyup()
+readyup(1)
 exitspawn(1)
-wheeldowns(6)
+wheeldowns(11)
 doortostair()
 sleep, 5000
 stairtoshop()
@@ -94,20 +95,18 @@ walktoladder()
 waitfordawn()
 
 wave := 2
-readyup()
-sleep, 1000
+readyup(1)
+sleep, 10000
+ForcePlace(385, 147,4) ;sentry
 send, f ;ladder
 sleep, 500
 leftsentryw1()
-sleep, 4000
-place(width/2,height/2,4) ;sentry
-walktocenter()
-nw(400)
 wheeldowns(8)
 waitfordawn()
 
 wave := 3
-readyup()
+readyup(1)
+centerspawn()
 placespawnfl()
 wheelups(8)
 rightsentry()
@@ -116,7 +115,7 @@ sleep, 100
 walkrightsentrytoshop()
 
 wave := 4
-readyup()
+readyup(1)
 shoptostair() ;realign
 stairtoshop()
 shoptomines()
@@ -131,11 +130,11 @@ shoptomines()
 setuprightminesandfl()
 
 wave := 5
-readyup()
+readyup(1)
 ns(30000) 
 
 wave := 6
-readyup()
+readyup(1)
 shoptostair()
 stairtoupgs()
 send, f
@@ -149,77 +148,61 @@ upgrade(3,1)
 upgrade(4,1)
 wave := 7
 while (wave<10){ ;skip to wave 10
-	readyup()
+	readyup(1)
 	waitfordawn()
 	upgrade(2,1)
 	upgrade(3,1)
 	upgrade(4,1)
 	waitformorning()
 	wave++
-}
-upgstostair()
-readyup()
-refillandcliff()
-firetillmorning(2000)
-;10-16
-wave:=11
-while (wave<17){
-	readywithweapon()
+}	
+
+
+	nextsection(-1)
+	upgrade(3,3)
+	upgrade(4,3)
+	sleep, 100
+	send, f
+	sleep, 100
+	upgstostair()
+	stairtoshop()
+	a(800)
+	refill(3)
+	readyup()
+	ammotocliff()
+	waitfordawn()
+	sleep, 2000
 	firetillmorning(2000)
-	wave++
-} respawn()
-;17-20
-doortostair()
-readyup()
-refillandcliff()
-firetillmorning(2000)
-wave:=18
-while (wave<20){
-	readywithweapon()
-	firetillmorning(2000)
-	wave++
-} readywithweapon()
-firetillmorning(1000)
-;21-23
-respawn()
-doortostair()
-readyup()
-refillandcliff()
-wave:=22
-while (wave<24){
-	readywithweapon()
-	firetillmorning(0)
-	wave++
-}
-	;gunning till end
+	ulist := []
     runWaveBlock(11, 16, 2000)
 
-    prepRefill()
-    runWaveBlock(17, 20, 2000)
+    prepRefill(ulist)
+    runWaveBlock(17, 21, 2000)
 
-    prepRefill()
-    runWaveBlock(21, 23, 1000)
+	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
+    prepRefill(ulist)
+    runWaveBlock(22, 24, 1000)
 
-    prepRefill()
-    runWaveBlock(24, 25, 1000)
+	ulist := []
+    prepRefill(ulist)
+    runWaveBlock(25, 26, 1000)
 
-    prepRefill()
-    runWaveBlock(26, 27, 0)
+    prepRefill(ulist)
+    runWaveBlock(27, 28, 0)
 
-    prepRefill()
-    runWaveBlock(28, 29, 0)
-
-    prepRefill()
-    runWaveBlock(30, 30, 0)
+	ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+	premRefill(ulist)
+    runWaveBlock(29, 30, 0)
 
 return
 
 F1::
-chick(width/2,height/2)
-exitspawn(1)
+waitforplaybutton(0)
+MsgBox, ye
 return
 F2::
-firetillmorning(1000)
+	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
+    prepRefill(ulist)
 return
 F3:: 
 nextsection(3)

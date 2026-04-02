@@ -40,10 +40,12 @@ privategame(){
             Return
     }
 }
-readyup(){
+readyup(forceready := 0){
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
         PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
+        if (!forceready and !sunicon()) 
+            return 0
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
@@ -110,8 +112,8 @@ faultcheck(force){ ;insert for all endless loop
 	return 0
 }
 waitforplaybutton(appear){
-    ; 0: wait play to appear
-    ; 1: wait play to disappear
+    ; 1: wait play to appear
+    ; 0: wait play to disappear
     loop{
         PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
         if (boolean(x) == boolean(appear))
@@ -119,16 +121,22 @@ waitforplaybutton(appear){
         sleep, 100
     }   
 }
-waitforplacement(){
-    l:=0
+ForcePlace(x, y, toolnumber) {
     loop{
-        PixelSearch, x,y, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB 
-        PixelSearch, x2,y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
-        if (x or x2)
-            return 1
+        send, 1
         sleep, 50
-        if (l>100){
-            return 0
-        } l++
-    }   
+        Send, %toolnumber%
+        sleep, 50
+        chick(x, y)
+
+        Loop, 60 {
+            PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
+            PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
+            if (x1 || x2){
+                Send, %toolnumber%
+                return
+            }
+            Sleep, 50
+        }
+    }
 }

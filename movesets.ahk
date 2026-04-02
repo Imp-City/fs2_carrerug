@@ -51,11 +51,11 @@ laddertospawn(){
 placespawnfl(){
 	global width
 	global height
-	w(3500) ;12s baseline maxw
+	w(3000) ;12s baseline maxw
 	rotate(4,8) ;flip floodlight backwards
 	sleep, 100
 	place(width/2, 120,8)
-	s(4000)
+	s(3500)
 }
 knifeonly(){
 	i:=1
@@ -90,56 +90,28 @@ rotate(count, toolnumber){
 lefttripmine(toolnumber){
 	global width
 	global height
-	send, %toolnumber%
 	l:=0
 	while (l<6){
-		chick(width/4, height/2)
-		while !waitforplacement(){
-			send, %toolnumber%
-			sleep, 100
-			send, %toolnumber%
-			sleep, 100
-			chick(width/4, height/2)
-		}
+		ForcePlace(width/4, height/2, toolnumber)
 		nw(180)
 		l++
 	} sleep, 50
-	send, %toolnumber%
 }
 leftlandmine(toolnumber){
 	global width
 	global height
-	send, %toolnumber%
 	l:=0
 	while (l<4){
-		chick(742 + 5*l, 422)
-		while !waitforplacement(){
-			send, %toolnumber%
-			sleep, 100
-			send, %toolnumber%
-			sleep, 100
-			chick(750 + 5*l, 422)
-		}
+		ForcePlace(742 + 5*l, 422, toolnumber)
 		nw(170)
 		l++
 	} sleep, 50
-	send, %toolnumber%
 }
 setupleftmines(){
 	global width
 	global height
 	na(1200)
-	place(width/2, height*3/4,5)
-	sleep, 100
-	send, 5
-	while !waitforplacement(){
-		send, 5
-		sleep, 100
-		send, 5
-		sleep, 100
-		chick(width/2, height*3/4)
-	}
-	send, 5
+	ForcePlace(width/2, height*3/4, 5)
 	wheelups(5)
 	nw(1100)
 	lefttripmine(6)
@@ -149,6 +121,8 @@ setupleftmines(){
 }
 
 setuprightminesandfl(){
+	global width
+	global height
 	nd(1500)
 	wheelups(5)
 	nw(1100)
@@ -158,15 +132,7 @@ setuprightminesandfl(){
 	wheeldowns(5)
 	nw(2000)
 	na(800)
-	place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
-	send, 8
-	while !waitforplacement(){
-		send, 8
-		sleep, 100
-		send, 8
-		sleep, 100
-		place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
-	} send, 8
+	ForcePlace(width/2,height*2/5,8) ;floodlight
 	nw(3000)
 	place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
 }
@@ -174,25 +140,11 @@ setuprightminesandfl(){
 righttripmine(toolnumber){
 	global width
 	global height
-	send, %toolnumber%
-	chick(width*3/4, height/2)
-	while !waitforplacement(){
-		send, %toolnumber%
-		sleep, 100
-		send, %toolnumber%
-		sleep, 100
-		chick(width*3/4, height/2)
-	}
+	ForcePlace(width*3/4, height/2, toolnumber)
 	l:=0
 	nw(180)
 	while (l<5){
-		chick(width-1, height/2)
-		if !waitforplacement(){
-			send, %toolnumber%
-			sleep, 100
-			send, %toolnumber%
-			continue
-		}
+		ForcePlace(width-1, height/2, toolnumber)
 		nw(180)
 		l++
 	} sleep, 50
@@ -203,36 +155,16 @@ rightlandmine(toolnumber){
 	global height
 	send, %toolnumber%
 	l:=0
+	
 	while (l<3){
-		chick(565- 10*l, 431)
-		if !waitforplacement(){
-			send, %toolnumber%
-			sleep, 100
-			send, %toolnumber%
-			continue
-		}
+		ForcePlace(565- 10*l, 431, toolnumber)	
 		nw(180)
 		l++
 	} nw(40)
-	chick(539, 430)
-	while !waitforplacement(){
-		send, %toolnumber%
-		sleep, 100
-		send, %toolnumber%
-		sleep, 100
-		chick(539, 430)
-	}
-	send, %toolnumber%
+	ForcePlace(539, 430, toolnumber)
 }
 
-refillandcliff(){
-	stairtoshop()
-	a(800)
-	send, 3 ;m32
-	sleep, 100
-	send, f
-	sleep, 250
-	send, 3 ;m32
+ammotocliff(){
 	wd(1100)
 	SendInput, {Space down}
 	w(1000)
@@ -242,11 +174,15 @@ refillandcliff(){
 	w(1000)
 	SendInput, {Space up}
 	nw(500)
-	wheeldowns(10)
+	wheelups(20)
 	dllmove(0,-450)
 }
 
 firetillmorning(firedelay) {
+	send, 3
+	sleep, 100
+	send, e
+	sleep, 500
     Loop {
         chickstill()  ; fire once
 
@@ -265,8 +201,24 @@ firetillmorning(firedelay) {
 
                 ; one final shot before exiting
                 chickstill()
-                return
+                sleep, 100
+				send, 3
+				return
             }
+        }
+        if (sunicon()) {
+           graceStart := A_TickCount
+            while (A_TickCount - graceStart < 1000) {
+                chickstill()
+				start := A_TickCount
+				while (A_TickCount - start < firedelay)
+                	reload()
+            }
+            ; one final shot before exiting
+            chickstill()
+            sleep, 100
+			send, 3
+			return
         }
     }
 }
@@ -274,16 +226,132 @@ firetillmorning(firedelay) {
 runWaveBlock(startWave, endWave, fireDelay) {
     wave := startWave
     while (wave <= endWave) {
-        readywithweapon()
+		readywithweapon()
+		waitfordawn()
+		send, 7 ;oc remote
+		sleep, 100
+		chickstill()
+		sleep, 700
+		send, 7 ;oc remote
         firetillmorning(fireDelay)
         wave++
     }
 }
 
-prepRefill() {
+prepRefill(ulist) {
     respawn()
-	exitspawn(0)
+	sleep, 4000
+	exitspawn(1)
+	wheeldowns(6)
     doortostair()
+	stairtoupgs()
+	send, f
+
+	for i, item in ulist {
+		section := item[1]
+		nextsection(section)
+
+		if (item.Length() = 1) {
+			buy()
+		} else {
+			Loop, % item.Length() - 1 {
+				selection := item[A_Index + 1][1]
+				count := item[A_Index + 1][2]
+				upgrade(selection, count)
+				Sleep, 100
+			}
+		}
+
+		nextsection(-section)
+	}
+	nextsection(1)
+	loop, 4
+		buy()
+	nextsection(-1)
+
+	sleep, 100
+	send, f
+	sleep, 100
+	upgstostair()
+	stairtoshop()
+	a(800)
+	refill(3) ;m32
     readyup()
-    refillandcliff()
+    ammotocliff()
+	waitfordawn()
+}
+refill(toolnumber){
+	send, %toolnumber% ;m32
+	sleep, 100
+	send, f
+	sleep, 300
+	send, %toolnumber% ;m32
+}
+
+premRefill(ulist) {
+    respawn()
+	sleep, 4000
+	exitspawn(1)
+	wheeldowns(6)
+    doortostair()
+	stairtoupgs()
+	send, f
+
+	for i, item in ulist {
+		section := item[1]
+		nextsection(section)
+
+		if (item.Length() = 1) {
+			buy()
+		} else {
+			Loop, % item.Length() - 1 {
+				selection := item[A_Index + 1][1]
+				count := item[A_Index + 1][2]
+				upgrade(selection, count)
+				Sleep, 100
+			}
+		}
+
+		nextsection(-section)
+	}
+	nextsection(1)
+	loop, 4
+		buy()
+	nextsection(-1)
+
+	sleep, 100
+	send, f
+	sleep, 100
+	upgstostair()
+	stairtoshop()
+	d(500)
+	sd(300)
+	d(500)
+	w(100)
+	d(100)
+	wheelups(20)
+	send {Space down}
+	ns(1000)
+	send {Space up}
+	wheeldowns(6)
+	nw(500)
+	sa(600)
+	refill(3)
+	send {Space down}
+	nw(1300)
+	send {Space up}
+	readyup()
+	wa(1100)
+	SendInput, {Space down}
+	w(1000)
+	SendInput, {Space up}
+	w(6500)
+	SendInput, {Space down}
+	w(1000)
+	SendInput, {Space up}
+	nw(500)
+	wheelups(20)
+	dllmove(0,-450)
+	waitfordawn()
+	sleep, 1000
 }

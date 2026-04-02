@@ -9,11 +9,10 @@ MouseClick, wheelup
 sleep, 5
 l++
 }
-sleep, 50
-DllMove(0, 2000)
-Sleep, 100
-DllMove(0, -560)
-Sleep, 100
+DllMove(0, 3000)
+Sleep, 200
+DllMove(0, -570)
+Sleep, 200
 
 if (faultcheck(0))
     return 0
@@ -32,7 +31,7 @@ Loop { ;red finder
 }
 l=0
 b=0
-sleep, 300
+sleep, 200
 ;PixelSearch, x,, A_ScreenWidth/2-5, A_ScreenHeight*16/36, A_ScreenWidth/2+5, A_ScreenHeight*18/36, 0x52432C,10, Fast RGB
 PixelSearch, b,,  A_ScreenWidth/2, A_ScreenHeight/4, A_ScreenWidth, A_ScreenHeight*3/4, 0xD5D2CE, 0, Fast RGB ;black board normal
 PixelSearch, ,y,  A_ScreenWidth/2, A_ScreenHeight/4, A_ScreenWidth, A_ScreenHeight*3/4, 0xD5D2CD, 0, Fast RGB ;black board boss
@@ -54,11 +53,11 @@ else {
     }
     dllmove(100,0)
 }
-sleep, 300
+sleep, 200
 l=0
 Loop { ;grey finder
-    PixelSearch, x,, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x4C3416,15, Fast RGB ;normal
-    PixelSearch, ,y, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x563610,15, Fast RGB ;boss
+    PixelSearch, x,, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x4C3416,10, Fast RGB ;normal
+    PixelSearch, ,y, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x563610,10, Fast RGB ;boss
     if (x or y)
         break
     else {
@@ -76,12 +75,11 @@ else{
     SendInput, {w up}
 }
 l=0
-dllmove(-600,0)
 waitformorning()
-DllMove(0, 2000)
-Sleep, 50
-DllMove(0, -540)
-sleep, 50
+DllMove(-600, 3000)
+Sleep, 200
+DllMove(0, -560)
+sleep, 100
 Loop { ;red finder
     PixelSearch, x,, (A_ScreenWidth/2)-25, 0, (A_ScreenWidth/2)+25, A_ScreenHeight, 0xBA200B, 10, Fast RGB ;normal
     PixelSearch, ,y, (A_ScreenWidth/2)-25, 0, (A_ScreenWidth/2)+25, A_ScreenHeight, 0xBA1D07, 10, Fast RGB ;boss
@@ -111,7 +109,7 @@ Loop { ;red finder
 
 dllmove(-500,0)
 l=0
-sleep, 100
+sleep, 200
 loop { ;grey finder 2nd
     ;PixelSearch, x,, A_ScreenWidth/2, A_ScreenHeight*11/24, A_ScreenWidth/2, A_ScreenHeight*13/24, 0x4C3416,10, Fast RGB ;others
 	PixelSearch, x,, A_ScreenWidth/2-5, A_ScreenHeight*22/48, A_ScreenWidth/2+30, A_ScreenHeight*26/48, 0x564A30,20, Fast RGB ;normal
@@ -139,9 +137,9 @@ loop { ;grey finder 2nd
     l++
 }
 send 1
-DllMove(18, 0)
+DllMove(17, 0)
 sendinput, {a down}{s down}
-sleep, 100
+sleep, 200
 sendinput, {a up}{s up}
 i=0
 MouseClick, R,,,,,D
@@ -157,7 +155,7 @@ while(i<3){
         if (x or y)
             break
         else {
-			DllMove(1, 0)
+			DllMove(1 + 2*boolean(i<1), 0)
 			if (l>201)
                 return 1
 		}
