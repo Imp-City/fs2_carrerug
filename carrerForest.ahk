@@ -8,7 +8,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include controls.ahk
 #Include movesets.ahk
 #Include ugcarrermovesets.ahk
-snowball := 1
 ; ==================================
 perkX := 587
 perkY := 145
@@ -26,6 +25,8 @@ height := A_ScreenHeight
 
 listfile := A_ScriptDir "\PrestigeQueueList.txt"
 setupfile := A_ScriptDir "\PerkSetup.txt"
+snowballfile := A_ScriptDir "\snowball.txt"
+fileread, snowball, %snowballfile%
 viewerFile := ""
 viewerMode := ""
 viewerTitle := ""
@@ -71,6 +72,8 @@ if (exitspawn(1))
 return
 
 startmacro:
+FileDelete, %snowballfile%
+FileAppend, %snowball% , %snowballfile%
 Gui, Submit, NoHide
 hideeverything()
 restartroblox()

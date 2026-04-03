@@ -49,12 +49,19 @@ laddertospawn(){
 	wd(800)
 }
 placespawnfl(){
+	global snowball
 	global width
 	global height
 	w(3000) ;12s baseline maxw
-	rotate(4,8) ;flip floodlight backwards
+	if (snowball)
+		rotate(4,8) ;flip floodlight backwards
+	Else
+		rotate(4,2)
 	sleep, 100
-	place(width/2, 120,8)
+	if (snowball)
+		place(width/2, 120,8)
+	Else
+		place(width/2, 120,2)
 	s(3500)
 }
 place(x,y,toolnumber){
@@ -121,9 +128,16 @@ setuprightminesandfl(){
 	wheeldowns(5)
 	nw(2000)
 	na(800)
-	ForcePlace(width/2,height*2/5,8) ;floodlight
+	if (snowball)
+		ForcePlace(width/2,height*2/5,8) ;floodlight
+	Else
+		ForcePlace(width/2,height*2/5,2) ;floodlight
+	
 	nw(3000)
-	place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
+	if (snowball)
+		place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
+	Else
+		place(A_ScreenWidth/2,A_ScreenHeight*2/5,2) ;floodlight
 }
 
 righttripmine(toolnumber){
