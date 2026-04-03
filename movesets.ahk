@@ -213,17 +213,19 @@ firetillmorning(firedelay) {
 			return 1
         }
     }
+	return 0
 }
 
 runWaveBlock(startWave, endWave, fireDelay) {
     wave := startWave
     while (wave <= endWave) {
 		readywithweapon()
-		waitfordawn()
+		if (waitfordawn(0))
+			return 1
 		send, 7 ;oc remote
 		sleep, 100
 		chickstill()
-		sleep, 700
+		sleep, 900
 		send, 7 ;oc remote
 		failsafe2:=firetillmorning(fireDelay)
 		if (failsafe2<0)
@@ -233,9 +235,17 @@ runWaveBlock(startWave, endWave, fireDelay) {
 }
 
 prepRefill(ulist) {
+	delay := A_TickCount
+	if prestige()
+		if equipallfunction()
+			return 1
+	while (A_TickCount - delay < 4000){
+		faultcheck()
+		sleep, 200
+	}
     respawn()
-	sleep, 4000
-	exitspawn(1)
+	if (exitspawn(1))
+		return 1
 	wheeldowns(6)
     doortostair()
 	stairtoupgs()
@@ -270,10 +280,14 @@ prepRefill(ulist) {
 	stairtoshop()
 	a(800)
 	refill(3) ;m32
-	deadcheck(1)
-    readyup()
+	if (deadcheck(1)<0)
+		return 1
+    if (readyup())
+		return 1
     ammotocliff()
-	waitfordawn()
+	if (waitfordawn(0))
+		return 1
+	return 0
 }
 refill(toolnumber){
 	send, %toolnumber% ;m32
@@ -284,9 +298,17 @@ refill(toolnumber){
 }
 
 premRefill(ulist) {
+	delay := A_TickCount
+	if prestige()
+		if equipallfunction()
+			return 1
+	while (A_TickCount - delay < 4000){
+		faultcheck()
+		sleep, 200
+	}
     respawn()
-	sleep, 4000
-	exitspawn(1)
+	if (exitspawn(1))
+		return 1
 	wheeldowns(6)
     doortostair()
 	stairtoupgs()
@@ -335,8 +357,10 @@ premRefill(ulist) {
 	send {Space down}
 	nw(1300)
 	send {Space up}
-	deadcheck(1)
-	readyup()
+	if (deadcheck(1)<0)
+		return 1
+	if (readyup())
+		return 1
 	wa(1100)
 	SendInput, {Space down}
 	w(1000)
@@ -348,6 +372,8 @@ premRefill(ulist) {
 	nw(500)
 	wheelups(20)
 	dllmove(0,-450)
-	waitfordawn()
+	if (waitfordawn(0))
+		return 1
 	sleep, 1000
+	return 0
 }

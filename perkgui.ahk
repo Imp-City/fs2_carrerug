@@ -1,43 +1,52 @@
 EquipAll:
-chick(A_ScreenWidth/2,A_ScreenHeight/2)
-; 113, 578 ; 75x75
-; 0 indexing: 113 + 75*(slot%6), 578 + 75*(slot%6)
-; 562, 120, 50x50 (+ 9): r b g y p
-; 938, 660
-; prevSlot:= -1
-
-Loop, Read, %setupfile%
-{
-    line := A_LoopReadLine
-
-    if (line = "" or line = "`r")
-		continue
-
-    parts := StrSplit(line, "|")
-    perkName := parts[1]
-	column := parts[2]
-    color := parts[3]
-    slot := parts[4]
-
-	;if (prevslot>=0){
-	;	checkEquip(prevslot)
-	;}
-	; perk equip
-	chick(searchX, searchY)
-	send, %perkName%
-	chick(perkX + difX*column, perkY + DifY*color)
-	if (maxlvperk())
-		return
-	chick(slotX + slotSpace*Mod(slot,6), slotY + slotSpace*Floor((slot)/6))
-	prevslot:= slot
-}
-
+	if equipallfunction()
+		goto, startmacro
 return
+
+	
+equipallfunction(){
+	global setupfile
+	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
+	chick(A_ScreenWidth/2,A_ScreenHeight/2)
+	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+	if (!a)
+		chick(439, 737)
+	; 113, 578 ; 75x75
+	; 0 indexing: 113 + 75*(slot%6), 578 + 75*(slot%6)
+	; 562, 120, 50x50 (+ 9): r b g y p
+	; 938, 660
+	; prevSlot:= -1
+
+	Loop, Read, %setupfile%
+	{
+		line := A_LoopReadLine
+
+		if (line = "" or line = "`r")
+			continue
+
+		parts := StrSplit(line, "|")
+		perkName := parts[1]
+		column := parts[2]
+		color := parts[3]
+		slot := parts[4]
+
+		;if (prevslot>=0){
+		;	checkEquip(prevslot)
+		;} 
+		; perk equip
+		chick(searchX, searchY)
+		send, %perkName%
+		chick(perkX + difX*column, perkY + DifY*color)
+		if (maxlvperk())
+			return 1
+		chick(slotX + slotSpace*Mod(slot,6), slotY + slotSpace*Floor((slot)/6))
+		prevslot:= slot
+	} return 0
+}
 
 testpos:
 chick(A_ScreenWidth/2,A_ScreenHeight/2)
 Gui, Submit, NoHide
-
 v := Inputcheck()
 GuiControl, text, testpos, % v
 if (v="Success!"){
@@ -55,6 +64,7 @@ GuiControl, text, testpos, Test Position
 return
 
 Queue:
+slot:=1
 hideeverything()
 guicontrol, hide, waiting
 guicontrol,, headline, AutoPres: Input Column, Row, and Color of the perk: r,b,g,y,p

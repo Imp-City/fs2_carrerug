@@ -15,12 +15,12 @@ sunicon(){
 	return boolean(b)
 }
 
-waitfordawn(){
+waitfordawn(waitperiod:=1){
     while(sunicon()){
         if (deadcheck(0,1)<0)
             return 1
         sleep, 100
-    } sleep, 1000
+    } sleep, waitperiod*1000
     return 0
 }
 waitformorning(){
@@ -58,6 +58,8 @@ readyup(forceready := 0){
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
+                if (faultcheck())
+                    return 1
                 chick(1306, 699)
                 PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
                 if (not x){
@@ -66,12 +68,12 @@ readyup(forceready := 0){
                 }
             }
         }
-        if (faultcheck(0))
+        if (faultcheck())
             return 1
     }
 }
 
-faultcheck(force := 0){ ;insert for all endless loop
+faultcheck(){ ;insert for all endless loop
     PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
 
     PixelSearch, d1,, 538, 363, 538, 363, 0xFF0000,0, Fast RGB ;die 1
@@ -80,44 +82,45 @@ faultcheck(force := 0){ ;insert for all endless loop
     PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
     PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
     PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
-    if (force or (c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
-        if WinExist("ahk_exe RobloxPlayerBeta.exe"){
-            WinKill
-            sleep, 50
-            WinKill
-        }
-        sleep, 500
-        SetTitleMatchMode, 2
-        if winExist("The Final Stand 2"){
-            loop{
-                WinActivate
-                mouseclick, WheelUp
-                mouseclick, WheelUp
-                sleep, 8000
-                chick(995, 441) ;play button
-                mouseclick, WheelUp
-                sleep, 500
-                mouseclick, WheelUp
-                sleep, 500
-                chick(995, 441)
-                sleep, 2000
-                l=0
-                while (l<40){ ;20 sec
-                    if WinExist("ahk_exe RobloxPlayerBeta.exe"){
-                        sleep, 500
-                        WinActivate
-                        GuiControl,, Waiting, Status: Running, Do not perform any actions
-                        return 1
-                    }
-                    sleep, 500
-                    l++
-                }
-            }
-        }
+    GuiControl,, Debug2, % "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", ded:" . boolean(c) . boolean(d1) . boolean(d2)
+
+    if ((c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
+        return 1
     } else
         return 0
 }
-
+restartroblox(){
+    if WinExist("ahk_exe RobloxPlayerBeta.exe"){
+        WinKill
+        sleep, 50
+        WinKill
+    }
+    sleep, 500
+    SetTitleMatchMode, 2
+    if winExist("The Final Stand 2"){
+        loop{
+            WinActivate
+            mouseclick, WheelUp
+            mouseclick, WheelUp
+            sleep, 3000
+            chick(995, 441) ;play button
+            wheelups(4)
+            chick(995, 441)
+            sleep, 2000
+            l=0
+            while (l<40){ ;20 sec
+                if WinExist("ahk_exe RobloxPlayerBeta.exe"){
+                    sleep, 500
+                    WinActivate
+                    GuiControl,, Waiting, Status: Running, Do not perform any actions
+                    return 1
+                }
+                sleep, 500
+                l++
+            }
+        }
+    }
+}
 deadcheck(checkammo:= 0, killwhended := 0){
     PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
     faultcheck()
@@ -130,7 +133,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
     PixelSearch, s2,, 807, 422, 807, 422, 0xFF0000,0, Fast RGB ;lose life 2
 
     if (c and s1 and s2) {
-        if faultcheck(killwhended)
+        if (faultcheck() or killwhended)
             return -1
         waitformorning()
         if (wave<29){
@@ -143,7 +146,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
     }
 
     if (d1 and d2){
-        if faultcheck(killwhended)
+        if (faultcheck() or killwhended)
             return -1
         while (true){
             if sunicon() 
@@ -176,7 +179,7 @@ waitforplaybutton(appear){
     ; 1: wait play to appear
     ; 0: wait play to disappear
     loop{
-        if faultcheck(0)
+        if faultcheck()
             return 1
         PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
         if (boolean(x) == boolean(appear))
@@ -201,7 +204,13 @@ ForcePlace(x, y, toolnumber) {
             }
             Sleep, 50
         }
-        if (deadcheck(0,1))
+        if (deadcheck(0,1)<0)
             return 1
-    }
+    } return 0
+}
+
+closechat(){
+    PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 1, Fast RGB
+    if (x)
+        chick(x,y)
 }

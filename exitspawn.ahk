@@ -1,22 +1,16 @@
-exitspawn(sprint){
+exitspawn(sprint, trials := 1){
     global searchtimer
     global t
+if (faultcheck())
+    return 1
 MouseMove, MousePosX, MousePosY
-l=0
 Dllmove(0,1)
-while(l<50) {
-MouseClick, wheelup
-sleep, 5
-l++
-}
+wheelups(20)
 DllMove(0, 3000)
 Sleep, 200
 DllMove(0, -570)
 Sleep, 200
-
-if (faultcheck(0))
-    return 0
-l=0
+l := 0
 Loop { ;red finder
     PixelSearch, x,, (A_ScreenWidth/2)-6, 0, (A_ScreenWidth/2)+6, A_ScreenHeight, 0xBA200B, 15, Fast RGB
     PixelSearch, ,y, (A_ScreenWidth/2)-6, 0, (A_ScreenWidth/2)+6, A_ScreenHeight, 0xBA1D07, 15, Fast RGB
@@ -24,10 +18,12 @@ Loop { ;red finder
         break
     else {
         DllMove(100, 0)
-        if (l>50*searchtimer+20)
-            return 1
+        guicontrol,, Debug1, % "l= " . l
+        if (l>20*searchtimer+20){
+            return retrial(sprint,trials)
+        }
+        l++
     }
-    l++
 }
 l=0
 b=0
@@ -46,8 +42,12 @@ else {
         else {
             DllMove(-50, 0)
         sleep, 10
-            if (l>30)
-                return 1
+            if (l>30){
+                if (trials>3)
+                    return 1
+                else
+                    return retrial(sprint,trials)
+            }
         }
         l++
     }
@@ -62,8 +62,12 @@ Loop { ;grey finder
         break
     else {
         DllMove(10, 0)
-        if (l>60)
-            return 1
+        if (l>60){
+            if (trials>3)
+                return 1
+            else
+                return retrial(sprint,trials)
+        }
     }
     l++
 }
@@ -75,7 +79,8 @@ else{
     SendInput, {w up}
 }
 l=0
-waitformorning()
+if waitformorning()
+    return 1
 DllMove(-600, 3000)
 Sleep, 200
 DllMove(0, -560)
@@ -87,8 +92,9 @@ Loop { ;red finder
         break   
     else {
         DllMove(-200, 0)
-        if (l>20)
-            return 1
+        if (l>20){
+            return retrial(sprint,trials)
+        }
     }
     l++
 }
@@ -101,8 +107,9 @@ Loop { ;red finder
         break
     else {
         DllMove(-30, 0)
-        if (l>60)
-            return 1
+        if (l>60){
+            return retrial(sprint,trials)
+        }
     }
     l++
 }
@@ -118,8 +125,9 @@ loop { ;grey finder 2nd
         break
     else {
 		DllMove(7, 0)
-		if (l>50)
-            return 1
+        if (l>50){
+            return retrial(sprint,trials)
+        }
 	}
     l++
 }
@@ -131,8 +139,9 @@ loop { ;grey finder 2nd
         break
     else {
 		DllMove(1, 0)
-		if (l>50)
-            return 1
+        if (l>50){
+            return retrial(sprint,trials)
+        }
 	}
     l++
 }
@@ -156,8 +165,9 @@ while(i<3){
             break
         else {
 			DllMove(1 + 2*boolean(i<1), 0)
-			if (l>201)
-                return 1
+            if (l>201){
+                return retrial(sprint,trials)
+            }
 		}
     }
     DllMove(179, 0)
@@ -178,4 +188,11 @@ wa(300)
 send f
 sleep, 100
 return 0
+}
+
+retrial(sprint, trials){
+    if (trials>3)
+        return 1
+    respawn()
+    return exitspawn(sprint, trials+1)
 }

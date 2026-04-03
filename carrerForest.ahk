@@ -9,7 +9,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include movesets.ahk
 #Include ugcarrermovesets.ahk
 snowball := 1
-
+; ==================================
 perkX := 587
 perkY := 145
 DifY := 59
@@ -66,25 +66,36 @@ return
 
 Mode:
 chick(width/2,height/2)
-exitspawn(1)
+if (exitspawn(1))
+    goto, startmacro
 return
 
 startmacro:
+Gui, Submit, NoHide
+hideeverything()
+restartroblox()
 chick(width/2,height/2)
-privategame()
+if (privategame())
+    goto, startmacro
 chick(843, 346)
 chick(329, 523) ;ug (to enable scrolling)
 wheeldowns(20)
 chick(329, 523) ;ug
 chick(457, 654) ;Create Private
-waitforplaybutton(1)
-sleep, 1000
+closechat()
+if (waitforplaybutton(1))
+    goto, startmacro
+prestige()
+gosub, equipall
 chick(686, 734) ;PLAY
-waitforplaybutton(0)
+if (waitforplaybutton(0))
+    goto, startmacro
 wave := 1
 t:=1.33
-readyup(1)
-exitspawn(1)
+if (readyup(1))
+    goto, startmacro
+if (exitspawn(1))
+    goto, startmacro
 wheeldowns(11)
 doortostair()
 sleep, 5000
@@ -92,20 +103,25 @@ stairtoshop()
 send, f ;exit shop
 place(width/2,height/2,4) ;sentry
 walktoladder()
-waitfordawn()
+if (waitfordawn())
+    goto, startmacro
 
 wave := 2
-readyup(1)
+if (readyup(1))
+    goto, startmacro
 sleep, 10000
-ForcePlace(385, 147,4) ;sentry
+if (ForcePlace(385, 147,4))
+    goto, startmacro
 send, f ;ladder
 sleep, 500
 leftsentryw1()
 wheeldowns(8)
-waitfordawn()
+if (waitfordawn())
+    goto, startmacro
 
 wave := 3
-readyup(1)
+if (readyup(1))
+    goto, startmacro
 centerspawn()
 placespawnfl()
 wheelups(8)
@@ -115,7 +131,8 @@ sleep, 100
 walkrightsentrytoshop()
 
 wave := 4
-readyup(1)
+if (readyup(1))
+    goto, startmacro
 shoptostair() ;realign
 stairtoshop()
 shoptomines()
@@ -130,17 +147,20 @@ shoptomines()
 setuprightminesandfl()
 
 wave := 5
-readyup(1)
+if (readyup(1))
+    goto, startmacro
 ns(30000) 
 
 wave := 6
-readyup(1)
+if (readyup(1))
+    goto, startmacro
 shoptostair()
 stairtoupgs()
 send, f
 nextsection(3)
 buy()
-waitfordawn()
+if (waitfordawn())
+    goto, startmacro
 upgrade(4,1)
 nextsection(-2)
 upgrade(2,1)
@@ -148,12 +168,15 @@ upgrade(3,1)
 upgrade(4,1)
 wave := 7
 while (wave<10){ ;skip to wave 10
-	readyup(1)
-	waitfordawn()
+	if (readyup(1))
+        goto, startmacro
+	if (waitfordawn())
+        goto, startmacro
 	upgrade(2,1)
 	upgrade(3,1)
 	upgrade(4,1)
-	waitformorning()
+	if (waitformorning())
+        goto, startmacro
 	wave++
 }	
 
@@ -168,31 +191,48 @@ while (wave<10){ ;skip to wave 10
 	stairtoshop()
 	a(800)
 	refill(3)
-	readyup()
+	if (readyup())
+        goto, startmacro
 	ammotocliff()
-	waitfordawn()
+	if (waitfordawn())
+        goto, startmacro
 	sleep, 2000
-	firetillmorning(2000)
+	if (firetillmorning(2500)<0)
+        goto, startmacro
 	ulist := []
-    runWaveBlock(11, 16, 2000)
+    if (runWaveBlock(11, 17, 2500))
+        goto, startmacro
 
-    prepRefill(ulist)
-    runWaveBlock(17, 21, 2000)
+    if (prepRefill(ulist))
+        goto, startmacro
+    if (runWaveBlock(18, 20, 2500))
+        goto, startmacro
+	if (runWaveBlock(21, 22, 1500))
+        goto, startmacro
 
 	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
-    prepRefill(ulist)
-    runWaveBlock(22, 24, 1000)
-
+    if (prepRefill(ulist))
+        goto, startmacro
+    if (runWaveBlock(23, 24, 1500))
+        goto, startmacro
+    if (runWaveBlock(25, 25, 0))
+        goto, startmacro
 	ulist := []
-    prepRefill(ulist)
-    runWaveBlock(25, 26, 1000)
+    if (prepRefill(ulist))
+        goto, startmacro
+    if (runWaveBlock(26, 27, 0))
+        goto, startmacro
 
-    prepRefill(ulist)
-    runWaveBlock(27, 28, 0)
+    if (prepRefill(ulist))
+        goto, startmacro
+    if (runWaveBlock(28, 29, 0))
+        goto, startmacro
 
 	ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-	premRefill(ulist)
-    runWaveBlock(29, 30, 0)
+	if (premRefill(ulist))
+        goto, startmacro
+    if (runWaveBlock(30, 30, 0))
+        goto, startmacro
 
 return
 
@@ -255,7 +295,10 @@ while (l<20) {
 	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
 	if (x){
 		chick(x,y+13)
-		send, 0.36 {Enter}
+		sleep, 50
+		send 0.36 
+		sleep, 50
+		send {Enter}
 		GuiControl, text, settingadjust, Success! Don't forget to turn off shiftlock!
 		break
 	}
@@ -267,10 +310,12 @@ return
 
 maxlvperk(){
 	l:=0
-	PixelGetColor, c, 54, 131, alt RGB
+	PixelGetColor, c, 149, 226, Alt RGB
 	while not (c = 0xD3302B or c = 0xFF302B or c = 0x122D64 or c = 0x122D78 or c = 0x337D35 or c = 0x339635 or c = 0xE1D635 or c = 0xFFF235 or c = 0x963C96 or c = 0xBE4BBE or l>100){
+		if faultcheck()
+			return 1
 		chick(149, 488) ;upgrade/prestige
-		PixelGetColor, c, 54, 131, alt RGB
+		PixelGetColor, c, 149, 226, Alt RGB
 		sleep, 20
 		l++
 		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
@@ -295,31 +340,16 @@ checkEquip(Lslot){
 	}
 }
 
-prestige:
+prestige(){
+	global listfile
+	global searchX, searchY, perkX, perkY, difX, difY
 send, m
 l=0
-loop{ ;white PLAY
-    sleep, 200
-    PixelSearch, x,, 651, 733, 652, 734, 0xFFFFFF, 1, Fast RGB ;no
-    if (x)
-        break
-    if (l>25 or faultcheck(0))
-        return
-    l++
-}
-
+waitforplaybutton(1)
 sleep, 100
-l := 0
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
-while (!a){
-
-	chick(438, 732) ;Unlocks/no
-	sleep, 200
-	l++
-	if (l>10)
-		return
-	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
-}
+if (!a)
+	chick(439, 737)
 chick(1115, 108) ;prestige section
 sleep, 100
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
@@ -333,16 +363,22 @@ if (a){
 
 	chick(searchX, searchY)
 	send, %perkName%
-	chick(perkX + difX*column, perkY + DifY*color)
+	chick(perkX + difX*column, perkY + difY*color)
 	sleep, 100
-	;chick(149, 488) ;upgrade/prestige
-
+	l:=0
+	PixelGetColor, c, 149, 226, Alt RGB
+	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE or l > 100){
+		PixelGetColor, c, 149, 226, Alt RGB
+		chick(149, 488) ;upgrade/prestige
+		sleep, 100
+		l++
+	}
 	PopFirstLine(listfile)
-	guicontrol,, settingadjust, % d
-}
+	;guicontrol,, settingadjust, % d
+}chick(173, 104)
 sleep, 100
-return
-
+return 1
+}
 
 
 
