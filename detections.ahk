@@ -17,13 +17,18 @@ sunicon(){
 
 waitfordawn(){
     while(sunicon()){
+        if (deadcheck(0,1)<0)
+            return 1
         sleep, 100
     } sleep, 1000
+    return 0
 }
 waitformorning(){
     while(!sunicon()){
+        if (deadcheck(0,1)<0)
+            return 1
         sleep, 50
-    }
+    } return 0
 }
 privategame(){
     loop{
@@ -31,13 +36,17 @@ privategame(){
         if (x)
             break
         sleep, 500
+        if faultcheck()
+            return 1
     }
     loop{
         chick(155, 585) ;PRIVATE GAME
         sleep, 1000
         PixelSearch, x,, 1018, 621, 1019, 682, 0xCD0C0B,3, Fast RGB 
         if (x)
-            Return
+            Return 0
+        if faultcheck()
+            return 1
     }
 }
 readyup(forceready := 0){
@@ -62,17 +71,16 @@ readyup(forceready := 0){
     }
 }
 
-faultcheck(force){ ;insert for all endless loop
-	/*
-    PixelSearch, x,, 641, 465, 641, 465, 0x393B3D,0, Fast RGB ;disconnected
-    PixelSearch, y,, 809, 454, 809, 454, 0xFFFFFF,0, Fast RGB ;disconnected
-    PixelSearch, z,, 636, 285, 636, 285, 0xBDBEBE,0, Fast RGB ;disconnected
-    PixelSearch, a,, 219, 297, 219, 297, 0xFF0000,0, Fast RGB ;shop die
-    PixelSearch, b,, 1071, 320, 1071, 320, 0xFF0000,0, Fast RGB ;shop die
+faultcheck(force := 0){ ;insert for all endless loop
     PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
-    GuiControl,, Debug2, % "fault: f:" . boolean(force) . " dc:" . boolean(x) . boolean(y) . boolean(z) . " ded:" . boolean(a) . boolean(b) . boolean(c)
-    if (force or (x and y and z) or (a and b and c) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
-        GuiControl,, Waiting, Status: Attempting to launch Roblox from Web.
+
+    PixelSearch, d1,, 538, 363, 538, 363, 0xFF0000,0, Fast RGB ;die 1
+    PixelSearch, d2,, 821, 364, 821, 364, 0xFF0000,0, Fast RGB ;die 2
+
+    PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
+    PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
+    PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
+    if (force or (c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
         if WinExist("ahk_exe RobloxPlayerBeta.exe"){
             WinKill
             sleep, 50
@@ -86,12 +94,12 @@ faultcheck(force){ ;insert for all endless loop
                 mouseclick, WheelUp
                 mouseclick, WheelUp
                 sleep, 8000
-                chick(975, 424) ;play button
+                chick(995, 441) ;play button
                 mouseclick, WheelUp
                 sleep, 500
                 mouseclick, WheelUp
                 sleep, 500
-                chick(975, 424)
+                chick(995, 441)
                 sleep, 2000
                 l=0
                 while (l<40){ ;20 sec
@@ -108,18 +116,73 @@ faultcheck(force){ ;insert for all endless loop
         }
     } else
         return 0
-	*/
-	return 0
+}
+
+deadcheck(checkammo:= 0, killwhended := 0){
+    PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
+    faultcheck()
+    PixelSearch, d1,, 538, 690, 538, 690, 0x1F1F1F,0, Fast RGB ;ded pov
+    PixelSearch, d2,, 529, 681, 530, 682, 0xFFFFFF,0, Fast RGB ;ded pov
+
+    PixelSearch, a1,, 699, 696, 700, 697, 0xC0C1C0,0, Fast RGB ;not at ammo box
+
+    PixelSearch, s1,, 235, 351, 235, 351, 0xFF0000,0, Fast RGB ;lose life 1
+    PixelSearch, s2,, 807, 422, 807, 422, 0xFF0000,0, Fast RGB ;lose life 2
+
+    if (c and s1 and s2) {
+        if faultcheck(killwhended)
+            return -1
+        waitformorning()
+        if (wave<29){
+            prepRefill([[0],[0],[0],[0]])
+        } else {
+            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            premRefill(ulist)
+        } 
+        return 1
+    }
+
+    if (d1 and d2){
+        if faultcheck(killwhended)
+            return -1
+        while (true){
+            if sunicon() 
+                break
+            if (c and s1 and s2)
+                return deadcheck()
+        }
+        if (wave<29){
+            prepRefill([[0],[0],[0],[0]])
+        } else {
+            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            premRefill(ulist)
+        }
+        return 0
+    }
+
+
+    if (checkammo and a1){
+        if (wave<29){
+            prepRefill([])
+        } else {
+            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            premRefill(ulist)
+        }
+        return 0
+    }
+    return 2
 }
 waitforplaybutton(appear){
     ; 1: wait play to appear
     ; 0: wait play to disappear
     loop{
+        if faultcheck(0)
+            return 1
         PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
         if (boolean(x) == boolean(appear))
             break 
         sleep, 100
-    }   
+    } return 0
 }
 ForcePlace(x, y, toolnumber) {
     loop{
@@ -138,5 +201,7 @@ ForcePlace(x, y, toolnumber) {
             }
             Sleep, 50
         }
+        if (deadcheck(0,1))
+            return 1
     }
 }

@@ -24,8 +24,8 @@ Loop { ;red finder
         break
     else {
         DllMove(100, 0)
-        ;if (l>50*searchtimer+0)
-        ;    return 1
+        if (l>50*searchtimer+20)
+            return 1
     }
     l++
 }
@@ -177,4 +177,5 @@ a(1200)
 wa(300)
 send f
 sleep, 100
+return 0
 }

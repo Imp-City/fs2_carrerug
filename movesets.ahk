@@ -57,17 +57,6 @@ placespawnfl(){
 	place(width/2, 120,8)
 	s(3500)
 }
-knifeonly(){
-	i:=1
-	SendInput, {v down}
-	while (!sunicon()){
-		i:=Mod(i+1,4)
-		ox:=[-40,0,40,0][i+1], oy:=[0,-40,0,40][i+1]
-		chick(ox + A_ScreenWidth/2,oy + A_ScreenHeight/2)
-		sleep, 10
-	}
-	SendInput, {v up}
-}
 place(x,y,toolnumber){
 	send, %toolnumber%
 	sleep, 50
@@ -186,10 +175,13 @@ firetillmorning(firedelay) {
     Loop {
         chickstill()  ; fire once
 
+		failsafe1:=deadcheck(0)
+		if (failsafe1<2)
+			return failsafe1
+
         start := A_TickCount
         while (A_TickCount - start < firedelay) {
             reload()
-
             if (sunicon()) {
                 graceStart := A_TickCount
                 while (A_TickCount - graceStart < 1000) {
@@ -203,7 +195,7 @@ firetillmorning(firedelay) {
                 chickstill()
                 sleep, 100
 				send, 3
-				return
+				return 1
             }
         }
         if (sunicon()) {
@@ -218,7 +210,7 @@ firetillmorning(firedelay) {
             chickstill()
             sleep, 100
 			send, 3
-			return
+			return 1
         }
     }
 }
@@ -233,9 +225,11 @@ runWaveBlock(startWave, endWave, fireDelay) {
 		chickstill()
 		sleep, 700
 		send, 7 ;oc remote
-        firetillmorning(fireDelay)
-        wave++
-    }
+		failsafe2:=firetillmorning(fireDelay)
+		if (failsafe2<0)
+			return 1
+        wave+=failsafe2
+    } return 0
 }
 
 prepRefill(ulist) {
@@ -276,6 +270,7 @@ prepRefill(ulist) {
 	stairtoshop()
 	a(800)
 	refill(3) ;m32
+	deadcheck(1)
     readyup()
     ammotocliff()
 	waitfordawn()
@@ -340,6 +335,7 @@ premRefill(ulist) {
 	send {Space down}
 	nw(1300)
 	send {Space up}
+	deadcheck(1)
 	readyup()
 	wa(1100)
 	SendInput, {Space down}
