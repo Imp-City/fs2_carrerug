@@ -1,5 +1,4 @@
 exitspawn(sprint, trials := 1){
-    global searchtimer
     global t
 if (faultcheck())
     return 1
@@ -19,7 +18,7 @@ Loop { ;red finder
     else {
         DllMove(100, 0)
         guicontrol,, Debug1, % "l= " . l
-        if (l>20*searchtimer+20){
+        if (l>40){
             return retrial(sprint,trials)
         }
         l++
