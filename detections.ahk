@@ -94,7 +94,8 @@ restartroblox(){
         WinKill
         sleep, 50
         WinKill
-    }
+    } 
+
     sleep, 500
     SetTitleMatchMode, 2
     if winExist("The Final Stand 2"){
@@ -102,6 +103,7 @@ restartroblox(){
             WinActivate
             mouseclick, WheelUp
             mouseclick, WheelUp
+            WinMove, ,, 0, 0, 1366, 768
             sleep, 3000
             chick(995, 441) ;play button
             wheelups(4)
@@ -113,6 +115,7 @@ restartroblox(){
                     sleep, 500
                     WinActivate
                     GuiControl,, Waiting, Status: Running, Do not perform any actions
+                    WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
                     return 1
                 }
                 sleep, 500
