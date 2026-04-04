@@ -1,5 +1,5 @@
 exitspawn(sprint, trials := 1){
-    global t
+    global t, width, height
 if (faultcheck())
     return 1
 MouseMove, MousePosX, MousePosY
@@ -11,8 +11,8 @@ DllMove(0, -570)
 Sleep, 200
 l := 0
 Loop { ;red finder
-    PixelSearch, x,, (A_ScreenWidth/2)-6, 0, (A_ScreenWidth/2)+6, A_ScreenHeight, 0xBA200B, 15, Fast RGB
-    PixelSearch, ,y, (A_ScreenWidth/2)-6, 0, (A_ScreenWidth/2)+6, A_ScreenHeight, 0xBA1D07, 15, Fast RGB
+    PixelSearch, x,, (width/2)-6, 0, (width/2)+6, height, 0xBA200B, 15, Fast RGB
+    PixelSearch, ,y, (width/2)-6, 0, (width/2)+6, height, 0xBA1D07, 15, Fast RGB
     if (x or y)
         break
     else {
@@ -27,15 +27,15 @@ Loop { ;red finder
 l=0
 b=0
 sleep, 200
-;PixelSearch, x,, A_ScreenWidth/2-5, A_ScreenHeight*16/36, A_ScreenWidth/2+5, A_ScreenHeight*18/36, 0x52432C,10, Fast RGB
-PixelSearch, b,,  A_ScreenWidth/2, A_ScreenHeight/4, A_ScreenWidth, A_ScreenHeight*3/4, 0xD5D2CE, 0, Fast RGB ;black board normal
-PixelSearch, ,y,  A_ScreenWidth/2, A_ScreenHeight/4, A_ScreenWidth, A_ScreenHeight*3/4, 0xD5D2CD, 0, Fast RGB ;black board boss
+;PixelSearch, x,, width/2-5, height*16/36, width/2+5, height*18/36, 0x52432C,10, Fast RGB
+PixelSearch, b,,  width/2, height/4, width, height*3/4, 0xD5D2CE, 0, Fast RGB ;black board normal
+PixelSearch, ,y,  width/2, height/4, width, height*3/4, 0xD5D2CD, 0, Fast RGB ;black board boss
 if (b or y)
     dllmove(250,0)
 else {
         Loop { ;black board
-        PixelSearch, b,,  A_ScreenWidth/2-60, A_ScreenHeight/4, A_ScreenWidth/2+60, A_ScreenHeight*3/4, 0xD5D2CE, 0, Fast RGB ;normal
-        PixelSearch, ,y,  A_ScreenWidth/2-60, A_ScreenHeight/4, A_ScreenWidth/2+60, A_ScreenHeight*3/4, 0xD5D2CD, 0, Fast RGB ;boss
+        PixelSearch, b,,  width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CE, 0, Fast RGB ;normal
+        PixelSearch, ,y,  width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CD, 0, Fast RGB ;boss
         if (b or y)
             break
         else {
@@ -55,8 +55,8 @@ else {
 sleep, 200
 l=0
 Loop { ;grey finder
-    PixelSearch, x,, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x4C3416,10, Fast RGB ;normal
-    PixelSearch, ,y, A_ScreenWidth/2-15, A_ScreenHeight*23/48, A_ScreenWidth/2+15, A_ScreenHeight*25/48, 0x563610,10, Fast RGB ;boss
+    PixelSearch, x,, width/2-15, height*23/48, width/2+15, height*25/48, 0x4C3416,10, Fast RGB ;normal
+    PixelSearch, ,y, width/2-15, height*23/48, width/2+15, height*25/48, 0x563610,10, Fast RGB ;boss
     if (x or y)
         break
     else {
@@ -85,8 +85,8 @@ Sleep, 200
 DllMove(0, -560)
 sleep, 100
 Loop { ;red finder
-    PixelSearch, x,, (A_ScreenWidth/2)-25, 0, (A_ScreenWidth/2)+25, A_ScreenHeight, 0xBA200B, 10, Fast RGB ;normal
-    PixelSearch, ,y, (A_ScreenWidth/2)-25, 0, (A_ScreenWidth/2)+25, A_ScreenHeight, 0xBA1D07, 10, Fast RGB ;boss
+    PixelSearch, x,, (width/2)-25, 0, (width/2)+25, height, 0xBA200B, 10, Fast RGB ;normal
+    PixelSearch, ,y, (width/2)-25, 0, (width/2)+25, height, 0xBA1D07, 10, Fast RGB ;boss
     if (x or y)
         break   
     else {
@@ -100,8 +100,8 @@ Loop { ;red finder
 dllmove(350,0)
 sleep, 50
 Loop { ;red finder
-    PixelSearch, x,, (A_ScreenWidth/2)-5, 0, (A_ScreenWidth/2)+5, A_ScreenHeight, 0xBA200B, 10, Fast RGB ;normal
-    PixelSearch, ,y, (A_ScreenWidth/2)-5, 0, (A_ScreenWidth/2)+5, A_ScreenHeight, 0xBA1D07, 10, Fast RGB ;boss
+    PixelSearch, x,, (width/2)-5, 0, (width/2)+5, height, 0xBA200B, 10, Fast RGB ;normal
+    PixelSearch, ,y, (width/2)-5, 0, (width/2)+5, height, 0xBA1D07, 10, Fast RGB ;boss
     if (x or y)
         break
     else {
@@ -117,9 +117,9 @@ dllmove(-500,0)
 l=0
 sleep, 200
 loop { ;grey finder 2nd
-    ;PixelSearch, x,, A_ScreenWidth/2, A_ScreenHeight*11/24, A_ScreenWidth/2, A_ScreenHeight*13/24, 0x4C3416,10, Fast RGB ;others
-	PixelSearch, x,, A_ScreenWidth/2-5, A_ScreenHeight*22/48, A_ScreenWidth/2+30, A_ScreenHeight*26/48, 0x564A30,20, Fast RGB ;normal
-    PixelSearch, ,y, A_ScreenWidth/2-5, A_ScreenHeight*22/48, A_ScreenWidth/2+30, A_ScreenHeight*26/48, 0x5D4C2F,30, Fast RGB ;boss
+    ;PixelSearch, x,, width/2, height*11/24, width/2, height*13/24, 0x4C3416,10, Fast RGB ;others
+	PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x564A30,20, Fast RGB ;normal
+    PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x5D4C2F,30, Fast RGB ;boss
     if (x)
         break
     else {
@@ -131,9 +131,9 @@ loop { ;grey finder 2nd
     l++
 }
 loop { ;grey finder 2nd
-    ;PixelSearch, x,, A_ScreenWidth/2, A_ScreenHeight*11/24, A_ScreenWidth/2, A_ScreenHeight*13/24, 0x4C3416,10, Fast RGB ;others
-	PixelSearch, x,, A_ScreenWidth/2-2, A_ScreenHeight*22/48, A_ScreenWidth/2+2, A_ScreenHeight*26/48, 0x564A30,20, Fast RGB ;normal
-    PixelSearch, ,y, A_ScreenWidth/2-2, A_ScreenHeight*22/48, A_ScreenWidth/2+2, A_ScreenHeight*26/48, 0x5D4C2F,30, Fast RGB ;boss
+    ;PixelSearch, x,, width/2, height*11/24, width/2, height*13/24, 0x4C3416,10, Fast RGB ;others
+	PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x564A30,20, Fast RGB ;normal
+    PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x5D4C2F,30, Fast RGB ;boss
     if (x)
         break
     else {
@@ -156,9 +156,9 @@ while(i<3){
     DllMove(-187,0)
     loop { ;grey finder 2nd
         sleep, 2
-        ;PixelSearch, x,, A_ScreenWidth/2, A_ScreenHeight*11/24, A_ScreenWidth/2, A_ScreenHeight*11/24+6, 0x4C3416 ,15, Fast RGB ;others
-        PixelSearch, x,, A_ScreenWidth/2, A_ScreenHeight*22/48, A_ScreenWidth/2, A_ScreenHeight*23/48, 0x5C4E35,30, Fast RGB ;normal
-        PixelSearch, ,y, A_ScreenWidth/2, A_ScreenHeight*22/48, A_ScreenWidth/2, A_ScreenHeight*23/48, 0x5D4C2F,30, Fast RGB ;boss
+        ;PixelSearch, x,, width/2, height*11/24, width/2, height*11/24+6, 0x4C3416 ,15, Fast RGB ;others
+        PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x5C4E35,30, Fast RGB ;normal
+        PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x5D4C2F,30, Fast RGB ;boss
 		l++
         if (x or y)
             break

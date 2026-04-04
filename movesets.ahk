@@ -120,6 +120,7 @@ setupleftmines(){
 setuprightminesandfl(){
 	global width
 	global height
+	global snowball
 	nd(1500)
 	wheelups(5)
 	nw(1100)
@@ -136,9 +137,9 @@ setuprightminesandfl(){
 	
 	nw(3000)
 	if (snowball)
-		place(A_ScreenWidth/2,A_ScreenHeight*2/5,8) ;floodlight
+		place(width/2,height*2/5,8) ;floodlight
 	Else
-		place(A_ScreenWidth/2,A_ScreenHeight*2/5,2) ;floodlight
+		place(width/2,height*2/5,2) ;floodlight
 }
 
 righttripmine(toolnumber){

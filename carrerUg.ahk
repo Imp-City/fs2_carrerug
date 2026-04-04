@@ -20,8 +20,8 @@ slotSpace := 75
 searchX := 938
 searchY := 660
 
-width := A_ScreenWidth
-height := A_ScreenHeight
+width := 1366
+height := 768
 
 listfile := A_ScriptDir "\PrestigeQueueList.txt"
 setupfile := A_ScriptDir "\PerkSetup.txt"
@@ -66,6 +66,8 @@ return
 #Include perkgui.ahk
 
 Mode:
+chick(width/2,height/2)
+exitspawn(1)
 return
 
 startmacro:
@@ -256,11 +258,11 @@ ExitApp
 return
 
 settingadjust:
-chick(A_ScreenWidth/2,A_ScreenHeight/2)
+chick(width/2,height/2)
 chick(1137, 750) ;settings
 sleep, 100
 chick(487, 184) ;options
-chick(A_ScreenWidth/2,A_ScreenHeight/2)
+chick(width/2,height/2)
 wheelups(15)
 sleep 300
 

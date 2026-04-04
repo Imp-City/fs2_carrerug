@@ -7,7 +7,8 @@ return
 equipallfunction(){
 	global setupfile
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
-	chick(A_ScreenWidth/2,A_ScreenHeight/2)
+	global width, height
+	chick(width/2,height/2)
 	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
 	if (!a)
 		chick(439, 737)
@@ -45,7 +46,7 @@ equipallfunction(){
 }
 
 testpos:
-chick(A_ScreenWidth/2,A_ScreenHeight/2)
+chick(width/2,height/2)
 Gui, Submit, NoHide
 v := Inputcheck()
 GuiControl, text, testpos, % v

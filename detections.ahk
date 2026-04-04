@@ -74,7 +74,8 @@ readyup(forceready := 0){
 }
 
 faultcheck(){ ;insert for all endless loop
-    PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
+    global width, height
+    PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
 
     PixelSearch, d1,, 538, 363, 538, 363, 0xFF0000,0, Fast RGB ;die 1
     PixelSearch, d2,, 821, 364, 821, 364, 0xFF0000,0, Fast RGB ;die 2
@@ -125,7 +126,8 @@ restartroblox(){
     }
 }
 deadcheck(checkammo:= 0, killwhended := 0){
-    PixelSearch, c,, A_ScreenWidth/2,A_ScreenHeight/2, A_ScreenWidth/2,A_ScreenHeight/2, 0x000000,0, Fast RGB ;shop die
+    global width, height
+    PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
     faultcheck()
     PixelSearch, d1,, 538, 690, 538, 690, 0x1F1F1F,0, Fast RGB ;ded pov
     PixelSearch, d2,, 529, 681, 530, 682, 0xFFFFFF,0, Fast RGB ;ded pov
