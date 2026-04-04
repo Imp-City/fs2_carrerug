@@ -375,7 +375,9 @@ if (a){
 	}
 	PopFirstLine(listfile)
 	;guicontrol,, settingadjust, % d
-}chick(173, 104)
+} else
+	return 0
+chick(173, 104)
 sleep, 100
 return 1
 }
