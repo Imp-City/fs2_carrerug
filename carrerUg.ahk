@@ -66,9 +66,6 @@ return
 #Include perkgui.ahk
 
 Mode:
-chick(width/2,height/2)
-if (exitspawn(1))
-    goto, startmacro
 return
 
 startmacro:
