@@ -107,7 +107,7 @@ setupleftmines(){
 	global width
 	global height
 	na(1200)
-	if (Techlv = 1)
+	if (techlv = 1)
 		ForcePlace(width/2, height*3/4, 5)
 	wheelups(5)
 	nw(1100)
@@ -144,7 +144,7 @@ setuprightminesandfl(){
 righttripmine(toolnumber){
 	global width
 	global height
-	if (Techlv = 1)
+	if (techlv = 1)
 		ForcePlace(width*3/4, height/2, toolnumber)
 	l:=0
 	nw(180)

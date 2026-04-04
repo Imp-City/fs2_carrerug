@@ -41,8 +41,8 @@ Gui, Add, Button, x10 y15 w72 h22 gstartmacro vstartmacro, Start Macro
 Gui, Add, Button, x82 y15 w72 h22 gperksetup vperksetup, Perk setup
 Gui, Add, Text, x156 y20 w100 h22 vsnowtext, Snowball
 Gui, Add, Edit, x202 y15 w20 h22 vsnowball, % snowball
-Gui, Add, Text, x221 y20 w50 h22 vtimetext center, Tech lv4
-Gui, Add, Edit, x270 y15 w20 h22 vTechlv, 0
+Gui, Add, Text, x221 y20 w50 h22 vtechtext center, Tech lv4
+Gui, Add, Edit, x270 y15 w20 h22 vtechlv, 0
 
 Gui, Add, Text, x5 y14 w290 h14 vWaiting,
 Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro Settings

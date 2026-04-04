@@ -101,7 +101,6 @@ gui, add, button, x10 y43 h17 w70 gadd2 vadd2, Add Perk
 gui, add, button, x80 y43 h17 w70 gtestpos vtestpos, Test Position
 Gui, add, button, x150 y43 h17 w70 gequipall vequipall, Equip All
 gui, add, button, x220 y43 h17 w70 gviewsetup vviewsetup, View Setup
-;GuiControl, Move, equipall, x150 y42 h12 w60
 return
 
 add:
@@ -153,8 +152,8 @@ hideeverything(){
     GuiControl, Hide, snowtext
     GuiControl, Hide, code
     GuiControl, Hide, snowball
-    GuiControl, Hide, timetext
-    GuiControl, Hide, searchtimer
+    GuiControl, Hide, techtext
+    GuiControl, Hide, techlv
 }
 
 inputcheck(){
