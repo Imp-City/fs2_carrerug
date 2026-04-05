@@ -64,7 +64,7 @@ readyup(forceready := 0){
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
-                if (deadcheck(0,1))
+                if (deadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
                 PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
@@ -74,12 +74,13 @@ readyup(forceready := 0){
                 }
             }
         }
-        if (deadcheck(0,1))
+        if (deadcheck(0,1) < 0)
             return 1
     }
 }
 
 faultcheck(){ ;insert for all endless loop
+    global debug2faultcheck, debug2deadcheck
     global width, height
     PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
 
@@ -89,14 +90,15 @@ faultcheck(){ ;insert for all endless loop
     PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
     PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
     PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
-    GuiControl,, Debug2, % "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", ded:" . boolean(c) . boolean(d1) . boolean(d2)
-
+    debug2faultcheck = % "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", ded:" . boolean(c) . boolean(d1) . boolean(d2)
+    GuiControl,, Debug2, % debug2faultcheck . debug2deadcheck
     if ((c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
         return 1
     } else
         return 0
 }
 restartroblox(){
+    sleep, 2000
     GuiControl,, Debug1, At: restartroblox
     if WinExist("ahk_exe RobloxPlayerBeta.exe"){
         WinKill
@@ -112,7 +114,7 @@ restartroblox(){
             mouseclick, WheelUp
             mouseclick, WheelUp
             WinMove, ,, 0, 0, 1366, 768
-            sleep, 3000
+            sleep, 2000
             chick(995, 441) ;play button
             wheelups(4)
             chick(995, 441)
@@ -132,7 +134,9 @@ restartroblox(){
         }
     }
 }
+
 deadcheck(checkammo:= 0, killwhended := 0){
+    global debug2faultcheck, debug2deadcheck
     global width, height
     PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
     faultcheck()
@@ -143,7 +147,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
 
     PixelSearch, s1,, 235, 351, 235, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 807, 422, 807, 422, 0xFF0000,0, Fast RGB ;lose life 2
-
+    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean (d2)
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1

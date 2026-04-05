@@ -32,6 +32,8 @@ viewerFile := ""
 viewerMode := ""
 viewerTitle := ""
 perkName = ""
+debug2faultcheck = % ""
+debug2deadcheck = % ""
 recoverycycle := 0
 Column := 1
 color := 0
@@ -76,8 +78,8 @@ startmacro:
 Gui, Submit, NoHide
 FileDelete, %snowballfile%
 FileAppend, %snowball% , %snowballfile%
-hideeverything()
 restartroblox()
+hideeverything()
 chick(width/2,height/2)
 if (privategame())
     goto, startmacro
@@ -92,6 +94,7 @@ if (waitforplaybutton(1))
 prestige()
 sleep, 500
 gosub, equipall
+sleep, 100
 chick(686, 734) ;PLAY
 if (waitforplaybutton(0))
     goto, startmacro
@@ -323,7 +326,7 @@ maxlvperk(){
 		sleep, 20
 		l++
 		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
-		if (not a)
+		if (!a)
 			return 1
 	} return 0
 }
@@ -355,7 +358,7 @@ waitforplaybutton(1)
 sleep, 100
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
 if (!a)
-	chick(439, 737)
+	chick(439, 737) ;unlocks
 chick(1115, 108) ;prestige section
 sleep, 200
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open

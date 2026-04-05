@@ -14,9 +14,13 @@ files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/u
 
 for _, file in files
 {
-    url := file.url "?nocache=" A_TickCount
     path := A_ScriptDir "\" file.path
 
+    ; skip if it's a .txt file AND already exists
+    if (SubStr(file.path, -3) = ".txt" && FileExist(path))
+        continue
+
+    url := file.url "?nocache=" A_TickCount
     URLDownloadToFile, %url%, %path%
 }
 
