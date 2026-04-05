@@ -1,5 +1,6 @@
 exitspawn(sprint, trials := 1){
     global t, width, height
+GuiControl,, Debug1, At: exitspawn
 if (faultcheck())
     return 1
 MouseMove, MousePosX, MousePosY
@@ -11,14 +12,14 @@ DllMove(0, -570)
 Sleep, 200
 l := 0
 Loop { ;red finder
-    PixelSearch, x,, (width/2)-6, 0, (width/2)+6, height, 0xBA200B, 15, Fast RGB
-    PixelSearch, ,y, (width/2)-6, 0, (width/2)+6, height, 0xBA1D07, 15, Fast RGB
+    PixelSearch, x,, (width/2)-20, 0, (width/2)+20, height, 0xBA200B, 15, Fast RGB
+    PixelSearch, ,y, (width/2)-20, 0, (width/2)+20, height, 0xBA1D07, 15, Fast RGB
     if (x or y)
         break
     else {
-        DllMove(100, 0)
+        DllMove(90, 0)
         guicontrol,, Debug1, % "l= " . l
-        if (l>40){
+        if (l>50){
             return retrial(sprint,trials)
         }
         l++
@@ -190,6 +191,7 @@ return 0
 }
 
 retrial(sprint, trials){
+    GuiControl,, Debug1, At: retrial
     if (trials>3)
         return 1
     respawn()

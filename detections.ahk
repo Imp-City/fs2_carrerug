@@ -4,6 +4,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
 boolean(x){
+    ;GuiControl,, Debug1, At: boolean
     if (x)
         return 1
     else
@@ -11,11 +12,13 @@ boolean(x){
 }
 
 sunicon(){
+	;GuiControl,, Debug1, At: sunicon
 	PixelSearch, b,,  129, 716, 254, 734, 0x966400,0, Fast RGB ;yellow/sun icon
 	return boolean(b)
 }
 
 waitfordawn(waitperiod:=1){
+    GuiControl,, Debug1, At: waitfordawn
     while(sunicon()){
         if (deadcheck(0,1)<0)
             return 1
@@ -24,6 +27,7 @@ waitfordawn(waitperiod:=1){
     return 0
 }
 waitformorning(){
+    GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
         if (deadcheck(0,1)<0)
             return 1
@@ -31,6 +35,7 @@ waitformorning(){
     } return 0
 }
 privategame(){
+    GuiControl,, Debug1, At: privategame
     loop{
         PixelSearch, x,, 63, 575, 297, 594, 0xFFFFFF,0, Fast RGB 
         if (x)
@@ -50,6 +55,7 @@ privategame(){
     }
 }
 readyup(forceready := 0){
+    GuiControl,, Debug1, At: readyup
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
         PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
@@ -58,7 +64,7 @@ readyup(forceready := 0){
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
-                if (faultcheck())
+                if (deadcheck(0,1))
                     return 1
                 chick(1306, 699)
                 PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
@@ -68,7 +74,7 @@ readyup(forceready := 0){
                 }
             }
         }
-        if (faultcheck())
+        if (deadcheck(0,1))
             return 1
     }
 }
@@ -91,6 +97,7 @@ faultcheck(){ ;insert for all endless loop
         return 0
 }
 restartroblox(){
+    GuiControl,, Debug1, At: restartroblox
     if WinExist("ahk_exe RobloxPlayerBeta.exe"){
         WinKill
         sleep, 50
@@ -181,6 +188,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
     return 2
 }
 waitforplaybutton(appear){
+    GuiControl,, Debug1, At: waitforplaybutton
     ; 1: wait play to appear
     ; 0: wait play to disappear
     loop{
@@ -192,29 +200,51 @@ waitforplaybutton(appear){
         sleep, 100
     } return 0
 }
-ForcePlace(x, y, toolnumber) {
-    loop{
+
+ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
+    GuiControl,, Debug1, At: ForcePlace
+    loop {
         send, 1
         sleep, 50
         Send, %toolnumber%
         sleep, 50
-        chick(x, y)
 
-        Loop, 60 {
-            PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
-            PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
-            if (x1 || x2){
-                Send, %toolnumber%
-                return
+        Loop, 3 {
+            pos := -offset
+            while (pos <= offset) {
+                curX := x
+                curY := y
+
+                if (axis = 0)
+                    curX := x + pos
+                else if (axis = 1)
+                    curY := y + pos
+
+                chick(curX, curY)
+
+                Loop, 5 {
+                    PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
+                    PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
+                    if (deadcheck(0,1) < 0)
+                        return 1
+                    if (x1 || x2) {
+                        Send, %toolnumber%
+                        return
+                    }
+                    Sleep, 100
+                }
+
+                pos += 10
             }
-            Sleep, 50
         }
-        if (deadcheck(0,1)<0)
+        if (deadcheck(0,1) < 0)
             return 1
-    } return 0
+    }
+    return 0
 }
 
 closechat(){
+    ;GuiControl,, Debug1, At: closechat
     PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 1, Fast RGB
     if (x)
         chick(x,y)

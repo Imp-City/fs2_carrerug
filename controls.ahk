@@ -71,10 +71,12 @@ nd(x){
     SendInput, {d up}
 }
 DllMove(x, y) {
+    ;GuiControl,, Debug1, At: DllMove
     DllCall("mouse_event", "UInt", 0x01, "UInt", x, "UInt", y)
 }
 
 chick(x,y){
+    ;GuiControl,, Debug1, At: chick
     mousemove, x, y-1
     sleep, 25
 		Dllmove(0,1)
@@ -85,6 +87,7 @@ chick(x,y){
 }
 
 chicks(x,y, c){
+    ;GuiControl,, Debug1, At: chicks
     mousemove, x, y-1
 	l := 0
 	while (l<c){
@@ -98,6 +101,7 @@ chicks(x,y, c){
 	}
 }
 chickstill() {
+    ;GuiControl,, Debug1, At: chickstill
     Click down
     Sleep, 50
     Click up
@@ -105,6 +109,7 @@ chickstill() {
 }
 
 reload() {
+    ;GuiControl,, Debug1, At: reload
     Send, {r down}
     Sleep, 50
     Send, {r up}
@@ -112,6 +117,7 @@ reload() {
 }
 
 respawn(){
+    GuiControl,, Debug1, At: respawn
     i=0
     while (i<11){
         send, {esc}
@@ -143,14 +149,17 @@ wheelups(times){
 }
 
 upgrade(selection, count){
+    GuiControl,, Debug1, At: upgrade
     lowerselection(2)
     selection--
     chicks(432 + 243*mod(selection, 3), 407 + 109*Floor(selection/3), count)
 }
 buy(){
+    ;GuiControl,, Debug1, At: buy
     chick(964,378) 
 }
 lowerselection(n){
+    ;GuiControl,, Debug1, At: lowerselection
     chick(434 + 125*n, 667)
     /*
     0: <<BACK<<
@@ -161,6 +170,7 @@ lowerselection(n){
     */
 }
 nextsection(n){
+    GuiControl,, Debug1, At: nextsection
     while (n<0){
         lowerselection(0)
         n++
@@ -171,6 +181,7 @@ nextsection(n){
     }
 }
 readywithweapon(){
+    GuiControl,, Debug1, At: readywithweapon
     send, 1
     sleep, 100
     send, 1

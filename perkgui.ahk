@@ -5,11 +5,13 @@ return
 
 	
 equipallfunction(){
+	GuiControl,, Debug1, At: equipall
 	global setupfile
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
 	global width, height
 	chick(width/2,height/2)
 	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+	GuiControl,, Debug2, % "EquipAll:" . boolean(a)
 	if (!a)
 		chick(439, 737)
 	; 113, 578 ; 75x75
@@ -22,7 +24,7 @@ equipallfunction(){
 	{
 		line := A_LoopReadLine
 
-		if (line = "" or line = "`r")
+		if (Trim(line) = "")
 			continue
 
 		parts := StrSplit(line, "|")
@@ -38,6 +40,7 @@ equipallfunction(){
 		chick(searchX, searchY)
 		send, %perkName%
 		chick(perkX + difX*column, perkY + DifY*color)
+		sleep, 100
 		if (maxlvperk())
 			return 1
 		chick(slotX + slotSpace*Mod(slot,6), slotY + slotSpace*Floor((slot)/6))
@@ -47,6 +50,8 @@ equipallfunction(){
 
 testpos:
 chick(width/2,height/2)
+sleep, 100
+WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 Gui, Submit, NoHide
 v := Inputcheck()
 GuiControl, text, testpos, % v
@@ -145,6 +150,7 @@ ShowFileViewer(setupfile, "Perk Setup Viewer", "setup")
 return
 
 hideeverything(){
+	GuiControl,, Debug1, At: hideeverything
 	GuiControl, Hide, Mode
     GuiControl, Hide, StartMacro
     GuiControl, Hide, settingadjust
@@ -158,6 +164,7 @@ hideeverything(){
 }
 
 inputcheck(){
+	;GuiControl,, Debug1, At: inputcheck
 	global perkName
 	global column
 	global color
@@ -187,6 +194,7 @@ inputcheck(){
 }
 
 PopFirstLine(file) {
+	;GuiControl,, Debug1, At: PopFirstLine
 	FileRead, content, %file%
 	first := RegExMatch(content, "^[^\r\n]*", line)
 	content := RegExReplace(content, "^[^\r\n]*\r?\n")

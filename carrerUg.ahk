@@ -23,6 +23,7 @@ searchY := 660
 width := 1366
 height := 768
 
+
 listfile := A_ScriptDir "\PrestigeQueueList.txt"
 setupfile := A_ScriptDir "\PerkSetup.txt"
 snowballfile := A_ScriptDir "\snowball.txt"
@@ -31,6 +32,7 @@ viewerFile := ""
 viewerMode := ""
 viewerTitle := ""
 perkName = ""
+recoverycycle := 0
 Column := 1
 color := 0
 
@@ -71,9 +73,9 @@ exitspawn(1)
 return
 
 startmacro:
+Gui, Submit, NoHide
 FileDelete, %snowballfile%
 FileAppend, %snowball% , %snowballfile%
-Gui, Submit, NoHide
 hideeverything()
 restartroblox()
 chick(width/2,height/2)
@@ -88,6 +90,7 @@ closechat()
 if (waitforplaybutton(1))
     goto, startmacro
 prestige()
+sleep, 500
 gosub, equipall
 chick(686, 734) ;PLAY
 if (waitforplaybutton(0))
@@ -112,33 +115,35 @@ wave := 2
 if (readyup(1))
     goto, startmacro
 sleep, 10000
-if (ForcePlace(385, 147,4))
+if (ForcePlace(385, 147, 4 , 1 , 50))
     goto, startmacro
-send, f ;ladder
-sleep, 500
-leftsentryw1()
-wheeldowns(8)
+rightsentry()
 if (waitfordawn())
     goto, startmacro
 
 wave := 3
 if (readyup(1))
     goto, startmacro
-centerspawn()
-placespawnfl()
-wheelups(8)
-rightsentry()
-place(width/2,height/2,4) ;sentry
-sleep, 100
-walkrightsentrytoshop()
+sleep, 10000
+if rightsentrythenladder()
+	goto, startmacro
+send, f
+prepflw3()
 
 wave := 4
+if (readyup(1))
+    goto, startmacro
+centerspawn()
+placespawnfl()
+walkspawntoshop()
+
+wave := 5
 if (readyup(1))
     goto, startmacro
 shoptostair() ;realign
 stairtoshop()
 shoptomines()
-wheelups(50)
+wheelups(40)
 sleep, 100
 wheeldowns(6)
 setupleftmines()
@@ -147,10 +152,6 @@ nd(600) ;recenter
 nw(50) ;adjust
 shoptomines()
 setuprightminesandfl()
-
-wave := 5
-if (readyup(1))
-    goto, startmacro
 ns(30000) 
 
 wave := 6
@@ -181,8 +182,6 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
 	wave++
 }	
-
-
 	nextsection(-1)
 	upgrade(3,3)
 	upgrade(4,3)
@@ -243,8 +242,8 @@ waitforplaybutton(0)
 MsgBox, ye
 return
 F2::
-	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
-    prepRefill(ulist)
+WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
+walkspawntoshop()
 return
 F3:: 
 nextsection(3)
@@ -259,6 +258,8 @@ return
 
 settingadjust:
 chick(width/2,height/2)
+sleep, 100
+WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 chick(1137, 750) ;settings
 sleep, 100
 chick(487, 184) ;options
@@ -311,13 +312,14 @@ while (l<20) {
 return
 
 maxlvperk(){
+	GuiControl,, Debug1, At: maxlvperk
 	l:=0
-	PixelGetColor, c, 149, 226, Alt RGB
+	PixelGetColor, c, 149, 225, Alt RGB
 	while not (c = 0xD3302B or c = 0xFF302B or c = 0x122D64 or c = 0x122D78 or c = 0x337D35 or c = 0x339635 or c = 0xE1D635 or c = 0xFFF235 or c = 0x963C96 or c = 0xBE4BBE or l>100){
 		if faultcheck()
 			return 1
 		chick(149, 488) ;upgrade/prestige
-		PixelGetColor, c, 149, 226, Alt RGB
+		PixelGetColor, c, 149, 225, Alt RGB
 		sleep, 20
 		l++
 		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
@@ -326,6 +328,7 @@ maxlvperk(){
 	} return 0
 }
 checkEquip(Lslot){
+	GuiControl,, Debug1, At: checkEquip
 	global slotSpace
 	global slotX
 	global slotY
@@ -343,6 +346,7 @@ checkEquip(Lslot){
 }
 
 prestige(){
+	GuiControl,, Debug1, At: prestige
 	global listfile
 	global searchX, searchY, perkX, perkY, difX, difY
 send, m
@@ -353,7 +357,7 @@ PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
 if (!a)
 	chick(439, 737)
 chick(1115, 108) ;prestige section
-sleep, 100
+sleep, 200
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
 if (a){
 	filereadline, line, %listfile%, 1
@@ -369,18 +373,29 @@ if (a){
 	sleep, 100
 	l:=0
 	PixelGetColor, c, 149, 226, Alt RGB
-	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE or l > 100){
+	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE or l > 10){
 		PixelGetColor, c, 149, 226, Alt RGB
 		chick(149, 488) ;upgrade/prestige
-		sleep, 100
+		sleep, 200
+		chick(149, 488)
+		sleep, 200
 		l++
+		chick(1115, 108)
+		sleep, 300
+		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+		if (!a){
+			break
+		}
 	}
 	PopFirstLine(listfile)
 	;guicontrol,, settingadjust, % d
-} else
+} else {
+	sleep, 200
+	chick(173, 104)
 	return 0
+}
 chick(173, 104)
-sleep, 100
+sleep, 200
 return 1
 }
 

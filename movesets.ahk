@@ -1,4 +1,5 @@
 doortostair(){
+	GuiControl,, Debug1, At: doortostair
 	d(500)
     sd(500)
     d(700)
@@ -6,13 +7,16 @@ doortostair(){
     a(200)
 }
 barricadetosentry(){
+	GuiControl,, Debug1, At: barricadetosentry
 	w(3800)
 }
 stairtoshop(){
+	GuiControl,, Debug1, At: stairtoshop
 	w(2700)
 	nw(100)
 }
 shoptostair(){
+	GuiControl,, Debug1, At: shoptostair
 	ns(300)
 	a(400)
 	s(2700)
@@ -21,12 +25,14 @@ shoptostair(){
 	a(200)
 }
 stairtoupgs(){
+	GuiControl,, Debug1, At: stairtoupgs
 	nd(400)
 	SendInput, {d down}
 	ns(1600)
 	SendInput, {d up}
 }
 upgstostair(){
+	GuiControl,, Debug1, At: upgstostair
 	SendInput, {a down}
 	nw(2400)
 	SendInput, {a up}
@@ -38,17 +44,21 @@ upgstostair(){
 	na(300)
 }
 shoptomines(){
+	GuiControl,, Debug1, At: shoptomines
 	nw(4625)
 }
 sentrytoladder(){
+	GuiControl,, Debug1, At: sentrytoladder
 	wa(500)
 	w(2200)
 }
 laddertospawn(){
+	GuiControl,, Debug1, At: laddertospawn
 	w(4200)
 	wd(800)
 }
 placespawnfl(){
+	GuiControl,, Debug1, At: placespawnfl
 	global snowball
 	global width
 	global height
@@ -65,6 +75,7 @@ placespawnfl(){
 	s(3500)
 }
 place(x,y,toolnumber){
+	;GuiControl,, Debug1, At: place
 	send, %toolnumber%
 	sleep, 50
 	chick(x,y)
@@ -72,6 +83,7 @@ place(x,y,toolnumber){
 	send, %toolnumber%
 }
 rotate(count, toolnumber){
+	GuiControl,, Debug1, At: rotate
 	send, %toolnumber%
 	l:=0
 	while (l<count){
@@ -84,6 +96,7 @@ rotate(count, toolnumber){
 }
 
 lefttripmine(toolnumber){
+	GuiControl,, Debug1, At: lefttripmine
 	global width
 	global height
 	l:=0
@@ -94,6 +107,7 @@ lefttripmine(toolnumber){
 	} sleep, 50
 }
 leftlandmine(toolnumber){
+	GuiControl,, Debug1, At: leftlandmine
 	global width
 	global height
 	l:=0
@@ -104,6 +118,7 @@ leftlandmine(toolnumber){
 	} sleep, 50
 }
 setupleftmines(){
+	GuiControl,, Debug1, At: setupleftmines
 	global width
 	global height
 	na(1200)
@@ -118,6 +133,7 @@ setupleftmines(){
 }
 
 setuprightminesandfl(){
+	GuiControl,, Debug1, At: setuprightminesandfl
 	global width
 	global height
 	global snowball
@@ -143,6 +159,7 @@ setuprightminesandfl(){
 }
 
 righttripmine(toolnumber){
+	GuiControl,, Debug1, At: righttripmine
 	global width
 	global height
 	if (techlv = 1)
@@ -157,6 +174,7 @@ righttripmine(toolnumber){
 	send, %toolnumber%
 }
 rightlandmine(toolnumber){
+	GuiControl,, Debug1, At: rightlandmine
 	global width
 	global height
 	send, %toolnumber%
@@ -171,6 +189,7 @@ rightlandmine(toolnumber){
 }
 
 ammotocliff(){
+	GuiControl,, Debug1, At: ammotocliff
 	wd(1100)
 	SendInput, {Space down}
 	w(1000)
@@ -185,55 +204,78 @@ ammotocliff(){
 }
 
 firetillmorning(firedelay) {
+	GuiControl,, Debug1, At: firetillmorning
 	send, 3
 	sleep, 100
 	send, e
 	sleep, 500
-    Loop {
-        chickstill()  ; fire once
 
-		failsafe1:=deadcheck(0)
-		if (failsafe1<2)
-			return failsafe1
-
-        start := A_TickCount
-        while (A_TickCount - start < firedelay) {
-            reload()
-            if (sunicon()) {
-                graceStart := A_TickCount
-                while (A_TickCount - graceStart < 1000) {
-                    chickstill()
-					start := A_TickCount
-					while (A_TickCount - start < firedelay)
-                    	reload()
-                }
-
-                ; one final shot before exiting
-                chickstill()
-                sleep, 100
-				send, 3
+	if (firedelay = 0)
+		Loop {
+			start := A_TickCount
+			while (A_TickCount - start < 1000) {
+				failsafe1:=deadcheck(0)
+				if (failsafe1<2)
+					return failsafe1
+					
+				chickstill()
+			} dllmove(0,4)
+			if MorningFire(firedelay)
 				return 1
-            }
-        }
-        if (sunicon()) {
-           graceStart := A_TickCount
-            while (A_TickCount - graceStart < 1000) {
-                chickstill()
-				start := A_TickCount
-				while (A_TickCount - start < firedelay)
-                	reload()
-            }
-            ; one final shot before exiting
-            chickstill()
-            sleep, 100
-			send, 3
-			return 1
-        }
-    }
+		}
+	else
+		Loop {
+			fireWithRecovery()  ; fire once
+			failsafe1:=deadcheck(0)
+			if (failsafe1<2)
+				return failsafe1
+
+			start := A_TickCount
+			while (A_TickCount - start < firedelay) {
+				reload()
+				if MorningFire(firedelay)
+					return 1
+			}
+			if MorningFire(firedelay)
+				return 1
+		}
 	return 0
 }
+MorningFire(firedelay){
+    GuiControl,, Debug1, At: MorningFire
+    if (sunicon()) {
+        graceStart := A_TickCount
+        while (A_TickCount - graceStart < 1000) {
+			fireWithRecovery()
+			start := A_TickCount
+			while (A_TickCount - start < firedelay)
+            	reload()
+        }
+        ; one final shot before exiting
+		fireWithRecovery()
+        sleep, 100
+		send, 3
+	return 1
+    } return 0
+}
+fireWithRecovery(){
+	GuiControl,, Debug1, At: fireWithRecovery
+	dllmove(0,DllmoveOffset())
+	chickstill()
+}
+DllmoveOffset() {
+    ;GuiControl,, Debug1, At: DllmoveOffset
+    global recoverycycle
 
+    recoverycycle++
+    if (recoverycycle >= 5) {
+        recoverycycle := 0
+        return 3
+    }
+    return 4
+}
 runWaveBlock(startWave, endWave, fireDelay) {
+    GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
     while (wave <= endWave) {
 		readywithweapon()
@@ -252,6 +294,7 @@ runWaveBlock(startWave, endWave, fireDelay) {
 }
 
 prepRefill(ulist) {
+	GuiControl,, Debug1, At: prepRefill
 	delay := A_TickCount
 	if prestige()
 		if equipallfunction()
@@ -307,6 +350,7 @@ prepRefill(ulist) {
 	return 0
 }
 refill(toolnumber){
+	;GuiControl,, Debug1, At: refill
 	send, %toolnumber% ;m32
 	sleep, 100
 	send, f
@@ -315,6 +359,7 @@ refill(toolnumber){
 }
 
 premRefill(ulist) {
+	GuiControl,, Debug1, At: premRefill
 	delay := A_TickCount
 	if prestige()
 		if equipallfunction()
