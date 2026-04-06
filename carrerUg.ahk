@@ -237,7 +237,7 @@ while (wave<10){ ;skip to wave 10
 	ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
 	if (premRefill(ulist))
         goto, startmacro
-    if (runWaveBlock(30, 31, 0))
+    if (runWaveBlock(30, 30, 0))
         goto, startmacro
 	goto, startmacro
 return
