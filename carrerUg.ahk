@@ -111,7 +111,8 @@ doortostair()
 stairtoshop()
 send, f ;exit shop
 place(width/2,height/2,4) ;sentry
-walktoladder()
+if walktoladder()
+    goto, startmacro
 if (waitfordawn())
     goto, startmacro
 

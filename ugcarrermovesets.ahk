@@ -13,6 +13,9 @@ walktoladder(){
 	GuiControl,, Debug1, At: walktoladder
 	nw(18000)
 	na(1500)
+	sleep, 500
+	PixelSearch, x, y, 633, 682, 732, 683, 0xFFFFFF, 0, Fast RGB
+	return !boolean(x)
 }
 rightsentry(){
 	GuiControl,, Debug1, At: rightsentry

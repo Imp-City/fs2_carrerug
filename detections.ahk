@@ -148,7 +148,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
 
     PixelSearch, s1,, 235, 351, 235, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 807, 422, 807, 422, 0xFF0000,0, Fast RGB ;lose life 2
-    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . "wave: " . wave
+    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
