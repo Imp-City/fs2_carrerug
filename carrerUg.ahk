@@ -35,6 +35,7 @@ perkName = ""
 debug2faultcheck := ""
 debug2deadcheck := ""
 recoverycycle := 0
+curendwave := 0
 Column := 1
 color := 0
 

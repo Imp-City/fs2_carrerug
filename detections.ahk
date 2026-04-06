@@ -142,10 +142,10 @@ setfullscreen(){
         Send, {F11}
     } sleep, 500
 }
-deadcheck(checkammo:= 0, killwhended := 0){
+deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
     global debug2faultcheck, debug2deadcheck
     global width, height
-    global wave
+    global wave, curendwave
     PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
     if faultcheck()
         return -1
@@ -169,7 +169,6 @@ deadcheck(checkammo:= 0, killwhended := 0){
         } 
         return 1
     }
-
     if (d1 and d2){
         if (faultcheck() or killwhended)
             return -1
@@ -188,11 +187,13 @@ deadcheck(checkammo:= 0, killwhended := 0){
             if (c and s1 and s2)
                 return deadcheck()
         }
-        if (wave<28){
-            prepRefill([[0],[0],[0],[0]], 0)
-        } else {
-            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
-            premRefill(ulist, 0)
+        if (wave != curendwave){
+            if (wave<28){
+                prepRefill([[0],[0],[0],[0]], 0)
+            } else {
+                ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
+                premRefill(ulist, 0)
+            }   
         }
         return 1
     }
@@ -200,7 +201,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
 
     if (checkammo and a1){
         if (wave<29){
-            prepRefill([])
+            prepRefill([], 0)
         } else {
             ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
             premRefill(ulist)
@@ -225,44 +226,39 @@ waitforplaybutton(appear){
 
 ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
     GuiControl,, Debug1, At: ForcePlace
-    loop {
-        send, 1
-        sleep, 50
-        Send, %toolnumber%
-        sleep, 50
+    send, 1
+    sleep, 50
+    Send, %toolnumber%
+    sleep, 50
 
-        Loop, 3 {
-            pos := -offset
-            while (pos <= offset) {
-                curX := x
-                curY := y
+    Loop, 3 {
+        pos := -offset
+        while (pos <= offset) {
+            curX := x
+            curY := y
 
-                if (axis = 0)
-                    curX := x + pos
-                else if (axis = 1)
-                    curY := y + pos
+            if (axis = 0)
+                curX := x + pos
+            else if (axis = 1)
+                curY := y + pos
 
-                chick(curX, curY)
+            chick(curX, curY)
 
-                Loop, 5 {
-                    PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
-                    PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
-                    if (deadcheck(0,1) < 0)
-                        return 1
-                    if (x1 || x2) {
-                        Send, %toolnumber%
-                        return
-                    }
-                    Sleep, 100
+            Loop, 5 {
+                PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
+                PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
+                if (deadcheck(0,1) < 0)
+                    return 1
+                if (x1 || x2) {
+                    Send, %toolnumber%
+                    return 0
                 }
-
-                pos += 10
+                Sleep, 100
             }
+            pos += 10
         }
-        if (deadcheck(0,1) < 0)
-            return 1
     }
-    return 0
+    return 1
 }
 
 closechat(){

@@ -125,7 +125,7 @@ setupleftmines(){
 	if (techlv = 1)
 		ForcePlace(width/2, height*3/4, 5)
 	wheelups(5)
-	nw(1100)
+	nw(1150)
 	lefttripmine(6)
 	nw(500)
 	leftlandmine(5)
@@ -275,7 +275,8 @@ DllmoveOffset() {
     return 5
 }
 runWaveBlock(startWave, endWave, fireDelay) {
-	global wave
+	global wave, curendwave
+	curendwave = endWave
     GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
     while (wave <= endWave) {
