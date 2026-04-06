@@ -1,1 +1,6 @@
 Investor|0|3
+Private Medical|0|3
+Profiteer|0|3
+Field Medic|0|1
+Survival Contract|0|3
+Contractor|0|3

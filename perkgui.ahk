@@ -111,7 +111,6 @@ return
 
 add:
 Gui, Submit, NoHide
-slot := 1
 if not FileExist(listfile)
 	FileAppend,, %listfile%
 
@@ -123,7 +122,7 @@ sleep, 500
 GuiControl, text, add, Add Perk
 if WinExist("Prestige Queue Viewer"){
 	ShowFileViewer(viewerFile, viewerTitle, viewerMode)
-}
+} slot := 1
 return
 
 add2:
@@ -150,7 +149,7 @@ ShowFileViewer(setupfile, "Perk Setup Viewer", "setup")
 return
 
 hideeverything(){
-	GuiControl,, Debug1, At: hideeverything
+	; GuiControl,, Debug1, At: hideeverything
 	GuiControl, Hide, Mode
     GuiControl, Hide, StartMacro
     GuiControl, Hide, settingadjust

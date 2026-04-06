@@ -164,7 +164,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
         if (wave<29){
             prepRefill([[0],[0],[0],[0]], 0)
         } else {
-            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
             premRefill(ulist, 0)
         } 
         return 1
@@ -180,13 +180,18 @@ deadcheck(checkammo:= 0, killwhended := 0){
             } 
             if (faultcheck())
                 return -1
+            PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
+            PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
+            PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
+
+            debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
             if (c and s1 and s2)
                 return deadcheck()
         }
         if (wave<28){
             prepRefill([[0],[0],[0],[0]], 0)
         } else {
-            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
             premRefill(ulist, 0)
         }
         return 0
@@ -197,7 +202,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
         if (wave<29){
             prepRefill([])
         } else {
-            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
             premRefill(ulist)
         }
         return 0
