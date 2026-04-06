@@ -194,7 +194,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
             ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
             premRefill(ulist, 0)
         }
-        return 0
+        return 1
     }
 
 
