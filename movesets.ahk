@@ -113,7 +113,7 @@ leftlandmine(toolnumber){
 	l:=0
 	while (l<4){
 		ForcePlace(742 + 5*l, 422, toolnumber)
-		nw(170)
+		nw(200)
 		l++
 	} sleep, 50
 }
@@ -127,7 +127,7 @@ setupleftmines(){
 	wheelups(5)
 	nw(1100)
 	lefttripmine(6)
-	nw(600)
+	nw(500)
 	leftlandmine(5)
 	wheeldowns(5)
 }
@@ -137,14 +137,14 @@ setuprightminesandfl(){
 	global width
 	global height
 	global snowball
-	nd(1500)
+	nd(1800)
 	wheelups(5)
 	nw(1100)
 	righttripmine(6)
 	nw(300)
 	rightlandmine(5)
 	wheeldowns(5)
-	nw(2000)
+	nw(1700)
 	na(800)
 	if (snowball)
 		ForcePlace(width/2,height*2/5,8) ;floodlight
@@ -182,7 +182,7 @@ rightlandmine(toolnumber){
 	
 	while (l<3){
 		ForcePlace(565- 10*l, 431, toolnumber)	
-		nw(180)
+		nw(200)
 		l++
 	} nw(40)
 	ForcePlace(539, 430, toolnumber)
