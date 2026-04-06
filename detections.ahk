@@ -26,10 +26,10 @@ waitfordawn(waitperiod:=1){
     } sleep, waitperiod*1000
     return 0
 }
-waitformorning(){
+waitformorning(killwhended := 1){
     GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
-        if (deadcheck(0,1)<0)
+        if (deadcheck(0,killwhended)<0)
             return 1
         sleep, 50
     } return 0
@@ -138,6 +138,7 @@ restartroblox(){
 deadcheck(checkammo:= 0, killwhended := 0){
     global debug2faultcheck, debug2deadcheck
     global width, height
+    global wave
     PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
     faultcheck()
     PixelSearch, d1,, 538, 690, 538, 690, 0x1F1F1F,0, Fast RGB ;ded pov
@@ -153,10 +154,10 @@ deadcheck(checkammo:= 0, killwhended := 0){
             return -1
         waitformorning()
         if (wave<29){
-            prepRefill([[0],[0],[0],[0]])
+            prepRefill([[0],[0],[0],[0]], 0)
         } else {
-            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist)
+            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            premRefill(ulist, 0)
         } 
         return 1
     }
@@ -165,16 +166,18 @@ deadcheck(checkammo:= 0, killwhended := 0){
         if (faultcheck() or killwhended)
             return -1
         while (true){
-            if sunicon() 
+            if sunicon() {
+                sleep, 10000
                 break
+            }
             if (c and s1 and s2)
                 return deadcheck()
         }
         if (wave<29){
-            prepRefill([[0],[0],[0],[0]])
+            prepRefill([[0],[0],[0],[0]], 0)
         } else {
-            ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist)
+            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+            premRefill(ulist, 0)
         }
         return 0
     }

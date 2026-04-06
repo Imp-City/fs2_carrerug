@@ -194,7 +194,7 @@ ammotocliff(){
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
-	w(6500)
+	w(7500)
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
@@ -219,7 +219,7 @@ firetillmorning(firedelay) {
 					return failsafe1
 					
 				chickstill()
-			} dllmove(0,4)
+			} dllmove(0,5)
 			if MorningFire(firedelay)
 				return 1
 		}
@@ -270,9 +270,9 @@ DllmoveOffset() {
     recoverycycle++
     if (recoverycycle >= 5) {
         recoverycycle := 0
-        return 3
+        return 4
     }
-    return 4
+    return 5
 }
 runWaveBlock(startWave, endWave, fireDelay) {
     GuiControl,, Debug1, At: runWaveBlock
@@ -293,17 +293,21 @@ runWaveBlock(startWave, endWave, fireDelay) {
     } return 0
 }
 
-prepRefill(ulist) {
+prepRefill(ulist, perks := 1) {
 	GuiControl,, Debug1, At: prepRefill
 	delay := A_TickCount
-	if prestige()
-		if equipallfunction()
-			return 1
-	while (A_TickCount - delay < 4000){
-		faultcheck()
-		sleep, 200
+	if (perks){
+		if prestige()
+			if equipallfunction()
+				return 1
+		while (A_TickCount - delay < 4000){
+			faultcheck()
+			sleep, 200
+		}
+		respawn()
+	} else {
+		waitformorning(0)
 	}
-    respawn()
 	if (exitspawn(1))
 		return 1
 	wheeldowns(6)
@@ -358,17 +362,21 @@ refill(toolnumber){
 	send, %toolnumber% ;m32
 }
 
-premRefill(ulist) {
+premRefill(ulist, perks := 1) {
 	GuiControl,, Debug1, At: premRefill
 	delay := A_TickCount
-	if prestige()
-		if equipallfunction()
-			return 1
-	while (A_TickCount - delay < 4000){
-		faultcheck()
-		sleep, 200
+	if (perks){
+			if prestige()
+				if equipallfunction()
+					return 1
+		while (A_TickCount - delay < 4000){
+			faultcheck()
+			sleep, 200
+		}
+		respawn()
+	} else {
+		waitformorning(0)
 	}
-    respawn()
 	if (exitspawn(1))
 		return 1
 	wheeldowns(6)
@@ -427,7 +435,7 @@ premRefill(ulist) {
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
-	w(6500)
+	w(7500)
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}

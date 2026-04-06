@@ -201,17 +201,17 @@ while (wave<10){ ;skip to wave 10
 	if (waitfordawn())
         goto, startmacro
 	sleep, 2000
-	if (firetillmorning(2500)<0)
+	if (firetillmorning(2400)<0)
         goto, startmacro
 	ulist := []
-    if (runWaveBlock(11, 17, 2500))
+    if (runWaveBlock(11, 17, 2400))
         goto, startmacro
 
     if (prepRefill(ulist))
         goto, startmacro
-    if (runWaveBlock(18, 20, 2500))
+    if (runWaveBlock(18, 19, 2400))
         goto, startmacro
-	if (runWaveBlock(21, 22, 1500))
+	if (runWaveBlock(20, 22, 1500))
         goto, startmacro
 
 	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
