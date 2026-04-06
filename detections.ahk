@@ -124,7 +124,9 @@ restartroblox(){
                 if WinExist("ahk_exe RobloxPlayerBeta.exe"){
                     sleep, 500
                     WinActivate
+                    sleep, 500
                     GuiControl,, Waiting, Status: Running, Do not perform any actions
+                    setfullscreen()
                     WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
                     return 1
                 }
@@ -134,7 +136,12 @@ restartroblox(){
         }
     }
 }
-
+setfullscreen(){
+    WinGetPos, X, Y, W, H, A
+    if (W != A_ScreenWidth || H != A_ScreenHeight){
+        Send, {F11}
+    } sleep, 500
+}
 deadcheck(checkammo:= 0, killwhended := 0){
     global debug2faultcheck, debug2deadcheck
     global width, height

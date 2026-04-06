@@ -39,7 +39,7 @@ Column := 1
 color := 0
 
 Gui, Color, 0x52fadb,  0x20a0e6
-Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or f11)
+Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or P)
 Gui, Show, x1030 y0 w300 h60, Career Macro
 Gui, Add, Button, x10 y15 w72 h22 gstartmacro vstartmacro, Start Macro
 Gui, Add, Button, x82 y15 w72 h22 gperksetup vperksetup, Perk setup
@@ -241,7 +241,7 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
 
 return
-
+/*
 F1::
 waitforplaybutton(0)
 MsgBox, ye
@@ -252,9 +252,9 @@ walkspawntoshop()
 return
 F3:: 
 nextsection(3)
-
+*/
 return
-F11::
+P::
 ExitApp
 return
 GuiClose: ;fafa00
@@ -264,6 +264,8 @@ return
 settingadjust:
 chick(width/2,height/2)
 sleep, 100
+WinActivate, ahk_exe RobloxPlayerBeta.exe
+setfullscreen()
 WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 chick(1137, 750) ;settings
 sleep, 100
@@ -289,6 +291,10 @@ chick(641, 316) ;sprint default
 chick(933, 269) ;melee default
 chick(933, 319) ;menu default
 
+Loop, 10 {
+    Send, +{F10}
+    Sleep, 100
+}
 
 sleep, 100
 send, {Esc}
