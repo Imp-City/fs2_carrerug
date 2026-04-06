@@ -31,7 +31,8 @@ rightsentry(){
 
 rightsentrythenladder(){
 	GuiControl,, Debug1, At: rightsentrythenladder
-	ForcePlace(858, 316, 4, 0, 50) ;sentry
+	if ForcePlace(858, 316, 4, 0, 50) ;sentry
+		return 1
 	wheelups(20)
 	wheeldowns(6)
 	send, {s down} {a down}
