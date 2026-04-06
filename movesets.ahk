@@ -194,7 +194,7 @@ ammotocliff(){
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
-	w(7500)
+	w(7000)
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
@@ -436,7 +436,7 @@ premRefill(ulist, perks := 1) {
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
-	w(7500)
+	w(7000)
 	SendInput, {Space down}
 	w(1000)
 	SendInput, {Space up}
