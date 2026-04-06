@@ -102,9 +102,9 @@ wave := 1
 t:=1.33
 if (exitspawn(1))
     goto, startmacro
+wheeldowns(11)
 if (readyup(1))
     goto, startmacro
-wheeldowns(11)
 if (waitfordawn())
 	goto, startmacro
 doortostair()
