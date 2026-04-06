@@ -78,11 +78,11 @@ DllMove(x, y) {
 chick(x,y){
     ;GuiControl,, Debug1, At: chick
     mousemove, x, y-1
-    sleep, 25
+    sleep, 35
 		Dllmove(0,1)
-		sleep, 25
+		sleep, 35
 		click, Down
-    sleep, 25
+    sleep, 35
     click, Up
 }
 
@@ -91,11 +91,11 @@ chicks(x,y, c){
     mousemove, x, y-1
 	l := 0
 	while (l<c){
-		sleep, 25
+		sleep, 35
 		Dllmove(0,1)
-		sleep, 25
+		sleep, 35
 		click, Down
-		sleep, 25
+		sleep, 35
 		click, Up
 		l++
 	}

@@ -83,11 +83,11 @@ hideeverything()
 chick(width/2,height/2)
 if (privategame())
     goto, startmacro
-chick(843, 346)
+chicks(843, 346, 3) ;carrer mode
 chick(329, 523) ;ug (to enable scrolling)
 wheeldowns(20)
-chick(329, 523) ;ug
-chick(457, 654) ;Create Private
+chicks(329, 523, 3) ;ug
+chicks(457, 654, 3) ;Create Private
 closechat()
 if (waitforplaybutton(1))
     goto, startmacro
