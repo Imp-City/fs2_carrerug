@@ -100,13 +100,14 @@ if (waitforplaybutton(0))
     goto, startmacro
 wave := 1
 t:=1.33
-if (readyup(1))
-    goto, startmacro
 if (exitspawn(1))
     goto, startmacro
+if (readyup(1))
+    goto, startmacro
 wheeldowns(11)
+if (waitfordawn())
+	goto, startmacro
 doortostair()
-sleep, 5000
 stairtoshop()
 send, f ;exit shop
 place(width/2,height/2,4) ;sentry
