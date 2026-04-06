@@ -243,8 +243,11 @@ while (wave<10){ ;skip to wave 10
 return
 /*
 F1::
-waitforplaybutton(0)
-MsgBox, ye
+msgbox,, runnin
+Loop {
+	failsafe := deadcheck(0,1)
+	GuiControl,, Debug1, % "Failsafe code: " . failsafe
+}
 return
 F2::
 WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768

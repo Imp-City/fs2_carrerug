@@ -217,7 +217,6 @@ firetillmorning(firedelay) {
 				failsafe1:=deadcheck(0)
 				if (failsafe1<2)
 					return failsafe1
-					
 				chickstill()
 			} dllmove(0,5)
 			if MorningFire(firedelay)
@@ -229,10 +228,12 @@ firetillmorning(firedelay) {
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
 				return failsafe1
-
 			start := A_TickCount
 			while (A_TickCount - start < firedelay) {
 				reload()
+				failsafe1:=deadcheck(0)
+				if (failsafe1<2)
+					return failsafe1
 				if MorningFire(firedelay)
 					return 1
 			}
@@ -242,9 +243,9 @@ firetillmorning(firedelay) {
 	return 0
 }
 MorningFire(firedelay){
-    GuiControl,, Debug1, At: MorningFire
     if (sunicon()) {
-        graceStart := A_TickCount
+		graceStart := A_TickCount
+		GuiControl,, Debug1, At: MorningFire
         while (A_TickCount - graceStart < 1000) {
 			fireWithRecovery()
 			start := A_TickCount
@@ -259,7 +260,6 @@ MorningFire(firedelay){
     } return 0
 }
 fireWithRecovery(){
-	GuiControl,, Debug1, At: fireWithRecovery
 	dllmove(0,DllmoveOffset())
 	chickstill()
 }
