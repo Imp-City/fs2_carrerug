@@ -39,7 +39,7 @@ Column := 1
 color := 0
 
 Gui, Color, 0x52fadb,  0x20a0e6
-Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or P)
+Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
 Gui, Show, x1030 y0 w300 h60, Career Macro
 Gui, Add, Button, x10 y15 w72 h22 gstartmacro vstartmacro, Start Macro
 Gui, Add, Button, x82 y15 w72 h22 gperksetup vperksetup, Perk setup
@@ -254,7 +254,7 @@ F3::
 nextsection(3)
 */
 return
-P::
+F9::
 ExitApp
 return
 GuiClose: ;fafa00
