@@ -148,7 +148,7 @@ deadcheck(checkammo:= 0, killwhended := 0){
 
     PixelSearch, s1,, 235, 351, 235, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 807, 422, 807, 422, 0xFF0000,0, Fast RGB ;lose life 2
-    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean (d2)
+    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . "wave: " . wave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
@@ -169,11 +169,13 @@ deadcheck(checkammo:= 0, killwhended := 0){
             if sunicon() {
                 sleep, 10000
                 break
-            }
+            } 
+            if (faultcheck())
+                return -1
             if (c and s1 and s2)
                 return deadcheck()
         }
-        if (wave<29){
+        if (wave<28){
             prepRefill([[0],[0],[0],[0]], 0)
         } else {
             ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
