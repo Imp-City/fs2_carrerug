@@ -275,6 +275,7 @@ DllmoveOffset() {
     return 5
 }
 runWaveBlock(startWave, endWave, fireDelay) {
+	global wave
     GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
     while (wave <= endWave) {
