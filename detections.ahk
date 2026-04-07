@@ -18,25 +18,30 @@ sunicon(){
 }
 
 waitfordawn(waitperiod:=1){
-    GuiControl,, Debug1, At: waitfordawn
     while(sunicon()){
+        GuiControl,, Debug1, At: waitfordawn loop
         if (deadcheck(0,1)<0)
             return 1
         sleep, 100
     } sleep, waitperiod*1000
     return 0
 }
-waitformorning(killwhended := 1){
+waitformorning(killwhended := 1, fromdeadcheck := 0){
     GuiControl,, Debug1, At: waitformorning
-    while(!sunicon()){
-        if (deadcheck(0,killwhended)<0)
-            return 1
+    while(!sunicon()){ 
+        if (fromdeadcheck)
+            if faultcheck()
+                return 1
+        else 
+            if(deadcheck(0,killwhended)<0)
+                return 1
         sleep, 50
     } return 0
 }
 privategame(){
     GuiControl,, Debug1, At: privategame
     loop{
+        GuiControl,, Debug1, At: privategame wait-list
         PixelSearch, x,, 63, 575, 297, 594, 0xFFFFFF,0, Fast RGB 
         if (x)
             break
@@ -45,6 +50,7 @@ privategame(){
             return 1
     }
     loop{
+        GuiControl,, Debug1, At: privategame click-private
         chick(155, 585) ;PRIVATE GAME
         sleep, 1000
         PixelSearch, x,, 1018, 621, 1019, 682, 0xCD0C0B,3, Fast RGB 
@@ -58,12 +64,14 @@ readyup(forceready := 0){
     GuiControl,, Debug1, At: readyup
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
+        GuiControl,, Debug1, At: readyup outer-loop
         PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
         if (!forceready and !sunicon()) 
             return 0
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
+                GuiControl,, Debug1, At: readyup click-loop
                 if (deadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
@@ -110,6 +118,7 @@ restartroblox(){
     SetTitleMatchMode, 2
     if winExist("The Final Stand 2"){
         loop{
+            GuiControl,, Debug1, At: restartroblox launch-loop
             WinActivate
             mouseclick, WheelUp
             mouseclick, WheelUp
@@ -121,6 +130,7 @@ restartroblox(){
             sleep, 2000
             l:=0
             while (l<40){ ;20 sec
+                GuiControl,, Debug1, At: restartroblox wait-client
                 if WinExist("ahk_exe RobloxPlayerBeta.exe"){
                     sleep, 500
                     WinActivate
@@ -147,8 +157,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
     global width, height
     global wave, curendwave
     PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
-    if faultcheck()
-        return -1
+
     PixelSearch, d1,, 538, 690, 538, 690, 0x1F1F1F,0, Fast RGB ;ded pov
     PixelSearch, d2,, 529, 681, 530, 682, 0xFFFFFF,0, Fast RGB ;ded pov
 
@@ -157,15 +166,19 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
     PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
     debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "=>" . curendwave
+    if faultcheck()
+        return -1
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
-        waitformorning()
+        waitformorning(0,1)
         if (wave<29){
-            prepRefill([[0],[0],[0],[0]], 0)
+            if prepRefill([[0],[0],[0],[0]], 0)
+                return -1
         } else {
             ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist, 0)
+            if premRefill(ulist, 0)
+                return -1
         } 
         return 0
     }
@@ -173,6 +186,8 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
         if (faultcheck() or killwhended)
             return -1
         while (true){
+            GuiControl,, Debug1, At: deadcheck inner-loop
+
             if sunicon() {
                 sleep, 10000
                 break
@@ -182,17 +197,30 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
             PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
             PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
             PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-
+            
             debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
-            if (c and s1 and s2)
-                return deadcheck(checkammo, killwhended, endofWave)
+
+            if (c and s1 and s2){
+                waitformorning(0,1)
+                if (wave<29){
+                    if prepRefill([[0],[0],[0],[0]], 0)
+                        return -1
+                } else {
+                    ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+                    if premRefill(ulist, 0)
+                        return -1
+                } 
+                return 0
+            }
         }
         if (wave < curendwave){
             if (wave<28){
-                prepRefill([[0],[0],[0],[0]], 0)
+                if prepRefill([[0],[0],[0],[0]], 0)
+                    return -1
             } else {
                 ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
-                premRefill(ulist, 0)
+                if premRefill(ulist, 0)
+                    return -1
             }   
         }
         return 1
@@ -201,10 +229,12 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
 
     if (checkammo and a1){
         if (wave<29){
-            prepRefill([], 0)
+            if prepRefill([], 0)
+                return -1
         } else {
             ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist)
+            if premRefill(ulist)
+                return -1
         }
         return 0
     }
@@ -215,6 +245,7 @@ waitforplaybutton(appear){
     ; 1: wait play to appear
     ; 0: wait play to disappear
     loop{
+        GuiControl,, Debug1, At: waitforplaybutton loop
         if faultcheck()
             return 1
         PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
@@ -262,7 +293,7 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
 }
 
 closechat(){
-    ;GuiControl,, Debug1, At: closechat
+    GuiControl,, Debug1, At: closechat
     PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 1, Fast RGB
     if (x)
         chick(x,y)

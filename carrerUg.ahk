@@ -79,8 +79,9 @@ startmacro:
 Gui, Submit, NoHide
 FileDelete, %snowballfile%
 FileAppend, %snowball% , %snowballfile%
-restartroblox()
 hideeverything()
+/*
+restartroblox()
 chick(width/2,height/2)
 if (privategame())
     goto, startmacro
@@ -224,6 +225,9 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
     if (runWaveBlock(23, 24, 1500))
         goto, startmacro
+	*/
+    if (prepRefill([]))
+        goto, startmacro
     if (runWaveBlock(25, 25, 0))
         goto, startmacro
 	ulist := []
@@ -237,7 +241,7 @@ while (wave<10){ ;skip to wave 10
     if (runWaveBlock(28, 29, 0))
         goto, startmacro
 
-	ulist := [[0],[0],[0],[0],[1,[1,5],[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+	ulist := [[0],[0],[0],[0],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
 	if (premRefill(ulist))
         goto, startmacro
     if (runWaveBlock(30, 30, 0))

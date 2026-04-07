@@ -75,7 +75,7 @@ placespawnfl(){
 	s(3500)
 }
 place(x,y,toolnumber){
-	;GuiControl,, Debug1, At: place
+	GuiControl,, Debug1, At: place
 	send, %toolnumber%
 	sleep, 50
 	chick(x,y)
@@ -235,6 +235,7 @@ firetillmorning(firedelay) {
 
 	if (firedelay = 0)
 		Loop {
+			GuiControl,, Debug1, At: firetillmorning no-delay
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
 				failsafe1:=deadcheck(0)
@@ -247,6 +248,7 @@ firetillmorning(firedelay) {
 		}
 	else
 		Loop {
+			GuiControl,, Debug1, At: firetillmorning with-delay
 			fireWithRecovery()  ; fire once
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
@@ -287,7 +289,7 @@ fireWithRecovery(){
 	chickstill()
 }
 DllmoveOffset() {
-    ;GuiControl,, Debug1, At: DllmoveOffset
+    GuiControl,, Debug1, At: DllmoveOffset
     global recoverycycle
 
     recoverycycle++
@@ -300,9 +302,11 @@ DllmoveOffset() {
 runWaveBlock(startWave, endWave, fireDelay) {
 	global wave, curendwave
 	curendwave := endWave
-    GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
     while (wave <= endWave) {
+		GuiControl,, Debug1, % "At: runWaveBlock" . wave . "=>" curendwave
+		if faultcheck()
+			return 1
 		readywithweapon()
 		if (waitfordawn(0))
 			return 1
@@ -312,7 +316,7 @@ runWaveBlock(startWave, endWave, fireDelay) {
 		sleep, 900
 		send, 7 ;oc remote
 		failsafe2:=firetillmorning(fireDelay)
-		if (failsafe2<0)
+		if (failsafe2 < 0)
 			return 1
         wave+=failsafe2
     } return 0
@@ -376,10 +380,11 @@ prepRefill(ulist, perks := 1) {
     ammotocliff()
 	if (waitfordawn(0))
 		return 1
+	GuiControl,, Debug1, exited refill
 	return 0
 }
 refill(toolnumber){
-	;GuiControl,, Debug1, At: refill
+	GuiControl,, Debug1, At: refill
 	send, %toolnumber% ;m32
 	sleep, 100
 	send, f
@@ -469,6 +474,6 @@ premRefill(ulist, perks := 1) {
 	dllmove(0,-450)
 	if (waitfordawn(0))
 		return 1
-	sleep, 1000
+	GuiControl,, Debug1, exited refill
 	return 0
 }
