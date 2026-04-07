@@ -64,7 +64,7 @@ if WinExist("Career Macro") {
 }
 
 
-t:=1.33
+t:=1
 return
 
 #Include perkviewer.ahk
@@ -79,8 +79,10 @@ startmacro:
 Gui, Submit, NoHide
 FileDelete, %snowballfile%
 FileAppend, %snowball% , %snowballfile%
-restartroblox()
 hideeverything()
+/*
+restartroblox()
+
 chick(width/2,height/2)
 if (privategame())
     goto, startmacro
@@ -224,6 +226,7 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
     if (runWaveBlock(23, 24, 1500))
         goto, startmacro
+	*/ prepRefill([])
     if (runWaveBlock(25, 25, 0))
         goto, startmacro
 	ulist := []

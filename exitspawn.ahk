@@ -79,12 +79,7 @@ else{
     SendInput, {w up}
 }
 l:=0
-if waitformorning()
-    return 1
-DllMove(-600, 3000)
-Sleep, 200
-DllMove(0, -560)
-sleep, 100
+sleep, 200
 Loop { ;red finder
     PixelSearch, x,, (width/2)-25, 0, (width/2)+25, height, 0xBA200B, 10, Fast RGB ;normal
     PixelSearch, ,y, (width/2)-25, 0, (width/2)+25, height, 0xBA1D07, 10, Fast RGB ;boss
@@ -118,10 +113,11 @@ dllmove(-500,0)
 l:=0
 sleep, 200
 loop { ;grey finder 2nd
-    ;PixelSearch, x,, width/2, height*11/24, width/2, height*13/24, 0x4C3416,10, Fast RGB ;others
-	PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x564A30,20, Fast RGB ;normal
-    PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x5D4C2F,30, Fast RGB ;boss
-    if (x)
+    PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x4C3416,10, Fast RGB ;normal
+    PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x563610,10, Fast RGB ;boss
+	;PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x564A30,20, Fast RGB ;normal/carrer
+    ;PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
+    if (x or y)
         break
     else {
 		DllMove(7, 0)
@@ -132,10 +128,11 @@ loop { ;grey finder 2nd
     l++
 }
 loop { ;grey finder 2nd
-    ;PixelSearch, x,, width/2, height*11/24, width/2, height*13/24, 0x4C3416,10, Fast RGB ;others
-	PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x564A30,20, Fast RGB ;normal
-    PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x5D4C2F,30, Fast RGB ;boss
-    if (x)
+    PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x4C3416,10, Fast RGB ;normal
+    PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x563610,10, Fast RGB ;boss
+	;PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x564A30,20, Fast RGB ;normal/carrer
+    ;PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
+    if (x or y)
         break
     else {
 		DllMove(1, 0)
@@ -157,9 +154,10 @@ while(i<3){
     DllMove(-187,0)
     loop { ;grey finder 2nd
         sleep, 2
-        ;PixelSearch, x,, width/2, height*11/24, width/2, height*11/24+6, 0x4C3416 ,15, Fast RGB ;others
-        PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x5C4E35,30, Fast RGB ;normal
-        PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x5D4C2F,30, Fast RGB ;boss
+        PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x4C3416,10, Fast RGB ;normal
+        PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x563610,10, Fast RGB ;boss
+        ;PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x5C4E35,30, Fast RGB ;normal/carrer
+        ;PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
 		l++
         if (x or y)
             break

@@ -4,12 +4,13 @@ EquipAll:
 return
 
 	
-equipallfunction(){
+equipallfunction(killwhended := 0){
 	GuiControl,, Debug1, At: equipall
 	global setupfile
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
 	global width, height
 	chick(width/2,height/2)
+	if deadcheck(0,killwhended)
 	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
 	GuiControl,, Debug2, % "EquipAll:" . boolean(a)
 	if (!a)

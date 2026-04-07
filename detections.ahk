@@ -26,11 +26,17 @@ waitfordawn(waitperiod:=1){
     } sleep, waitperiod*1000
     return 0
 }
-waitformorning(killwhended := 1){
+waitformorning(killwhended := 1, fromdeadcheck := 0){
+    sleep, 2000
     GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
-        if (deadcheck(0,killwhended)<0)
-            return 1
+        GuiControl,, Debug1, At: waitformorning
+        if (fromdeadcheck)
+            if faultcheck()
+                return 1
+        else
+            if (deadcheck(0,killwhended)<0)
+                return 1
         sleep, 50
     } return 0
 }
@@ -142,7 +148,7 @@ setfullscreen(){
         Send, {F11}
     } sleep, 500
 }
-deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
+deadcheck(checkammo:= 0, killwhended := 0){
     global debug2faultcheck, debug2deadcheck
     global width, height
     global wave, curendwave
@@ -156,7 +162,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
 
     PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "=>" . curendwave
+    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "->" . curendwave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
@@ -173,6 +179,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
         if (faultcheck() or killwhended)
             return -1
         while (true){
+            GuiControl,, Debug1, At: InnerDeadCheck
             if sunicon() {
                 sleep, 10000
                 break

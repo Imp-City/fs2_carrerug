@@ -331,7 +331,7 @@ prepRefill(ulist, perks := 1) {
 		}
 		respawn()
 	} else {
-		waitformorning(0)
+		waitformorning(0,1)
 	}
 	if (exitspawn(1))
 		return 1
