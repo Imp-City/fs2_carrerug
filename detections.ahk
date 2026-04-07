@@ -90,7 +90,7 @@ faultcheck(){ ;insert for all endless loop
     PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
     PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
     PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
-    debug2faultcheck :=  "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", gg:" . boolean(c) . boolean(d1) . boolean(d2) 
+    debug2faultcheck = % "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", gg:" . boolean(c) . boolean(d1) . boolean(d2)
     GuiControl,, Debug2, % debug2faultcheck . debug2deadcheck
     if ((c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
         return 1
@@ -119,7 +119,7 @@ restartroblox(){
             wheelups(4)
             chick(995, 441)
             sleep, 2000
-            l:=0
+            l=0
             while (l<40){ ;20 sec
                 if WinExist("ahk_exe RobloxPlayerBeta.exe"){
                     sleep, 500
@@ -156,7 +156,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
 
     PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "=>" . curendwave
+    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave ."->" . curendwave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
@@ -183,7 +183,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
             PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
             PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
 
-            debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
+            debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
             if (c and s1 and s2)
                 return deadcheck(checkammo, killwhended, endofWave)
         }
