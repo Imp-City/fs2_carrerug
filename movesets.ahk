@@ -101,10 +101,13 @@ lefttripmine(toolnumber){
 	global height
 	l:=0
 	while (l<6){
-		ForcePlace(width/4, height/2, toolnumber)
+		if (ForcePlace(width/4, height/2, toolnumber))
+			return 1
 		nw(180)
 		l++
-	} sleep, 50
+	}
+	sleep, 50
+	return 0
 }
 leftlandmine(toolnumber){
 	GuiControl,, Debug1, At: leftlandmine
@@ -112,10 +115,13 @@ leftlandmine(toolnumber){
 	global height
 	l:=0
 	while (l<4){
-		ForcePlace(742 + 5*l, 422, toolnumber)
+		if (ForcePlace(742 + 5*l, 422, toolnumber))
+			return 1
 		nw(200)
 		l++
-	} sleep, 50
+	}
+	sleep, 50
+	return 0
 }
 setupleftmines(){
 	GuiControl,, Debug1, At: setupleftmines
@@ -123,13 +129,17 @@ setupleftmines(){
 	global height
 	na(1200)
 	if (techlv = 1)
-		ForcePlace(width/2, height*3/4, 5)
+		if (ForcePlace(width/2, height*3/4, 5))
+			return 1
 	wheelups(5)
 	nw(1150)
-	lefttripmine(6)
+	if (lefttripmine(6))
+		return 1
 	nw(500)
-	leftlandmine(5)
+	if (leftlandmine(5))
+		return 1
 	wheeldowns(5)
+	return 0
 }
 
 setuprightminesandfl(){
@@ -140,22 +150,27 @@ setuprightminesandfl(){
 	nd(1800)
 	wheelups(5)
 	nw(1100)
-	righttripmine(6)
+	if (righttripmine(6))
+		return 1
 	nw(300)
-	rightlandmine(5)
+	if (rightlandmine(5))
+		return 1
 	wheeldowns(5)
 	nw(1700)
 	na(800)
 	if (snowball)
-		ForcePlace(width/2,height*2/5,8) ;floodlight
+		if (ForcePlace(width/2,height*2/5,8)) ;floodlight
+			return 1
 	Else
-		ForcePlace(width/2,height*2/5,2) ;floodlight
+		if (ForcePlace(width/2,height*2/5,2)) ;floodlight
+			return 1
 	
 	nw(3000)
 	if (snowball)
 		place(width/2,height*2/5,8) ;floodlight
 	Else
 		place(width/2,height*2/5,2) ;floodlight
+	return 0
 }
 
 righttripmine(toolnumber){
@@ -163,15 +178,19 @@ righttripmine(toolnumber){
 	global width
 	global height
 	if (techlv = 1)
-		ForcePlace(width*3/4, height/2, toolnumber)
+		if (ForcePlace(width*3/4, height/2, toolnumber))
+			return 1
 	l:=0
 	nw(180)
 	while (l<5){
-		ForcePlace(width-1, height/2, toolnumber)
+		if (ForcePlace(width-1, height/2, toolnumber))
+			return 1
 		nw(180)
 		l++
-	} sleep, 50
+	}
+	sleep, 50
 	send, %toolnumber%
+	return 0
 }
 rightlandmine(toolnumber){
 	GuiControl,, Debug1, At: rightlandmine
@@ -181,11 +200,15 @@ rightlandmine(toolnumber){
 	l:=0
 	
 	while (l<3){
-		ForcePlace(565- 10*l, 431, toolnumber)	
+		if (ForcePlace(565- 10*l, 431, toolnumber))
+			return 1
 		nw(200)
 		l++
-	} nw(40)
-	ForcePlace(539, 430, toolnumber)
+	}
+	nw(40)
+	if (ForcePlace(539, 430, toolnumber))
+		return 1
+	return 0
 }
 
 ammotocliff(){

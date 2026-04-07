@@ -152,12 +152,14 @@ shoptomines()
 wheelups(40)
 sleep, 100
 wheeldowns(6)
-setupleftmines()
+if (setupleftmines())
+    goto, startmacro
 ns(10000) ;walk back to shoptomines()
 nd(600) ;recenter
 nw(50) ;adjust
 shoptomines()
-setuprightminesandfl()
+if (setuprightminesandfl())
+    goto, startmacro
 ns(30000) 
 
 wave := 6
@@ -413,6 +415,5 @@ chick(173, 104)
 sleep, 200
 return 1
 }
-
 
 
