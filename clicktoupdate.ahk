@@ -11,6 +11,7 @@ files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/p
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/perkviewer.ahk", path: "perkviewer.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/snowball.txt", path: "snowball.txt"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/ugcarrermovesets.ahk", path: "ugcarrermovesets.ahk"})
+files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/techlv.txt", path: "techlv.txt"})
 
 for _, file in files
 {

@@ -29,12 +29,13 @@ waitfordawn(waitperiod:=1){
 waitformorning(killwhended := 1, fromdeadcheck := 0){
     GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
-        if (fromdeadcheck)
+        if (fromdeadcheck){
             if faultcheck()
                 return 1
-        else
+        } else {
             if (deadcheck(0,killwhended)<0)
                 return 1
+        }
         sleep, 50
     } return 0
 }
@@ -160,7 +161,7 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
 
     PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave ."->" . curendwave
+    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "->" . curendwave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
@@ -236,6 +237,9 @@ waitforplaybutton(appear){
         PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
         if (boolean(x) == boolean(appear))
             break 
+        sleep, 100
+        if (appear)
+            send, m
         sleep, 100
     } return 0
 }
