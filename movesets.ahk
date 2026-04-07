@@ -237,7 +237,7 @@ firetillmorning(firedelay) {
 		Loop {
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
-				failsafe1:=deadcheck(0)
+				failsafe1:=handledeadcheck(0)
 				if (failsafe1<2)
 					return failsafe1
 				chickstill()
@@ -248,13 +248,13 @@ firetillmorning(firedelay) {
 	else
 		Loop {
 			fireWithRecovery()  ; fire once
-			failsafe1:=deadcheck(0)
+			failsafe1:=handledeadcheck(0)
 			if (failsafe1<2)
 				return failsafe1
 			start := A_TickCount
 			while (A_TickCount - start < firedelay) {
 				reload()
-				failsafe1:=deadcheck(0)
+				failsafe1:=handledeadcheck(0)
 				if (failsafe1<2)
 					return failsafe1
 				if MorningFire(firedelay)
@@ -331,6 +331,8 @@ prepRefill(ulist, perks := 1) {
 		}
 		respawn()
 	} else {
+		GuiControl,, Debug1, prepRefill running waitformorning
+		sleep, 2000
 		waitformorning(0,1)
 	}
 	if (exitspawn(1))
@@ -369,7 +371,7 @@ prepRefill(ulist, perks := 1) {
 	stairtoshop()
 	a(800)
 	refill(3) ;m32
-	if (deadcheck(1)<0)
+	if (handledeadcheck(1)<0)
 		return 1
     if (readyup())
 		return 1
@@ -400,7 +402,7 @@ premRefill(ulist, perks := 1) {
 		}
 		respawn()
 	} else {
-		waitformorning(0)
+		waitformorning(0,1)
 	}
 	if (exitspawn(1))
 		return 1
@@ -452,7 +454,7 @@ premRefill(ulist, perks := 1) {
 	send {Space down}
 	nw(1300)
 	send {Space up}
-	if (deadcheck(1)<0)
+	if (handledeadcheck(1)<0)
 		return 1
 	if (readyup())
 		return 1

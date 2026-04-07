@@ -20,23 +20,25 @@ sunicon(){
 waitfordawn(waitperiod:=1){
     GuiControl,, Debug1, At: waitfordawn
     while(sunicon()){
-        if (deadcheck(0,1)<0)
+        if (handledeadcheck(0,1)<0)
             return 1
         sleep, 100
     } sleep, waitperiod*1000
     return 0
 }
 waitformorning(killwhended := 1, fromdeadcheck := 0){
-    sleep, 2000
+    sleep, 1000
     GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
         GuiControl,, Debug1, At: waitformorning
-        if (fromdeadcheck)
+        sleep, 2000
+        if (fromdeadcheck){
             if faultcheck()
                 return 1
-        else
-            if (deadcheck(0,killwhended)<0)
+        }else{
+            if (handledeadcheck(0,killwhended)<0)
                 return 1
+        }
         sleep, 50
     } return 0
 }
@@ -70,7 +72,7 @@ readyup(forceready := 0){
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
-                if (deadcheck(0,1) < 0)
+                if (handledeadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
                 PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
@@ -80,7 +82,7 @@ readyup(forceready := 0){
                 }
             }
         }
-        if (deadcheck(0,1) < 0)
+        if (handledeadcheck(0,1) < 0)
             return 1
     }
 }
@@ -148,6 +150,89 @@ setfullscreen(){
         Send, {F11}
     } sleep, 500
 }
+runPrepRefillFromDeadcheck(){
+    GuiControl,, Debug1, At: preprefill fromdeadcheck
+    sleep, 2000
+    global wave
+    if (wave < 29){
+        return prepRefill([[0],[0],[0],[0]], 0)
+    }
+    ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+    return premRefill(ulist, 0)
+}
+runPostDeathRefill(){
+    GuiControl,, Debug1, At: postdeathrefill fromdeadcheck
+    sleep, 2000
+    global wave, curendwave
+    if (wave >= curendwave)
+        return 0
+    if (wave < 28){
+        return prepRefill([[0],[0],[0],[0]], 0)
+    }
+    ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
+    return premRefill(ulist, 0)
+}
+runAmmoRefillFromDeadcheck(){
+    GuiControl,, Debug1, At: premrefill fromdeadcheck
+    sleep, 2000
+    global wave
+    if (wave < 29){
+        return prepRefill([], 0)
+    }
+    ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+    return premRefill(ulist, 0)
+}
+handledeadcheck(checkammo:= 0, killwhended := 0){
+    status := deadcheck(checkammo, killwhended)
+    if (status < 0)
+        return -1
+    if (killwhended and (status = 0 or status = 1))
+        return -1
+    if (status = 0){
+    	GuiControl,, Debug1, handledeadcheck1 running waitformorning
+		    sleep, 2000
+        if waitformorning(0, 1)
+            return -1
+        if runPrepRefillFromDeadcheck()
+            return -1
+        return 0
+    }
+    if (status = 1){
+        while (true){
+            GuiControl,, Debug1, At: handledeadcheck death-loop
+            if sunicon() {
+                sleep, 10000
+                break
+            }
+            if faultcheck()
+                return -1
+            status := deadcheck(0, 0)
+            if (status < 0)
+                return -1
+            if (killwhended and (status = 0 or status = 1))
+                return -1
+            if (status = 0){
+                GuiControl,, Debug1, handledeadcheck2 running waitformorning
+		            sleep, 2000
+                if waitformorning(0, 1)
+                    return -1
+                if runPrepRefillFromDeadcheck()
+                    return -1
+                return 0
+            }
+            sleep, 50
+        }
+        if runPostDeathRefill()
+            return -1
+        return 1
+    }
+    if (status = 2){
+        if runAmmoRefillFromDeadcheck()
+            return -1
+        return 0
+    }
+    return 3
+}
 deadcheck(checkammo:= 0, killwhended := 0){
     global debug2faultcheck, debug2deadcheck
     global width, height
@@ -164,58 +249,15 @@ deadcheck(checkammo:= 0, killwhended := 0){
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
     debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "->" . curendwave
     if (c and s1 and s2) {
-        if (faultcheck() or killwhended)
-            return -1
-        waitformorning()
-        if (wave<29){
-            prepRefill([[0],[0],[0],[0]], 0)
-        } else {
-            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist, 0)
-        } 
         return 0
     }
     if (d1 and d2){
-        if (faultcheck() or killwhended)
-            return -1
-        while (true){
-            GuiControl,, Debug1, At: InnerDeadCheck
-            if sunicon() {
-                sleep, 10000
-                break
-            } 
-            if (faultcheck())
-                return -1
-            PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
-            PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
-            PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-
-            debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
-            if (c and s1 and s2)
-                return deadcheck(checkammo, killwhended, endofWave)
-        }
-        if (wave < curendwave){
-            if (wave<28){
-                prepRefill([[0],[0],[0],[0]], 0)
-            } else {
-                ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
-                premRefill(ulist, 0)
-            }   
-        }
         return 1
     }
-
-
     if (checkammo and a1){
-        if (wave<29){
-            prepRefill([], 0)
-        } else {
-            ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist)
-        }
-        return 0
+        return 2
     }
-    return 2
+    return 3
 }
 waitforplaybutton(appear){
     GuiControl,, Debug1, At: waitforplaybutton
@@ -254,7 +296,7 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
             Loop, 5 {
                 PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
                 PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
-                if (deadcheck(0,1) < 0)
+                if (handledeadcheck(0,1) < 0)
                     return 1
                 if (x1 || x2) {
                     Send, %toolnumber%

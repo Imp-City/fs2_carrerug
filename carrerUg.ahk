@@ -251,7 +251,7 @@ return
 F1::
 msgbox,, runnin
 Loop {
-	failsafe := deadcheck(0,1)
+	failsafe := handledeadcheck(0,1)
 	GuiControl,, Debug1, % "Failsafe code: " . failsafe
 }
 return
