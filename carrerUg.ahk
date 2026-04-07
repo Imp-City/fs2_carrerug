@@ -31,7 +31,7 @@ fileread, snowball, %snowballfile%
 viewerFile := ""
 viewerMode := ""
 viewerTitle := ""
-perkName = ""
+perkName := ""
 debug2faultcheck := ""
 debug2deadcheck := ""
 recoverycycle := 0
@@ -367,7 +367,7 @@ prestige(){
 	global listfile
 	global searchX, searchY, perkX, perkY, difX, difY
 send, m
-l=0
+l:=0
 waitforplaybutton(1)
 sleep, 100
 PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open

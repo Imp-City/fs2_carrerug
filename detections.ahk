@@ -26,11 +26,15 @@ waitfordawn(waitperiod:=1){
     } sleep, waitperiod*1000
     return 0
 }
-waitformorning(killwhended := 1){
+waitformorning(killwhended := 1, fromdeadcheck := 0){
     GuiControl,, Debug1, At: waitformorning
     while(!sunicon()){
-        if (deadcheck(0,killwhended)<0)
-            return 1
+        if (fromdeadcheck)
+            if faultcheck()
+                return 1
+        else
+            if (deadcheck(0,killwhended)<0)
+                return 1
         sleep, 50
     } return 0
 }
@@ -90,7 +94,7 @@ faultcheck(){ ;insert for all endless loop
     PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
     PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
     PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
-    debug2faultcheck = % "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", gg:" . boolean(c) . boolean(d1) . boolean(d2)
+    debug2faultcheck := "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", gg:" . boolean(c) . boolean(d1) . boolean(d2)
     GuiControl,, Debug2, % debug2faultcheck . debug2deadcheck
     if ((c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
         return 1
@@ -119,7 +123,7 @@ restartroblox(){
             wheelups(4)
             chick(995, 441)
             sleep, 2000
-            l=0
+            l:=0
             while (l<40){ ;20 sec
                 if WinExist("ahk_exe RobloxPlayerBeta.exe"){
                     sleep, 500
@@ -156,11 +160,12 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
 
     PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
     PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-    debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave ."->" . curendwave
+    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave ."->" . curendwave
     if (c and s1 and s2) {
         if (faultcheck() or killwhended)
             return -1
-        waitformorning()
+        if waitformorning(0,1)
+            return -1
         if (wave<29){
             prepRefill([[0],[0],[0],[0]], 0)
         } else {
@@ -183,9 +188,20 @@ deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
             PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
             PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
 
-            debug2deadcheck = % ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
-            if (c and s1 and s2)
-                return deadcheck(checkammo, killwhended, endofWave)
+            debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
+            if (c and s1 and s2) {
+                if (faultcheck() or killwhended)
+                    return -1
+                if waitformorning(0,1)
+                    return -1
+                if (wave<29){
+                    prepRefill([[0],[0],[0],[0]], 0)
+                } else {
+                    ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
+                    premRefill(ulist, 0)
+                } 
+                return 0
+            }
         }
         if (wave < curendwave){
             if (wave<28){
