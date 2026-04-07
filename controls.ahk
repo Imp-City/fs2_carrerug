@@ -118,7 +118,7 @@ reload() {
 
 respawn(){
     GuiControl,, Debug1, At: respawn
-    i=0
+    i:=0
     while (i<11){
         send, {esc}
         sleep, 100
