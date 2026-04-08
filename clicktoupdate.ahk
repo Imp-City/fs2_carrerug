@@ -6,6 +6,7 @@ files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/c
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/controls.ahk", path: "controls.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/detections.ahk", path: "detections.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/exitspawn.ahk", path: "exitspawn.ahk"})
+files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/failsafes.ahk", path: "failsafes.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/movesets.ahk", path: "movesets.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/perkgui.ahk", path: "perkgui.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/perkviewer.ahk", path: "perkviewer.ahk"})

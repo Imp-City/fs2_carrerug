@@ -138,10 +138,10 @@ setuprightminesandfl(){
 	wheeldowns(5)
 	nw(1700)
 	na(800)
-	if (snowball)
+	if (snowball){
 		if (ForcePlace(width/2,height*2/5,8)) ;floodlight
 			return 1
-	Else
+	}Else
 		if (ForcePlace(width/2,height*2/5,2)) ;floodlight
 			return 1
 	
@@ -217,10 +217,12 @@ firetillmorning(firedelay) {
 		Loop {
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
+				click, down
 				failsafe1:=deadcheck(0)
-				if (failsafe1<2)
+				if (failsafe1<2){
 					return failsafe1
-				chickstill()
+					click, up
+				} click, up 
 			} dllmove(0,5)
 			if MorningFire(firedelay)
 				return 1

@@ -12,8 +12,8 @@ DllMove(0, -570)
 Sleep, 200
 l := 0
 Loop { ;red finder
-    PixelSearch, x,, (width/2)-20, 0, (width/2)+20, height, 0xBA200B, 15, Fast RGB
-    PixelSearch, ,y, (width/2)-20, 0, (width/2)+20, height, 0xBA1D07, 15, Fast RGB
+    x := findpx((width/2)-20, 0, (width/2)+20, height, 0xBA200B, 15)
+    y := findpx((width/2)-20, 0, (width/2)+20, height, 0xBA1D07, 15)
     if (x or y)
         break
     else {
@@ -29,14 +29,14 @@ l:=0
 b:=0
 sleep, 200
 ;PixelSearch, x,, width/2-5, height*16/36, width/2+5, height*18/36, 0x52432C,10, Fast RGB
-PixelSearch, b,,  width/2, height/4, width, height*3/4, 0xD5D2CE, 0, Fast RGB ;black board normal
-PixelSearch, ,y,  width/2, height/4, width, height*3/4, 0xD5D2CD, 0, Fast RGB ;black board boss
+b := findpx(width/2, height/4, width, height*3/4, 0xD5D2CE) ;black board normal
+y := findpx(width/2, height/4, width, height*3/4, 0xD5D2CD) ;black board boss
 if (b or y)
     dllmove(250,0)
 else {
         Loop { ;black board
-        PixelSearch, b,,  width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CE, 0, Fast RGB ;normal
-        PixelSearch, ,y,  width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CD, 0, Fast RGB ;boss
+        b := findpx(width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CE) ;normal
+        y := findpx(width/2-60, height/4, width/2+60, height*3/4, 0xD5D2CD) ;boss
         if (b or y)
             break
         else {
@@ -56,8 +56,8 @@ else {
 sleep, 200
 l:=0
 Loop { ;grey finder
-    PixelSearch, x,, width/2-15, height*23/48, width/2+15, height*25/48, 0x4C3416,10, Fast RGB ;normal
-    PixelSearch, ,y, width/2-15, height*23/48, width/2+15, height*25/48, 0x563610,10, Fast RGB ;boss
+    x := findpx(width/2-15, height*23/48, width/2+15, height*25/48, 0x4C3416, 10) ;normal
+    y := findpx(width/2-15, height*23/48, width/2+15, height*25/48, 0x563610, 10) ;boss
     if (x or y)
         break
     else {
@@ -81,8 +81,8 @@ else{
 l:=0
 sleep, 200
 Loop { ;red finder
-    PixelSearch, x,, (width/2)-25, 0, (width/2)+25, height, 0xBA200B, 10, Fast RGB ;normal
-    PixelSearch, ,y, (width/2)-25, 0, (width/2)+25, height, 0xBA1D07, 10, Fast RGB ;boss
+    x := findpx((width/2)-25, 0, (width/2)+25, height, 0xBA200B, 10) ;normal
+    y := findpx((width/2)-25, 0, (width/2)+25, height, 0xBA1D07, 10) ;boss
     if (x or y)
         break   
     else {
@@ -96,8 +96,8 @@ Loop { ;red finder
 dllmove(350,0)
 sleep, 50
 Loop { ;red finder
-    PixelSearch, x,, (width/2)-5, 0, (width/2)+5, height, 0xBA200B, 10, Fast RGB ;normal
-    PixelSearch, ,y, (width/2)-5, 0, (width/2)+5, height, 0xBA1D07, 10, Fast RGB ;boss
+    x := findpx((width/2)-5, 0, (width/2)+5, height, 0xBA200B, 10) ;normal
+    y := findpx((width/2)-5, 0, (width/2)+5, height, 0xBA1D07, 10) ;boss
     if (x or y)
         break
     else {
@@ -115,8 +115,8 @@ sleep, 200
 loop { ;grey finder 2nd
     ;PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x4C3416,10, Fast RGB ;normal
     ;PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x563610,10, Fast RGB ;boss
-	PixelSearch, x,, width/2-5, height*22/48, width/2+30, height*26/48, 0x564A30,20, Fast RGB ;normal/carrer
-    PixelSearch, ,y, width/2-5, height*22/48, width/2+30, height*26/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
+	x := findpx(width/2-5, height*22/48, width/2+30, height*26/48, 0x564A30, 20) ;normal/carrer
+    y := findpx(width/2-5, height*22/48, width/2+30, height*26/48, 0x5D4C2F, 30) ;boss/carrer
     if (x or y)
         break
     else {
@@ -130,8 +130,8 @@ loop { ;grey finder 2nd
 loop { ;grey finder 2nd
     ;PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x4C3416,10, Fast RGB ;normal
     ;PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x563610,10, Fast RGB ;boss
-	PixelSearch, x,, width/2-2, height*22/48, width/2+2, height*26/48, 0x564A30,20, Fast RGB ;normal/carrer
-    PixelSearch, ,y, width/2-2, height*22/48, width/2+2, height*26/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
+	x := findpx(width/2-2, height*22/48, width/2+2, height*26/48, 0x564A30, 20) ;normal/carrer
+    y := findpx(width/2-2, height*22/48, width/2+2, height*26/48, 0x5D4C2F, 30) ;boss/carrer
     if (x or y)
         break
     else {
@@ -156,8 +156,8 @@ while(i<3){
         sleep, 2
         ;PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x4C3416,10, Fast RGB ;normal
         ;PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x563610,10, Fast RGB ;boss
-        PixelSearch, x,, width/2, height*22/48, width/2, height*23/48, 0x5C4E35,30, Fast RGB ;normal/carrer
-        PixelSearch, ,y, width/2, height*22/48, width/2, height*23/48, 0x5D4C2F,30, Fast RGB ;boss/carrer
+        x := findpx(width/2, height*22/48, width/2, height*23/48, 0x5C4E35, 30) ;normal/carrer
+        y := findpx(width/2, height*22/48, width/2, height*23/48, 0x5D4C2F, 30) ;boss/carrer
 		l++
         if (x or y)
             break

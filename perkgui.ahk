@@ -10,7 +10,7 @@ equipallfunction(){
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
 	global width, height
 	chick(width/2,height/2)
-	PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+	a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 	GuiControl,, Debug2, % "EquipAll:" . boolean(a)
 	if (!a)
 		chick(439, 737)
@@ -200,4 +200,27 @@ PopFirstLine(file) {
 	FileDelete, %file%
 	FileAppend, %content%, %file%
 	return line
+}
+
+throttledDebugUpdate() {
+    global lastDebugUpdate, pendingFaultDebug, pendingDeadDebug
+    if (A_TickCount - lastDebugUpdate >= 1000) {
+        GuiControl,, Debug2, % pendingFaultDebug . pendingDeadDebug
+        lastDebugUpdate := A_TickCount
+    }
+}
+
+updateFaultDebug(dc1, dc2, dc3, gg1, gg2, gg3) {
+    global pendingFaultDebug
+    pendingFaultDebug := "dc:" . dc1 . dc2 . dc3 . ", gg:" . gg1 . gg2 . gg3
+    throttledDebugUpdate()
+}
+
+updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave := "") {
+    global pendingDeadDebug
+    if (curendwave != "")
+        pendingDeadDebug := ", shop: " . shop . lose1 . lose2 . ", ded: " . ded1 . ded2 . ", wave: " . wave . "->" . curendwave
+    else
+        pendingDeadDebug := ", shop: " . shop . lose1 . lose2 . ", ded: " . ded1 . ded2 . ", wave: " . wave
+    throttledDebugUpdate()
 }

@@ -179,6 +179,14 @@ nextsection(n){
         n--
     }
 }
+
+setfullscreen(){
+    WinGetPos, X, Y, W, H, A
+    if (W != A_ScreenWidth || H != A_ScreenHeight){
+        Send, {F11}
+    } sleep, 500
+}
+
 readywithweapon(){
     GuiControl,, Debug1, At: readywithweapon
     send, 1

@@ -3,6 +3,11 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
+findpx(x1, y1, x2, y2, color, variation := 0) {
+    PixelSearch, foundX, foundY, %x1%, %y1%, %x2%, %y2%, %color%, %variation%, Fast RGB
+    return !ErrorLevel
+}
+
 boolean(x){
     ;GuiControl,, Debug1, At: boolean
     if (x)
@@ -13,8 +18,7 @@ boolean(x){
 
 sunicon(){
 	;GuiControl,, Debug1, At: sunicon
-	PixelSearch, b,,  129, 716, 254, 734, 0x966400,0, Fast RGB ;yellow/sun icon
-	return boolean(b)
+	return findpx(129, 716, 254, 734, 0x966400) ;yellow/sun icon
 }
 
 waitfordawn(waitperiod:=1){
@@ -42,8 +46,7 @@ waitformorning(killwhended := 1, fromdeadcheck := 0){
 privategame(){
     GuiControl,, Debug1, At: privategame
     loop{
-        PixelSearch, x,, 63, 575, 297, 594, 0xFFFFFF,0, Fast RGB 
-        if (x)
+        if findpx(63, 575, 297, 594, 0xFFFFFF)
             break
         sleep, 500
         if faultcheck()
@@ -52,8 +55,7 @@ privategame(){
     loop{
         chick(155, 585) ;PRIVATE GAME
         sleep, 1000
-        PixelSearch, x,, 1018, 621, 1019, 682, 0xCD0C0B,3, Fast RGB 
-        if (x)
+        if findpx(1018, 621, 1019, 682, 0xCD0C0B, 3)
             Return 0
         if faultcheck()
             return 1
@@ -63,7 +65,7 @@ readyup(forceready := 0){
     GuiControl,, Debug1, At: readyup
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
-        PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
+        x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
         if (!forceready and !sunicon()) 
             return 0
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
@@ -72,7 +74,7 @@ readyup(forceready := 0){
                 if (deadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
-                PixelSearch, x,, 1251, 692, 1253, 706, 0xEDEDED,3, Fast RGB ;rdy
+                x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
                 if (not x){
                     ;GuiControl,, Waiting, Status: Running, Do not perform any actions.
                     return 0
@@ -84,149 +86,7 @@ readyup(forceready := 0){
     }
 }
 
-faultcheck(){ ;insert for all endless loop
-    global debug2faultcheck, debug2deadcheck
-    global width, height
-    PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
 
-    PixelSearch, d1,, 538, 363, 538, 363, 0xFF0000,0, Fast RGB ;die 1
-    PixelSearch, d2,, 821, 364, 821, 364, 0xFF0000,0, Fast RGB ;die 2
-
-    PixelSearch, e1,, 684, 308, 686, 310, 0xBDBEBE,0, Fast RGB ;disconnect 1
-    PixelSearch, e2,, 620, 285, 746, 285, 0x393B3D,0, Fast RGB ;disconnect 2
-    PixelSearch, e3,, 620, 285, 746, 285, 0xFFFFFF,0, Fast RGB ;disconnect 3
-    debug2faultcheck := "dc:" . boolean(e1) . boolean(e2) . boolean(e3) . ", gg:" . boolean(c) . boolean(d1) . boolean(d2)
-    GuiControl,, Debug2, % debug2faultcheck . debug2deadcheck
-    if ((c and d1 and d2) or (e1 and e2 and e3) or (not WinExist("ahk_exe RobloxPlayerBeta.exe"))){
-        return 1
-    } else
-        return 0
-}
-restartroblox(){
-    sleep, 2000
-    GuiControl,, Debug1, At: restartroblox
-    if WinExist("ahk_exe RobloxPlayerBeta.exe"){
-        WinKill
-        sleep, 50
-        WinKill
-    } 
-
-    sleep, 500
-    SetTitleMatchMode, 2
-    if winExist("The Final Stand 2"){
-        loop{
-            WinActivate
-            mouseclick, WheelUp
-            mouseclick, WheelUp
-            WinMove, ,, 0, 0, 1366, 768
-            sleep, 2000
-            chick(995, 441) ;play button
-            wheelups(4)
-            chick(995, 441)
-            sleep, 2000
-            l:=0
-            while (l<40){ ;20 sec
-                if WinExist("ahk_exe RobloxPlayerBeta.exe"){
-                    sleep, 500
-                    WinActivate
-                    sleep, 500
-                    GuiControl,, Waiting, Status: Running, Do not perform any actions
-                    setfullscreen()
-                    WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
-                    return 1
-                }
-                sleep, 500
-                l++
-            }
-        }
-    }
-}
-setfullscreen(){
-    WinGetPos, X, Y, W, H, A
-    if (W != A_ScreenWidth || H != A_ScreenHeight){
-        Send, {F11}
-    } sleep, 500
-}
-deadcheck(checkammo:= 0, killwhended := 0, endofWave := 0){
-    global debug2faultcheck, debug2deadcheck
-    global width, height
-    global wave, curendwave
-    PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
-    if faultcheck()
-        return -1
-    PixelSearch, d1,, 538, 690, 538, 690, 0x1F1F1F,0, Fast RGB ;ded pov
-    PixelSearch, d2,, 529, 681, 530, 682, 0xFFFFFF,0, Fast RGB ;ded pov
-
-    PixelSearch, a1,, 699, 696, 700, 697, 0xC0C1C0,0, Fast RGB ;not at ammo box
-
-    PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
-    PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-    debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", ded: " . boolean(d1) . boolean(d2) . ", wave: " . wave . "->" . curendwave
-    if (c and s1 and s2) {
-        if (faultcheck() or killwhended)
-            return -1
-        if waitformorning(0,1)
-            return -1
-        if (wave<29){
-            prepRefill([[0],[0],[0],[0]], 0)
-        } else {
-            ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist, 0)
-        } 
-        return 0
-    }
-    if (d1 and d2){
-        if (faultcheck() or killwhended)
-            return -1
-        while (true){
-            if sunicon() {
-                sleep, 10000
-                break
-            } 
-            if (faultcheck())
-                return -1
-            PixelSearch, c,, width/2,height/2, width/2,height/2, 0x000000,0, Fast RGB ;shop die
-            PixelSearch, s1,, 235, 351, 236, 351, 0xFF0000,0, Fast RGB ;lose life 1
-            PixelSearch, s2,, 632, 447, 632, 447, 0xFFFFFF,0, Fast RGB ;lose life 2
-
-            debug2deadcheck := ", shop: " . boolean(c) . boolean(s1) . boolean(s2) . ", die: " . boolean(d1) . boolean(d2) . ", wave: " . wave
-            if (c and s1 and s2) {
-                if (faultcheck() or killwhended)
-                    return -1
-                if waitformorning(0,1)
-                    return -1
-                if (wave<29){
-                    prepRefill([[0],[0],[0],[0]], 0)
-                } else {
-                    ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-                    premRefill(ulist, 0)
-                } 
-                return 0
-            }
-        }
-        if (wave < curendwave){
-            if (wave<28){
-                prepRefill([[0],[0],[0],[0]], 0)
-            } else {
-                ulist := [[0],[0],[0],[0],[2],[2],[2],[2],[4],[4],[4],[4]]
-                premRefill(ulist, 0)
-            }   
-        }
-        return 1
-    }
-
-
-    if (checkammo and a1){
-        if (wave<29){
-            prepRefill([], 0)
-        } else {
-            ulist := [[0],[0],[0],[0],[1,[4,1]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-            premRefill(ulist)
-        }
-        return 0
-    }
-    return 2
-}
 waitforplaybutton(appear){
     GuiControl,, Debug1, At: waitforplaybutton
     ; 1: wait play to appear
@@ -234,7 +94,7 @@ waitforplaybutton(appear){
     loop{
         if faultcheck()
             return 1
-        PixelSearch, x,, 648, 719, 715, 723, 0xFFFFFF, 30, Fast RGB 
+        x := findpx(648, 719, 715, 723, 0xFFFFFF, 30)
         if (boolean(x) == boolean(appear))
             break 
         sleep, 100

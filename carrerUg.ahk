@@ -8,6 +8,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include controls.ahk
 #Include movesets.ahk
 #Include ugcarrermovesets.ahk
+#Include failsafes.ahk
 ; ==================================
 perkX := 587
 perkY := 145
@@ -28,6 +29,8 @@ listfile := A_ScriptDir "\PrestigeQueueList.txt"
 setupfile := A_ScriptDir "\PerkSetup.txt"
 snowballfile := A_ScriptDir "\snowball.txt"
 techlvfile := A_ScriptDir "\techlv.txt"
+
+
 fileread, snowball, %snowballfile%
 fileread, techlv, %techlvfile%
 viewerFile := ""
@@ -36,6 +39,9 @@ viewerTitle := ""
 perkName := ""
 debug2faultcheck := ""
 debug2deadcheck := ""
+global pendingFaultDebug := ""
+global pendingDeadDebug := ""
+global lastDebugUpdate := 0
 recoverycycle := 0
 curendwave := 0
 Column := 1
@@ -64,7 +70,6 @@ if WinExist("Career Macro") {
 	CoordMode, Mouse, Screen
 	CoordMode, Pixel, Screen
 }
-
 
 t:=1
 return
@@ -251,14 +256,11 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
 	goto, startmacro
 return
-/*
+
 F1::
-msgbox,, runnin
-Loop {
-	failsafe := deadcheck(0,1)
-	GuiControl,, Debug1, % "Failsafe code: " . failsafe
-}
+firetillmorning(0)
 return
+/*
 F2::
 WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 walkspawntoshop()
@@ -348,7 +350,7 @@ maxlvperk(){
 		PixelGetColor, c, 149, 225, Alt RGB
 		sleep, 20
 		l++
-		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 		if (!a)
 			return 1
 	} return 0
@@ -379,12 +381,12 @@ send, m
 l:=0
 waitforplaybutton(1)
 sleep, 100
-PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (!a)
 	chick(439, 737) ;unlocks
 chick(1115, 108) ;prestige section
 sleep, 200
-PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (a){
 	filereadline, line, %listfile%, 1
 
@@ -408,7 +410,7 @@ if (a){
 		l++
 		chick(1115, 108)
 		sleep, 300
-		PixelSearch, a,, 272, 489, 279, 490, 0xFFFF00,0, Fast RGB ;prestige/perks open
+		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 		if (!a){
 			break
 		}
