@@ -366,11 +366,17 @@ prepRefill(ulist, perks := 1) {
 		return 1
 	return 0
 }
+
 refill(toolnumber){
 	;GuiControl,, Debug1, At: refill
 	send, %toolnumber% ;m32
-	sleep, 100
-	send, f
+	loop, 10{
+		sleep, 50
+		send, f
+		sleep, 10
+		if (findpx(683, 682, 683, 682, 0xFF0000) || findpx(683, 682, 683, 682, 0x000000))
+			break
+	}
 	sleep, 300
 	send, %toolnumber% ;m32
 }

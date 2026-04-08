@@ -38,11 +38,10 @@ rightsentrythenladder(){
 	send, {s down} {a down}
 	start := A_TickCount
 	Loop {
-		PixelSearch, x, y, 633, 682, 732, 683, 0xFFFFFF, 0, Fast RGB
-		if (ErrorLevel = 0){ ; found
+		if atinteractable(){
 			send, {s up} {a up}
 			return 0
-		}  
+		}
 			
 		if (A_TickCount - start >= 10000){ ;10 seconds
 			send, {s up} {a up}

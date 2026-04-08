@@ -3,8 +3,8 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-findpx(x1, y1, x2, y2, color, variation := 0) {
-    PixelSearch, foundX, foundY, %x1%, %y1%, %x2%, %y2%, %color%, %variation%, Fast RGB
+findpx(x1, y1, x2, y2, color, tolerance := 0) {
+    PixelSearch, foundX, foundY, %x1%, %y1%, %x2%, %y2%, %color%, %tolerance%, Fast RGB
     return !ErrorLevel
 }
 
@@ -146,4 +146,8 @@ closechat(){
     PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 1, Fast RGB
     if (x)
         chick(x,y)
+}
+
+atinteractable(){
+    return findpx(633, 682, 732, 683, 0xFFFFFF)
 }

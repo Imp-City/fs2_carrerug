@@ -8,8 +8,8 @@ isShopDeath() {
 }
 
 isDieScreen() {
-    return findpx(538, 363, 538, 363, 0xFF0000)
-        && findpx(821, 364, 821, 364, 0xFF0000)
+    if isShopDeath()
+        return (findpx(538, 363, 538, 363, 0xFF0000) && findpx(821, 364, 821, 364, 0xFF0000)) || (findpx(389, 249, 389, 249, 0xFF0000) && findpx(769, 248, 769, 248, 0xFF0000))
 }
 
 isDisconnectScreen() {
