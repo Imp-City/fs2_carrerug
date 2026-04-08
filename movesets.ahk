@@ -74,26 +74,6 @@ placespawnfl(){
 		place(width/2, 120,2)
 	s(3500)
 }
-place(x,y,toolnumber){
-	;GuiControl,, Debug1, At: place
-	send, %toolnumber%
-	sleep, 50
-	chick(x,y)
-	sleep, 50
-	send, %toolnumber%
-}
-rotate(count, toolnumber){
-	GuiControl,, Debug1, At: rotate
-	send, %toolnumber%
-	l:=0
-	while (l<count){
-		l++
-		sleep, 100
-		send, r
-	}
-	sleep, 100
-	send, %toolnumber%
-}
 
 lefttripmine(toolnumber){
 	GuiControl,, Debug1, At: lefttripmine

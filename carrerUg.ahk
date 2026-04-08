@@ -116,6 +116,7 @@ if (waitfordawn())
 doortostair()
 stairtoshop()
 send, f ;exit shop
+togglemode(2,4) ;sentry set to weak
 place(width/2,height/2,4) ;sentry
 if walktoladder()
     goto, startmacro

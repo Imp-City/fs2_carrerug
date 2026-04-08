@@ -147,7 +147,6 @@ wheelups(times){
         l++
     }
 }
-
 upgrade(selection, count){
     GuiControl,, Debug1, At: upgrade
     lowerselection(2)
@@ -188,4 +187,37 @@ readywithweapon(){
     wheeldowns(1)
     readyup()
     wheelups(10)
+}
+
+place(x,y,toolnumber){
+	;GuiControl,, Debug1, At: place
+	send, %toolnumber%
+	sleep, 50
+	chick(x,y)
+	sleep, 50
+	send, %toolnumber%
+}
+rotate(count, toolnumber){
+	;GuiControl,, Debug1, At: rotate
+	send, %toolnumber%
+	l:=0
+	while (l<count){
+		l++
+		sleep, 100
+		send, r
+	}
+	sleep, 100
+	send, %toolnumber%
+}
+togglemode(count,toolnumber){
+    l:=0
+	send, %toolnumber%
+	l:=0
+	while (l<count){
+		l++
+		sleep, 100
+		send, b
+	}
+	sleep, 100
+	send, %toolnumber%
 }
