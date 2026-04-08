@@ -275,7 +275,7 @@ ExitApp
 return
 
 settingadjust:
-chick(width/2,height/2)
+chick(width/2,height/2) 
 sleep, 100
 WinActivate, ahk_exe RobloxPlayerBeta.exe
 setfullscreen()
@@ -303,6 +303,8 @@ chick(643, 269) ;interact default
 chick(641, 316) ;sprint default
 chick(933, 269) ;melee default
 chick(933, 319) ;menu default
+chick(642, 413) ;night vision default
+chick(932, 409) ;toggle mode default
 
 Loop, 10 {
     Send, +{F10}
