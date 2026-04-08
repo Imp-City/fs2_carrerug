@@ -254,6 +254,7 @@ while (wave<10){ ;skip to wave 10
         goto, startmacro
     if (runWaveBlock(30, 30, 0))
         goto, startmacro
+	sleep, 10000
 	goto, startmacro
 return
 
