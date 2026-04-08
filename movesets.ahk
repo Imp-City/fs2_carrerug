@@ -320,18 +320,24 @@ runWaveBlock(startWave, endWave, fireDelay) {
 
 prepRefill(ulist, perks := 1) {
 	GuiControl,, Debug1, At: prepRefill
+
 	delay := A_TickCount
 	if (perks){
 		if prestige()
 			if equipallfunction()
 				return 1
-		while (A_TickCount - delay < 4000){
-			faultcheck()
-			sleep, 200
+		
+		while (A_TickCount - delay < 4500){
+			sleep, 1000
+			if (deadcheck(0,1) < 0)
+				return prepRefill(ulist, 0)
 		}
+		if (deadcheck(0,1) < 0)
+			return prepRefill(ulist, 0)
+		
 		respawn()
 	} else {
-		waitformorning(0)
+		waitformorning(0,1)
 	}
 	if (exitspawn(1))
 		return 1
@@ -391,16 +397,21 @@ premRefill(ulist, perks := 1) {
 	GuiControl,, Debug1, At: premRefill
 	delay := A_TickCount
 	if (perks){
-			if prestige()
-				if equipallfunction()
-					return 1
-		while (A_TickCount - delay < 4000){
-			faultcheck()
-			sleep, 200
+		if prestige()
+			if equipallfunction()
+				return 1
+		
+		while (A_TickCount - delay < 4500){
+			sleep, 1000
+			if (deadcheck(0,1) < 0)
+				return prepRefill(ulist, 0)
 		}
+		if (deadcheck(0,1) < 0)
+			return prepRefill(ulist, 0)
+		
 		respawn()
 	} else {
-		waitformorning(0)
+		waitformorning(0,1)
 	}
 	if (exitspawn(1))
 		return 1

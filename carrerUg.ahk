@@ -165,7 +165,7 @@ nw(50) ;adjust
 shoptomines()
 if (setuprightminesandfl())
     goto, startmacro
-ns(30000) 
+ns(20000) 
 
 wave := 6
 if (readyup(1))
