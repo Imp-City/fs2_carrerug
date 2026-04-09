@@ -119,7 +119,9 @@ waitforplaybutton(appear){
         sleep, 100
         if (appear)
             send, m
-        sleep, 100
+        Else
+            chick(685, 704) ;PLAY
+        sleep, 200
     } return 0
 }
 

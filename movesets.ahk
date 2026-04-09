@@ -220,12 +220,13 @@ firetillmorning(firedelay) {
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
 				click, down
-				failsafe1:=deadcheck(0)
-				if (failsafe1<2){
-					return failsafe1
-					click, up
-				} click, up 
-			} dllmove(0,5)
+				sleep, 5
+				click, up
+			} 
+			failsafe1:=deadcheck(0)
+			if (failsafe1<2)
+				return failsafe1 
+			dllmove(0,5)
 			if MorningFire(firedelay)
 				return 1
 		}
@@ -289,6 +290,11 @@ runWaveBlock(startWave, endWave, fireDelay) {
     GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
     while (wave <= endWave) {
+		if (wave > startWave){
+			if prestige()
+				if equipallfunction()
+					return 1
+		}
 		readywithweapon()
 		if (waitfordawn(0))
 			return 1

@@ -1,3 +1,2 @@
-Contractor|0|3
 Defense Contractor|0|0
 Philanthropy|0|3

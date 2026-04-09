@@ -229,3 +229,16 @@ togglemode(count,toolnumber){
 	sleep, 100
 	send, %toolnumber%
 }
+
+openunlocks(){
+    timer(0)
+	while true{
+		if timer(10)
+			return 1
+		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
+		if (a)
+			return 0
+		chick(439, 737)
+		sleep, 100
+	}
+}

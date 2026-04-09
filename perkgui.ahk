@@ -10,10 +10,9 @@ equipallfunction(){
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
 	global width, height
 	chick(width/2,height/2)
-	a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 	GuiControl,, Debug2, % "EquipAll:" . boolean(a)
-	if (!a)
-		chick(439, 737)
+	if openunlocks()
+		return 1
 	; 113, 578 ; 75x75
 	; 0 indexing: 113 + 75*(slot%6), 578 + 75*(slot%6)
 	; 562, 120, 50x50 (+ 9): r b g y p

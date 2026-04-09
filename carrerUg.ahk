@@ -106,10 +106,9 @@ closechat()
 if (waitforplaybutton(1))
     goto, startmacro
 prestige()
-sleep, 500
+sleep, 300
 gosub, equipall
 sleep, 100
-chick(686, 734) ;PLAY
 if (waitforplaybutton(0))
     goto, startmacro
 wave := 1
@@ -261,9 +260,7 @@ while (wave<10){ ;skip to wave 10
 return
 
 F1::
-WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
-shoptomines()
-setupleftmines()
+firetillmorning(0)
 return
 
 F2::
@@ -385,10 +382,8 @@ prestige(){
 send, m
 l:=0
 waitforplaybutton(1)
-sleep, 100
-a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
-if (!a)
-	chick(439, 737) ;unlocks
+if openunlocks()
+	return 1
 chick(1115, 108) ;prestige section
 sleep, 200
 a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
