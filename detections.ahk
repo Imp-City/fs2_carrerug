@@ -22,8 +22,11 @@ sunicon(){
 }
 
 waitfordawn(waitperiod:=1){
+    Timer(0)
     GuiControl,, Debug1, At: waitfordawn
     while(sunicon()){
+        if Timer(60)
+            return 1
         if (deadcheck(0,1)<0)
             return 1
         sleep, 100
@@ -32,8 +35,11 @@ waitfordawn(waitperiod:=1){
 }
 waitformorning(killwhended := 1, fromdeadcheck := 0){
     GuiControl,, Debug1, At: waitformorning
+    Timer(0)
     while(!sunicon()){
         if (fromdeadcheck){
+            if Timer(480)
+                return 1
             if faultcheck()
                 return 1
         } else {
@@ -45,7 +51,10 @@ waitformorning(killwhended := 1, fromdeadcheck := 0){
 }
 privategame(){
     GuiControl,, Debug1, At: privategame
+    Timer(0)
     loop{
+        if Timer(25)
+            return 1
         if findpx(63, 575, 297, 594, 0xFFFFFF)
             break
         sleep, 500
@@ -53,6 +62,8 @@ privategame(){
             return 1
     }
     loop{
+        if Timer(25)
+            return 1
         chick(155, 585) ;PRIVATE GAME
         sleep, 1000
         if findpx(1018, 621, 1019, 682, 0xCD0C0B, 3)
@@ -63,14 +74,19 @@ privategame(){
 }
 readyup(forceready := 0){
     GuiControl,, Debug1, At: readyup
+    Timer(0)
     ;GuiControl,, Waiting, Status: Readying up...
     loop{
+        if Timer(480)
+            return 1
         x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
         if (!forceready and !sunicon()) 
             return 0
         ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
+                if Timer(480)
+                    return 1
                 if (deadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
@@ -91,7 +107,10 @@ waitforplaybutton(appear){
     GuiControl,, Debug1, At: waitforplaybutton
     ; 1: wait play to appear
     ; 0: wait play to disappear
+    Timer(0)
     loop{
+        if Timer(30)
+            return 1
         if faultcheck()
             return 1
         x := findpx(648, 719, 715, 723, 0xFFFFFF, 30)
@@ -133,7 +152,7 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
                     Send, %toolnumber%
                     return 0
                 }
-                Sleep, 100
+                Sleep, 50
             }
             pos += 10
         }

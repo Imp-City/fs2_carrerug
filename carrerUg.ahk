@@ -41,6 +41,8 @@ debug2faultcheck := ""
 debug2deadcheck := ""
 global pendingFaultDebug := ""
 global pendingDeadDebug := ""
+global errortimer := 0
+global killtimer := 0
 global lastDebugUpdate := 0
 recoverycycle := 0
 curendwave := 0
@@ -61,7 +63,8 @@ Gui, Add, Text, x5 y14 w290 h14 vWaiting,
 Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro Settings
 Gui, Add, Button, x130 y37 w100 h22 gQueue vQueue, Queue Lv4 Perks
 Gui, Add, Button, x230 y37 w60 h22 gMode vMode, --WIP--
-Gui, Add, Text, x5 y28 w290 h13 vDebug1,
+Gui, Add, Text, x5 y28 w140 h13 vDebug1,
+Gui, Add, Text, x145 y28 w140 h13 vDebug3, 
 Gui, Add, Text, x41 y41 w290 h13 vDebug2,
 
 if WinExist("Career Macro") {
@@ -71,7 +74,7 @@ if WinExist("Career Macro") {
 	CoordMode, Pixel, Screen
 }
 
-t:=1
+t:=1.33
 return
 
 #Include perkviewer.ahk
@@ -153,12 +156,11 @@ if (readyup(1))
 centerspawn()
 placespawnfl()
 walkspawntoshop()
+ns(100)
 
 wave := 5
 if (readyup(1))
     goto, startmacro
-shoptostair() ;realign
-stairtoshop()
 shoptomines()
 wheelups(40)
 sleep, 100
@@ -171,7 +173,7 @@ nw(50) ;adjust
 shoptomines()
 if (setuprightminesandfl())
     goto, startmacro
-ns(20000) 
+ns(20000)
 
 wave := 6
 if (readyup(1))
@@ -200,7 +202,7 @@ while (wave<10){ ;skip to wave 10
 	if (waitformorning())
         goto, startmacro
 	wave++
-}	
+}
 	nextsection(-1)
 	upgrade(3,3)
 	upgrade(4,3)
@@ -259,14 +261,16 @@ while (wave<10){ ;skip to wave 10
 return
 
 F1::
-firetillmorning(0)
+WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
+shoptomines()
+setupleftmines()
+return
+
+F2::
+exitspawn(1)
 return
 /*
-F2::
-WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
-walkspawntoshop()
-return
-F3:: 
+F3::
 nextsection(3)
 */
 return
@@ -278,7 +282,7 @@ ExitApp
 return
 
 settingadjust:
-chick(width/2,height/2) 
+chick(width/2,height/2)
 sleep, 100
 WinActivate, ahk_exe RobloxPlayerBeta.exe
 setfullscreen()
@@ -328,7 +332,7 @@ while (l<20) {
 	if (x){
 		chick(x,y+13)
 		sleep, 50
-		send 0.36 
+		send 0.36
 		sleep, 50
 		send {Enter}
 		GuiControl, text, settingadjust, Success! Don't forget to turn off shiftlock!

@@ -5,5 +5,6 @@ Collateral Damage|0|0|3
 Combat Engineer|0|0|4
 Danger Close|0|0|5
 Shell Shock|0|2|6
+Fireworks|0|0|7
 Technician|0|2|10
 Money is Power|0|3|11

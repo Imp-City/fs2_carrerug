@@ -99,13 +99,14 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
     if (deadPOV) {
         if (faultcheck() || killwhended)
             return -1
-
+        Timer(0)
         while (true) {
             if sunicon() {
                 Sleep, 10000
                 break
             }
-
+            if Timer(600)
+                return 1
             if (faultcheck())
                 return -1
 
@@ -159,13 +160,10 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
 restartroblox(){
     sleep, 2000
     GuiControl,, Debug1, At: restartroblox
-    if WinExist("ahk_exe RobloxPlayerBeta.exe"){
+    while WinExist("ahk_exe RobloxPlayerBeta.exe"){
         WinKill
-        sleep, 50
-        WinKill
+        sleep, 500
     } 
-
-    sleep, 500
     SetTitleMatchMode, 2
     if winExist("The Final Stand 2"){
         loop{
@@ -194,4 +192,38 @@ restartroblox(){
             }
         }
     }
+}
+
+Timer(seconds) {
+    static start := 0
+    static triggered := false
+
+    now := A_TickCount
+    global errortimer := floor((now - start)/1000)
+    global killtimer := seconds
+
+    ; reset if seconds = 0
+    if (seconds = 0) {
+        start := now
+        triggered := false
+        return 0
+    }
+
+    ; first call
+    if (start = 0) {
+        start := now
+        return 0
+    }
+
+    ; already triggered
+    if (triggered)
+        return 1
+
+    ; check time
+    if ((now - start) >= seconds * 1000) {
+        triggered := true
+        return 1
+    }
+
+    return 0
 }

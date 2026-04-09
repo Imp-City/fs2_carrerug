@@ -182,7 +182,7 @@ nextsection(n){
 
 setfullscreen(){
     WinGetPos, X, Y, W, H, A
-    if (W != A_ScreenWidth || H != A_ScreenHeight){
+    if (X > 0 || Y > 0 || W != A_ScreenWidth || H != A_ScreenHeight){
         Send, {F11}
     } sleep, 500
 }

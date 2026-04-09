@@ -203,9 +203,10 @@ PopFirstLine(file) {
 }
 
 throttledDebugUpdate() {
-    global lastDebugUpdate, pendingFaultDebug, pendingDeadDebug
+    global lastDebugUpdate, pendingFaultDebug, pendingDeadDebug, errortimer, killtimer
     if (A_TickCount - lastDebugUpdate >= 1000) {
         GuiControl,, Debug2, % pendingFaultDebug . pendingDeadDebug
+		GuiControl,, Debug3, % "ErrorTimer:" . errortimer . "->" . killtimer
         lastDebugUpdate := A_TickCount
     }
 }

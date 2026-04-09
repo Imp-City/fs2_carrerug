@@ -212,9 +212,11 @@ firetillmorning(firedelay) {
 	sleep, 100
 	send, e
 	sleep, 500
-
+	Timer(0)
 	if (firedelay = 0)
 		Loop {
+			if Timer(600)
+				return -1
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
 				click, down
@@ -229,6 +231,8 @@ firetillmorning(firedelay) {
 		}
 	else
 		Loop {
+			if Timer(600)
+				return -1
 			fireWithRecovery()  ; fire once
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
