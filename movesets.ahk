@@ -220,15 +220,14 @@ firetillmorning(firedelay) {
 			start := A_TickCount
 			while (A_TickCount - start < 1000) {
 				click, down
-				sleep, 5
+				if MorningFire(firedelay)
+					return 1
 				click, up
 			} 
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
 				return failsafe1 
 			dllmove(0,5)
-			if MorningFire(firedelay)
-				return 1
 		}
 	else
 		Loop {
@@ -247,8 +246,6 @@ firetillmorning(firedelay) {
 				if MorningFire(firedelay)
 					return 1
 			}
-			if MorningFire(firedelay)
-				return 1
 		}
 	return 0
 }
