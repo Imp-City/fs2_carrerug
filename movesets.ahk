@@ -294,6 +294,7 @@ runWaveBlock(startWave, endWave, fireDelay) {
 			if prestige()
 				if equipallfunction()
 					return 1
+			waitforplaybutton(0)
 		}
 		readywithweapon()
 		if (waitfordawn(0))
