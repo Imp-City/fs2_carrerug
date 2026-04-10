@@ -293,6 +293,8 @@ runWaveBlock(startWave, endWave, fireDelay) {
 					return 1
 			waitforplaybutton(0)
 		}
+		if (wave = 25) 
+			fireDelay := 0
 		readywithweapon()
 		if (waitfordawn(0))
 			return 1
