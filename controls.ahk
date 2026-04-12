@@ -153,6 +153,18 @@ upgrade(selection, count){
     selection--
     chicks(432 + 243*mod(selection, 3), 407 + 109*Floor(selection/3), count)
 }
+
+setdefaults(slist){
+    chick(687, 183) ;keyboard
+    GuiControl,, Debug1, At: setdefaults    
+    sleep, 50
+    for _, selection in slist {
+        selection--
+        chicks(642 + 290*mod(selection, 2), 218 + 48*Floor(selection/2), 2)
+        ;MsgBox,, % selection
+    }
+}
+
 buy(){
     ;GuiControl,, Debug1, At: buy
     chick(964,378) 

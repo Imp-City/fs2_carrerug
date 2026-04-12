@@ -298,14 +298,8 @@ chick(467, 306) ;exit ADS off
 chick(467, 379) ;toggle ADS off
 chick(467, 447) ;toggle sprint off
 
-chick(687, 183) ;keyboard
-chick(644, 220) ;ads default
-chick(643, 269) ;interact default
-chick(641, 316) ;sprint default
-chick(933, 269) ;melee default
-chick(933, 319) ;menu default
-chick(642, 413) ;night vision default
-chick(932, 409) ;toggle mode default
+slist := [1,2,3,4,5,6,7,10,11,12]
+setdefaults(slist)
 
 Loop, 10 {
     Send, +{F10}

@@ -50,9 +50,9 @@ waitformorning(killwhended := 1, fromdeadcheck := 0){
     } return 0
 }
 privategame(){
-    GuiControl,, Debug1, At: privategame
     Timer(0)
     loop{
+        GuiControl,, Debug1, At: privategame - 1
         if Timer(25)
             return 1
         if findpx(63, 575, 297, 594, 0xFFFFFF)
@@ -62,6 +62,7 @@ privategame(){
             return 1
     }
     loop{
+        GuiControl,, Debug1, At: privategame - 2
         if Timer(25)
             return 1
         chick(155, 585) ;PRIVATE GAME
