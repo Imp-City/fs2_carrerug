@@ -201,9 +201,9 @@ PopFirstLine(file) {
 	return line
 }
 
-throttledDebugUpdate() {
+throttledDebugUpdate(force:=0) {
     global lastDebugUpdate, pendingFaultDebug, pendingDeadDebug, errortimer, killtimer
-    if (A_TickCount - lastDebugUpdate >= 1000) {
+    if (A_TickCount - lastDebugUpdate >= 1000 or force) {
         GuiControl,, Debug2, % pendingFaultDebug . pendingDeadDebug
 		GuiControl,, Debug3, % "ErrorTimer:" . errortimer . "->" . killtimer
         lastDebugUpdate := A_TickCount

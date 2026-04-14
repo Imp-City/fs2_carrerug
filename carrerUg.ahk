@@ -64,7 +64,7 @@ Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro S
 Gui, Add, Button, x130 y37 w100 h22 gQueue vQueue, Queue Lv4 Perks
 Gui, Add, Button, x230 y37 w60 h22 gMode vMode, --WIP--
 Gui, Add, Text, x5 y28 w140 h13 vDebug1,
-Gui, Add, Text, x145 y28 w140 h13 vDebug3, 
+Gui, Add, Text, x145 y28 w140 h13 vDebug3,
 Gui, Add, Text, x41 y41 w290 h13 vDebug2,
 
 if WinExist("Career Macro") {
@@ -81,10 +81,32 @@ return
 #Include perkgui.ahk
 
 Mode:
+/*
 chick(width/2,height/2)
+exitspawn(1)
+*/
+return
+/*
+F1::
+steps := []  ; start, end, delay, prep
+
+steps.Push([1, 1, 2400, []])
+steps.Push([0, 0, 0, []])   ; refill only
+steps.Push([2, 2, 0, ""])
+
+MsgBox, % "steps len: " . steps.length()
+
+Launchering(steps)
+return
+
+F2::
 exitspawn(1)
 return
 
+F3::
+nextsection(3)
+return
+*/
 startmacro:
 Gui, Submit, NoHide
 FileDelete, %snowballfile%
@@ -208,66 +230,41 @@ while (wave<10){ ;skip to wave 10
 	sleep, 100
 	send, f
 	sleep, 100
-	upgstostair()
-	stairtoshop()
-	a(800)
+	upgstoshop()
+	a(400)
+	sa(300)
+	a(300)
 	refill(3)
 	if (readyup())
         goto, startmacro
 	ammotocliff()
 	if (waitfordawn())
         goto, startmacro
-	sleep, 2000
-	if (firetillmorning(2400)<0)
-        goto, startmacro
-	ulist := []
-    if (runWaveBlock(11, 17, 2400))
-        goto, startmacro
+	timer(0)
+	steps := [] ;start: if start <= 0 - only prep, end, delay, prep: "" - no prep, only shoot | [] - refill only, otherwise ulist
 
-    if (prepRefill(ulist))
-        goto, startmacro
-    if (runWaveBlock(18, 19, 2400))
-        goto, startmacro
-	if (runWaveBlock(20, 22, 1500))
-        goto, startmacro
+	steps.Push([11, 17, 2400, ""])
+	steps.Push([0, 0, 0, []]) ; refill only
 
-	ulist := [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]
-    if (prepRefill(ulist))
-        goto, startmacro
-    if (runWaveBlock(23, 25, 1500))
-        goto, startmacro
-	ulist := []
-    if (prepRefill(ulist))
-        goto, startmacro
-    if (runWaveBlock(26, 27, 0))
-        goto, startmacro
+	steps.Push([18, 19, 2400, ""])
+	steps.Push([20, 22, 1500, ""])
 
-    if (prepRefill(ulist))
-        goto, startmacro
-    if (runWaveBlock(28, 29, 0))
-        goto, startmacro
+	steps.Push([23, 24, 1500, [[0,[1,1],[3,4],[4,4]],[3,[1,4],[2,4],[3,4],[6,4],[8,1]]]])
+	steps.Push([25, 25, 0, ""])
 
-	ulist := [[0],[0],[0],[0],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]
-	if (premRefill(ulist))
-        goto, startmacro
-    if (runWaveBlock(30, 30, 0))
-        goto, startmacro
+	steps.Push([26, 27, 0, []])
+	steps.Push([28, 29, 0, []])
+
+	steps.Push([30, 30, 0, [[0],[0],[0],[0],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]])
+	while !timer(1000){
+		sleep, 500
+	}
+	if (Launchering(steps))
+		goto, startmacro
 	sleep, 10000
 	goto, startmacro
 return
 
-F1::
-firetillmorning(0)
-return
-
-F2::
-exitspawn(1)
-return
-/*
-F3::
-nextsection(3)
-*/
-return
 F9::
 ExitApp
 return
@@ -323,7 +320,7 @@ while (l<20) {
 		send 0.36
 		sleep, 50
 		send {Enter}
-		GuiControl, text, settingadjust, Success! Don't forget to turn off shiftlock!
+		GuiControl, text, settingadjust, Success! Don't forget to set up perks!
 		break
 	}
 	l++

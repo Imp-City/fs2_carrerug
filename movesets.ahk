@@ -43,6 +43,11 @@ upgstostair(){
 	SendInput, {a up}
 	na(300)
 }
+upgstoshop(){
+	GuiControl,, Debug1, At: upgstoshop
+	wa(1400)
+	w(2500)
+}
 shoptomines(){
 	GuiControl,, Debug1, At: shoptomines
 	nw(4625)
@@ -227,7 +232,7 @@ firetillmorning(firedelay) {
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
 				return failsafe1 
-			dllmove(0,5)
+			dllmove(0,4)
 		}
 	else
 		Loop {
@@ -277,9 +282,9 @@ DllmoveOffset() {
     recoverycycle++
     if (recoverycycle >= 5) {
         recoverycycle := 0
-        return 4
+        return 3
     }
-    return 5
+    return 4
 }
 runWaveBlock(startWave, endWave, fireDelay) {
 	global wave, curendwave
@@ -291,7 +296,8 @@ runWaveBlock(startWave, endWave, fireDelay) {
 			if prestige()
 				if equipallfunction()
 					return 1
-			waitforplaybutton(0)
+			if waitforplaybutton(0)
+				return 1
 		}
 		if (wave = 25) 
 			fireDelay := 0
@@ -336,36 +342,13 @@ prepRefill(ulist, perks := 1) {
 	wheeldowns(6)
     doortostair()
 	stairtoupgs()
-	send, f
 
-	for i, item in ulist {
-		section := item[1]
-		nextsection(section)
+	upgradeShop(ulist)
 
-		if (item.Length() = 1) {
-			buy()
-		} else {
-			Loop, % item.Length() - 1 {
-				selection := item[A_Index + 1][1]
-				count := item[A_Index + 1][2]
-				upgrade(selection, count)
-				Sleep, 100
-			}
-		}
-
-		nextsection(-section)
-	}
-	nextsection(1)
-	loop, 4
-		buy()
-	nextsection(-1)
-
-	sleep, 100
-	send, f
-	sleep, 100
-	upgstostair()
-	stairtoshop()
-	a(800)
+	upgstoshop()
+	a(400)
+	sa(300)
+	a(300)
 	refill(3) ;m32
 	if (deadcheck(1)<0)
 		return 1
@@ -402,10 +385,10 @@ premRefill(ulist, perks := 1) {
 		while (A_TickCount - delay < 4500){
 			sleep, 1000
 			if (deadcheck(0,1) < 0)
-				return prepRefill(ulist, 0)
+				return premRefill(ulist, 0)
 		}
 		if (deadcheck(0,1) < 0)
-			return prepRefill(ulist, 0)
+			return premRefill(ulist, 0)
 		
 		respawn()
 	} else {
@@ -416,35 +399,10 @@ premRefill(ulist, perks := 1) {
 	wheeldowns(6)
     doortostair()
 	stairtoupgs()
-	send, f
 
-	for i, item in ulist {
-		section := item[1]
-		nextsection(section)
+	upgradeShop(ulist)
 
-		if (item.Length() = 1) {
-			buy()
-		} else {
-			Loop, % item.Length() - 1 {
-				selection := item[A_Index + 1][1]
-				count := item[A_Index + 1][2]
-				upgrade(selection, count)
-				Sleep, 100
-			}
-		}
-
-		nextsection(-section)
-	}
-	nextsection(1)
-	loop, 4
-		buy()
-	nextsection(-1)
-
-	sleep, 100
-	send, f
-	sleep, 100
-	upgstostair()
-	stairtoshop()
+	upgstoshop()
 	d(500)
 	sd(300)
 	d(500)
@@ -480,4 +438,61 @@ premRefill(ulist, perks := 1) {
 		return 1
 	sleep, 1000
 	return 0
+}
+
+;compact launcher function
+Launchering(steps, premStart := 30) {
+    for i, step in steps {
+        waveStart := step[1]
+        waveEnd   := step[2]
+        delay     := step[3]
+        ulist     := step[4]
+
+        ; Handle refill if present
+        if (ulist != "") {
+            if (waveStart >= premStart) {
+                if (premRefill(ulist))
+                    return true
+            } else {
+                if (prepRefill(ulist))
+                    return true
+            }
+        }
+
+        ; Run wave if valid
+        if (waveStart > 0) {
+            if (runWaveBlock(waveStart, waveEnd, delay))
+                return true
+        }
+    }
+    return false
+}
+
+upgradeShop(ulist){
+	send, f
+	lastSection := 0
+	GuiControl,, Debug1, At: UpgradeShop
+	for i, item in ulist {
+		section := item[1]
+		nextsection(section - lastSection)
+
+		if (item.Length() = 1) {
+			buy()
+		} else {
+			Loop, % item.Length() - 1 {
+				selection := item[A_Index + 1][1]
+				count := item[A_Index + 1][2]
+				upgrade(selection, count)
+				Sleep, 100
+			}
+		}
+
+		lastSection := section
+	}
+	nextsection(1 - lastSection)
+	buy(4)
+	nextsection(-1)
+	sleep, 100
+	send, f
+	sleep, 100
 }

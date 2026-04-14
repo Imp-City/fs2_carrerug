@@ -58,8 +58,10 @@ faultcheck() {
     gg3 := robloxClosed ? 1 : 0
 
     updateFaultDebug(dc1, dc2, dc3, gg1, gg2, gg3)
-
-    return (shopDeath && dieScreen) || disconnect || robloxClosed
+    if ((shopDeath && dieScreen) || disconnect || robloxClosed){
+        throttledDebugUpdate(1)
+        return 1
+    } return 0
 }
 
 deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {

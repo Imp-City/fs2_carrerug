@@ -165,9 +165,12 @@ setdefaults(slist){
     }
 }
 
-buy(){
-    ;GuiControl,, Debug1, At: buy
-    chick(964,378) 
+buy(times := 1){
+    GuiControl,, Debug1, At: buy
+    Loop, %times% {
+        chick(964,378)
+        sleep, 50
+    }
 }
 lowerselection(n){
     ;GuiControl,, Debug1, At: lowerselection
