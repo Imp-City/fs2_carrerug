@@ -113,7 +113,6 @@ FileDelete, %snowballfile%
 FileAppend, %snowball% , %snowballfile%
 FileDelete, %techlvfile%
 FileAppend, %techlv% , %techlvfile%
-
 restartroblox()
 hideeverything()
 chick(width/2,height/2)
@@ -256,9 +255,9 @@ while (wave<10){ ;skip to wave 10
 	steps.Push([28, 29, 0, []])
 
 	steps.Push([30, 30, 0, [[0],[0],[0],[0],[1,[4,4]],[2],[2,[1,1],[4,1],[5,1]],[4],[4,[1,1],[2,1],[3,1],[4,4]]]])
-	while !timer(1000){
+	while !timer(1){
 		sleep, 500
-	}
+	} 
 	if (Launchering(steps))
 		goto, startmacro
 	sleep, 10000
