@@ -242,7 +242,7 @@ while (wave<10){ ;skip to wave 10
 	timer(0)
 	steps := [] ;start: if start <= 0 - only prep, end, delay, prep: "" - no prep, only shoot | [] - refill only, otherwise ulist
 
-	steps.Push([11, 17, 2400, ""])
+	steps.Push([10, 17, 2400, ""])
 	steps.Push([0, 0, 0, []]) ; refill only
 
 	steps.Push([18, 19, 2400, ""])
