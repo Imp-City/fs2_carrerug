@@ -1,6 +1,7 @@
 sendstatboardattempt(initialmsg){
     global width, height
     Loop , 10{
+        wheeldowns(1)
         chick(834, 682) ; Next pov
         sleep, 200
         if findpx(584, 676, 585, 688, 0xFFFFFF){
