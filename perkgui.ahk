@@ -50,7 +50,7 @@ equipallfunction(){
 testpos:
 chick(width/2,height/2)
 sleep, 100
-WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
+setfullscreen()
 Gui, Submit, NoHide
 v := Inputcheck()
 GuiControl, text, testpos, % v
@@ -71,7 +71,6 @@ return
 Queue:
 slot:=1
 hideeverything()
-guicontrol, hide, waiting
 guicontrol,, headline, AutoPres: Input Column, Row, and Color of the perk: r,b,g,y,p
 
 gui, add, text, x15 y13 h13 w110, Perk Name:
@@ -89,7 +88,6 @@ return
 
 perksetup:
 hideeverything()
-guicontrol, hide, waiting
 guicontrol,, headline, Perk Setup: Order row from top to bottom.
 
 gui, add, text, x15 y13 h13 w140, Perk Name:
@@ -147,18 +145,48 @@ viewsetup:
 ShowFileViewer(setupfile, "Perk Setup Viewer", "setup")
 return
 
+Configure:
+hideeverything()
+sleep, 50
+fileread, snowball, %snowballfile%
+fileread, techlv, %techlvfile%
+fileread, webhook, %webhookURLfile%
+Gui, Add, Text, x10 y20 w45 h22 , Snowball
+Gui, Add, Edit, x55 y15 w20 h22 vsnowball, % snowball
+Gui, Add, Text, x77 y20 w50 h22 center, Tech lv4
+Gui, Add, Edit, x128 y15 w20 h22 vtechlv, % techlv
+gui, add, text, x150 y13 h13 w140 center, Webhook URL
+Gui, Add, Edit, x150 y25 w140 h17 vwebhook, % webhook
+Gui, Add, Button, x10 y37 w140 h22 gsettingadjust vsettingadjust, Set To Macro Settings
+Gui, Add, Button, x150 y42 w140 h20 gsendconfig vsendconfig, Submit
+return
+
+sendconfig:
+Gui, Submit, NoHide
+GuiControl, text, sendconfig, Submitting
+FileDelete, %snowballfile%
+FileAppend, %snowball% , %snowballfile%
+FileDelete, %techlvfile%
+FileAppend, %techlv% , %techlvfile%
+FileDelete, %webhookURLfile%
+FileAppend, %webhook% , %webhookURLfile%
+GuiControl, text, sendconfig, Submitted!
+sleep, 500
+GuiControl, text, sendconfig, Submit
+Return
+
 hideeverything(){
 	; GuiControl,, Debug1, At: hideeverything
 	GuiControl, Hide, Mode
-    GuiControl, Hide, StartMacro
-    GuiControl, Hide, settingadjust
+    GuiControl, Hide, initializemacro
+    GuiControl, Hide, Configure
     GuiControl, Hide, Perksetup
     GuiControl, Hide, Queue
     GuiControl, Hide, snowtext
-    GuiControl, Hide, code
-    GuiControl, Hide, snowball
-    GuiControl, Hide, techtext
-    GuiControl, Hide, techlv
+	guicontrol, Hide, waiting
+    GuiControl, Hide, Debug1
+    GuiControl, Hide, Debug2
+    GuiControl, Hide, Debug3
 }
 
 inputcheck(){

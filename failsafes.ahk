@@ -42,6 +42,7 @@ isLoseLifeScreen() {
 ; Main checks
 ; =========================
 faultcheck() {
+    global wave, width, height
     shopDeath := isShopDeath()
     dieScreen := isDieScreen()
     disconnect := isDisconnectScreen()
@@ -59,6 +60,7 @@ faultcheck() {
 
     updateFaultDebug(dc1, dc2, dc3, gg1, gg2, gg3)
     if ((shopDeath && dieScreen) || disconnect || robloxClosed){
+        SendWebhookSnip("","Game ended. Starting new round. Final Wave: " . wave, 0, 0 ,width, height)
         throttledDebugUpdate(1)
         return 1
     } return 0
@@ -84,6 +86,7 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
     updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave)
 
     if (loseLife) {
+        SendWebhookSnip("","Shop died at wave: " . wave)
         if (faultcheck() || killwhended)
             return -1
         if waitformorning(0, 1)
@@ -99,6 +102,9 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
     }
 
     if (deadPOV) {
+        chick(834, 682)
+        sleep, 500
+        SendWebhookSnip("","Character died at wave: " . wave . ", Stat board:", 283, 289, 1082, 479)
         if (faultcheck() || killwhended)
             return -1
         Timer(0)
@@ -184,9 +190,7 @@ restartroblox(){
                     sleep, 500
                     WinActivate
                     sleep, 500
-                    GuiControl,, Waiting, Status: Running, Do not perform any actions
                     setfullscreen()
-                    WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
                     return 1
                 }
                 sleep, 500

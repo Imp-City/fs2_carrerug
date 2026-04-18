@@ -76,14 +76,12 @@ privategame(){
 readyup(forceready := 0){
     GuiControl,, Debug1, At: readyup
     Timer(0)
-    ;GuiControl,, Waiting, Status: Readying up...
     loop{
         if Timer(480)
             return 1
         x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
         if (!forceready and !sunicon()) 
             return 0
-        ;GuiControl,, Debug1, % "debug: readyup:" . boolean(x)
         if (x){
             loop{
                 if Timer(480)
@@ -93,7 +91,6 @@ readyup(forceready := 0){
                 chick(1306, 699)
                 x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
                 if (not x){
-                    ;GuiControl,, Waiting, Status: Running, Do not perform any actions.
                     return 0
                 }
             }

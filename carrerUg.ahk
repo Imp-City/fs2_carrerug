@@ -29,10 +29,8 @@ listfile := A_ScriptDir "\PrestigeQueueList.txt"
 setupfile := A_ScriptDir "\PerkSetup.txt"
 snowballfile := A_ScriptDir "\snowball.txt"
 techlvfile := A_ScriptDir "\techlv.txt"
+webhookURLfile := A_ScriptDir "\webhookURL.txt"
 
-
-fileread, snowball, %snowballfile%
-fileread, techlv, %techlvfile%
 viewerFile := ""
 viewerMode := ""
 viewerTitle := ""
@@ -48,21 +46,20 @@ recoverycycle := 0
 curendwave := 0
 Column := 1
 color := 0
+webhook := ""
+global WebhookLastCallTick := 0
+global WebhookHeartbeatInterval := 600000   ; 10 min
+global heartbeatenabled := 0
 
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
 Gui, Show, x1030 y0 w300 h60, Career Macro
-Gui, Add, Button, x10 y15 w72 h22 gstartmacro vstartmacro, Start Macro
-Gui, Add, Button, x82 y15 w72 h22 gperksetup vperksetup, Perk setup
-Gui, Add, Text, x156 y20 w100 h22 vsnowtext, Snowball
-Gui, Add, Edit, x202 y15 w20 h22 vsnowball, % snowball
-Gui, Add, Text, x221 y20 w50 h22 vtechtext center, Tech lv4
-Gui, Add, Edit, x270 y15 w20 h22 vtechlv, % techlv
-
+Gui, Add, Button, x10 y15 w85 h22 ginitializemacro vinitializemacro, Start Macro
+Gui, Add, Button, x95 y15 w85 h22 gperksetup vperksetup, Perk setup
+Gui, Add, Button, x180 y15 w110 h22 gConfigure vConfigure, Configuration
 Gui, Add, Text, x5 y14 w290 h14 vWaiting,
-Gui, Add, Button, x10 y37 w120 h22 gsettingadjust vsettingadjust, Set To Macro Settings
-Gui, Add, Button, x130 y37 w100 h22 gQueue vQueue, Queue Lv4 Perks
-Gui, Add, Button, x230 y37 w60 h22 gMode vMode, --WIP--
+Gui, Add, Button, x10 y37 w120 h22 gQueue vQueue, Queue Lv4 Perks
+Gui, Add, Button, x130 y37 w160 h22 gMode vMode, --WIP--
 Gui, Add, Text, x5 y28 w140 h13 vDebug1,
 Gui, Add, Text, x145 y28 w140 h13 vDebug3,
 Gui, Add, Text, x41 y41 w290 h13 vDebug2,
@@ -79,42 +76,67 @@ return
 
 #Include perkviewer.ahk
 #Include perkgui.ahk
-
+#Include webhooker.ahk
 Mode:
 /*
 chick(width/2,height/2)
 exitspawn(1)
 */
 return
-/*
+
 F1::
-steps := []  ; start, end, delay, prep
+/*
+varname := "Def Con"
+fileread, webhook, %webhookURLfile%
 
-steps.Push([1, 1, 2400, []])
-steps.Push([0, 0, 0, []])   ; refill only
-steps.Push([2, 2, 0, ""])
+SendWebhookSnip("","Test stat board", 283, 289, 1082, 479)
+sleep, 1000
+SendWebhookSnip("","Test msg")
 
-MsgBox, % "steps len: " . steps.length()
+SendWebhookSnip("","Prestiged - " . varname, 52, 129, 550, 230)
 
-Launchering(steps)
+SendWebhookSnipSingleton("","Status: Running")
+sleep, 500
+SendWebhookSnipSingleton("","Status: Stopped 1", 0, 0, 1366, 768)
+sleep, 500
+SendWebhookSnipSingleton("","Status: Stopped 2", 0, 0, 1366, 768, 1)
+*/
 return
 
 F2::
-exitspawn(1)
+setfullscreen()
 return
-
+/*
 F3::
+
 nextsection(3)
 return
 */
-startmacro:
+initializemacro:
 Gui, Submit, NoHide
-FileDelete, %snowballfile%
-FileAppend, %snowball% , %snowballfile%
-FileDelete, %techlvfile%
-FileAppend, %techlv% , %techlvfile%
-restartroblox()
+fileread, snowball, %snowballfile%
+if ErrorLevel {
+    MsgBox, 48, "Error", You haven't set configuration. Please set configuration before starting macro.
+	return
+}
+fileread, techlv, %techlvfile%
+if ErrorLevel {
+    MsgBox, 48, "Error", You haven't set configuration. Please set configuration before starting macro.
+	return
+}
+fileread, webhook, %webhookURLfile%
 hideeverything()
+GuiControl, Show, waiting
+GuiControl, Show, debug1
+GuiControl, Show, debug2
+GuiControl, Show, debug3
+gosub, webhookheartbeattoggler
+goto, startmacro
+return
+
+startmacro:
+SendWebhookSnipSingleton("","Status: Restarting", 0, 0 , width, height)
+restartroblox()
 chick(width/2,height/2)
 if (privategame())
     goto, startmacro
@@ -260,14 +282,22 @@ while (wave<10){ ;skip to wave 10
 	} 
 	if (Launchering(steps))
 		goto, startmacro
-	sleep, 10000
+	readyup(1)
+	respawn()
+	waitfordawn()
+	sleep, 400
+	chick(834, 682)
+    sleep, 400
+	SendWebhookSnip("","Character died at wave: " . wave . ", Stat board:", 283, 289, 1082, 479)
 	goto, startmacro
 return
 
 F9::
-ExitApp
+goto, GuiClose
 return
 GuiClose: ;fafa00
+if (heartbeatenabled)
+	SendWebhookSnipSingleton("","Status: Stopped.")
 ExitApp
 return
 
@@ -276,7 +306,6 @@ chick(width/2,height/2)
 sleep, 100
 WinActivate, ahk_exe RobloxPlayerBeta.exe
 setfullscreen()
-WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 chick(1137, 750) ;settings
 sleep, 100
 chick(487, 184) ;options
@@ -403,7 +432,7 @@ if (a){
 		}
 	}
 	PopFirstLine(listfile)
-	;guicontrol,, settingadjust, % d
+	SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
 } else {
 	sleep, 200
 	chick(173, 104)

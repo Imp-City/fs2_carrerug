@@ -200,6 +200,7 @@ setfullscreen(){
     if (X > 0 || Y > 0 || W != A_ScreenWidth || H != A_ScreenHeight){
         Send, {F11}
     } sleep, 500
+    WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 }
 
 readywithweapon(){
