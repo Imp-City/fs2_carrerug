@@ -11,7 +11,6 @@ sendstatboardattempt(initialmsg){
 }
 
 webhookheartbeattoggler:
-    MsgBox, toggler fired
     global WebhookHeartBeatInterval, heartbeatenabled
 
     heartbeatenabled := !heartbeatenabled

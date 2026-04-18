@@ -283,7 +283,11 @@ while (wave<10){ ;skip to wave 10
 		goto, startmacro
 	readyup(1)
 	respawn()
-	waitfordawn()
+	timer(0)
+	loop{
+		if isDeadPOV() or timer(20)
+			break
+	}
 	sendstatboardattempt("Run Successful.")
 	goto, startmacro
 return
