@@ -83,11 +83,11 @@ chick(width/2,height/2)
 exitspawn(1)
 */
 return
-
-F1::
 /*
-varname := "Def Con"
+F1::
 fileread, webhook, %webhookURLfile%
+/*
+sendstatboardattempt("test stat board.")
 
 SendWebhookSnip("","Test stat board", 283, 289, 1082, 479)
 sleep, 1000
@@ -100,13 +100,12 @@ sleep, 500
 SendWebhookSnipSingleton("","Status: Stopped 1", 0, 0, 1366, 768)
 sleep, 500
 SendWebhookSnipSingleton("","Status: Stopped 2", 0, 0, 1366, 768, 1)
-*/
+
 return
 
 F2::
 setfullscreen()
 return
-/*
 F3::
 
 nextsection(3)
@@ -285,10 +284,7 @@ while (wave<10){ ;skip to wave 10
 	readyup(1)
 	respawn()
 	waitfordawn()
-	sleep, 400
-	chick(834, 682)
-    sleep, 400
-	SendWebhookSnip("","Character died at wave: " . wave . ", Stat board:", 283, 289, 1082, 479)
+	sendstatboardattempt("Run Successful.")
 	goto, startmacro
 return
 

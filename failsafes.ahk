@@ -102,9 +102,7 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
     }
 
     if (deadPOV) {
-        chick(834, 682)
-        sleep, 500
-        SendWebhookSnip("","Character died at wave: " . wave . ", Stat board:", 283, 289, 1082, 479)
+        sendstatboardattempt("Character died at wave: " . wave)
         if (faultcheck() || killwhended)
             return -1
         Timer(0)

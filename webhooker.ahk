@@ -1,3 +1,15 @@
+sendstatboardattempt(initialmsg){
+    global width, height
+    Loop , 10{
+        chick(834, 682) ; Next pov
+        sleep, 200
+        if findpx(584, 676, 585, 688, 0xFFFFFF){
+            SendWebhookSnip("",initialmsg . " Stat board:", 283, 289, 1082, 479)
+            return
+        }
+    } SendWebhookSnip("",initialmsg . " Failed to find stat board. Current POV:", 0, 0, width, height)
+}
+
 webhookheartbeattoggler:
     MsgBox, toggler fired
     global WebhookHeartBeatInterval, heartbeatenabled
@@ -109,6 +121,7 @@ SendWebhookSnipSingleton(msg, title, x1 := -1, y1 := -1, x2 := -1, y2 := -1, for
 
 SendWebhookSnip(msg, title, x1 := -1, y1 := -1, x2 := -1, y2 := -1)
 {
+    ;msgbox, snipping
     global webhook
     if (webhook = "")
         return 0
