@@ -11,7 +11,7 @@ files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/m
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/perkgui.ahk", path: "perkgui.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/perkviewer.ahk", path: "perkviewer.ahk"})
 files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/ugcarrermovesets.ahk", path: "ugcarrermovesets.ahk"})
-files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/webhooker.txt", path: "webhooker.txt"})
+files.Push({url: "https://raw.githubusercontent.com/Imp-City/fs2_carrerug/main/webhooker.ahk", path: "webhooker.ahk"})
 for _, file in files
 {
     path := A_ScriptDir "\" file.path
