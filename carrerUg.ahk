@@ -422,7 +422,7 @@ if (a){
 	sleep, 100
 	l:=0
 	PixelGetColor, c, 149, 226, Alt RGB
-	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE or l > 10){
+	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE){
 		PixelGetColor, c, 149, 226, Alt RGB
 		chick(149, 488) ;upgrade/prestige
 		sleep, 200
@@ -436,7 +436,11 @@ if (a){
 			SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
 			break
 		}
-	} SendWebhookSnip("","Couldnt prestige" . perkName, 0,0,width,height)
+		if (l==10) {
+			SendWebhookSnip("","Couldnt prestige" . perkName, 0,0,width,height)
+			break
+		}
+	} 
 	PopFirstLine(listfile)
 } else {
 	sleep, 200
