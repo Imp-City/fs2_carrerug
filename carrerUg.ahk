@@ -83,9 +83,14 @@ chick(width/2,height/2)
 exitspawn(1)
 */
 return
-/*
+
 F1::
 fileread, webhook, %webhookURLfile%
+if prestige()
+	if equipallfunction()
+		return
+
+return
 /*
 sendstatboardattempt("test stat board.")
 
@@ -102,12 +107,12 @@ sleep, 500
 SendWebhookSnipSingleton("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
-
+*/
 F2::
 setfullscreen()
 return
+/*
 F3::
-
 nextsection(3)
 return
 */
@@ -297,7 +302,7 @@ goto, GuiClose
 return
 GuiClose: ;fafa00
 if (heartbeatenabled)
-	SendWebhookSnipSingleton("","Status: Stopped.")
+	SendWebhookSnipSingleton("","Status: Stopped.",-1,-1,-1,-1,1)
 ExitApp
 return
 
@@ -394,13 +399,13 @@ checkEquip(Lslot){
 prestige(){
 	GuiControl,, Debug1, At: prestige
 	global listfile
-	global searchX, searchY, perkX, perkY, difX, difY
+	global searchX, searchY, perkX, perkY, difX, difY, width, height
 send, m
 l:=0
 waitforplaybutton(1)
 if openunlocks()
 	return 1
-chick(1115, 108) ;prestige section
+;chick(1115, 108) ;prestige section
 sleep, 200
 a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (a){
@@ -428,16 +433,17 @@ if (a){
 		sleep, 300
 		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 		if (!a){
+			SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
 			break
 		}
-	}
+	} SendWebhookSnip("","Couldnt prestige" . perkName, 0,0,width,height)
 	PopFirstLine(listfile)
-	SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
 } else {
 	sleep, 200
 	chick(173, 104)
 	return 0
 }
+sleep, 200
 chick(173, 104)
 sleep, 200
 return 1
