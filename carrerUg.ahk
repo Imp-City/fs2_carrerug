@@ -405,7 +405,7 @@ l:=0
 waitforplaybutton(1)
 if openunlocks()
 	return 1
-;chick(1115, 108) ;prestige section
+chick(1115, 108) ;prestige section
 sleep, 200
 a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (a){
