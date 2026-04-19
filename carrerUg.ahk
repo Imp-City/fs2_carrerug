@@ -405,7 +405,7 @@ l:=0
 waitforplaybutton(1)
 if openunlocks()
 	return 1
-chick(1115, 108) ;prestige section
+chick(1115, 108)
 sleep, 200
 a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (a){
@@ -423,13 +423,13 @@ if (a){
 	l:=0
 	PixelGetColor, c, 149, 226, Alt RGB
 	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE){
+		chick(1115, 108)
 		PixelGetColor, c, 149, 226, Alt RGB
 		chick(149, 488) ;upgrade/prestige
 		sleep, 200
 		chick(149, 488)
 		sleep, 200
 		l++
-		chick(1115, 108)
 		sleep, 300
 		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 		if (!a){
