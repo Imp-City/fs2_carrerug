@@ -437,7 +437,7 @@ if (a){
 			break
 		}
 		if (l==10) {
-			SendWebhookSnip("","Couldnt prestige" . perkName, 0,0,width,height)
+			SendWebhookSnip("","Couldnt prestige " . perkName, 0,0,width,height)
 			break
 		}
 	} 
