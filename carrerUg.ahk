@@ -436,10 +436,8 @@ if (a){
 		l++
 		sleep, 300
 		a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
-		if (!a){
-			SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
+		if (!a)
 			break
-		}
 		if (l==10) {
 			SendWebhookSnip("","Couldnt prestige " . perkName, 0,0,width,height)
 			break
@@ -447,12 +445,14 @@ if (a){
 	} 
 	PopFirstLine(listfile)
 } else {
-	sleep, 200
 	chick(173, 104)
+	sleep, 200
+	
 	return 0
 }
-sleep, 200
 chick(173, 104)
+sleep, 200
+SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
 sleep, 200
 return 1
 }
