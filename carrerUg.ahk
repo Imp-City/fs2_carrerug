@@ -37,20 +37,22 @@ viewerTitle := ""
 perkName := ""
 debug2faultcheck := ""
 debug2deadcheck := ""
-global pendingFaultDebug := ""
-global pendingDeadDebug := ""
-global errortimer := 0
-global killtimer := 0
-global lastDebugUpdate := 0
+pendingFaultDebug := ""
+pendingDeadDebug := ""
+
+
+
+errortimer := 0
+killtimer := 0
+lastDebugUpdate := 0
 recoverycycle := 0
 curendwave := 0
 Column := 1
 color := 0
-webhook := ""
-global WebhookLastCallTick := 0
-global WebhookHeartbeatInterval := 600000   ; 10 min
-global heartbeatenabled := 0
 
+;webhooks
+webhook := ""
+statusClient := ""
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
 Gui, Show, x1030 y0 w300 h60, Career Macro
@@ -100,11 +102,11 @@ SendWebhookSnip("","Test msg")
 
 SendWebhookSnip("","Prestiged - " . varname, 52, 129, 550, 230)
 
-SendWebhookSnipSingleton("","Status: Running")
+statusClient.Send("","Status: Running")
 sleep, 500
-SendWebhookSnipSingleton("","Status: Stopped 1", 0, 0, 1366, 768)
+statusClient.Send("","Status: Stopped 1", 0, 0, 1366, 768)
 sleep, 500
-SendWebhookSnipSingleton("","Status: Stopped 2", 0, 0, 1366, 768, 1)
+statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
 */
@@ -134,12 +136,13 @@ GuiControl, Show, waiting
 GuiControl, Show, debug1
 GuiControl, Show, debug2
 GuiControl, Show, debug3
-gosub, webhookheartbeattoggler
+statusClient := new WebhookSnipClient(webhook)
 goto, startmacro
 return
 
 startmacro:
-SendWebhookSnipSingleton("","Status: Restarting", 0, 0 , width, height)
+statusClient.send("","Status: Restarting", 0, 0 , width, height)
+statClient := new WebhookSnipClient(webhook)
 restartroblox()
 chick(width/2,height/2)
 if (privategame())
@@ -286,6 +289,7 @@ while (wave<10){ ;skip to wave 10
 	} 
 	if (Launchering(steps))
 		goto, startmacro
+	wheeldowns(1)
 	readyup(1)
 	respawn()
 	timer(0)
@@ -301,8 +305,8 @@ F9::
 goto, GuiClose
 return
 GuiClose: ;fafa00
-if (heartbeatenabled)
-	SendWebhookSnipSingleton("","Status: Stopped.",-1,-1,-1,-1,1)
+if (statusClient != "")
+	statusClient.Send("","Status: Stopped.",-1,-1,-1,-1,1)
 ExitApp
 return
 
@@ -405,7 +409,7 @@ l:=0
 waitforplaybutton(1)
 if openunlocks()
 	return 1
-chick(1115, 108)
+chick(1115, 108) ;prestige section
 sleep, 200
 a := findpx(272, 489, 279, 490, 0xFFFF00) ;prestige/perks open
 if (a){
@@ -423,7 +427,7 @@ if (a){
 	l:=0
 	PixelGetColor, c, 149, 226, Alt RGB
 	while not (c = 0xFF302B or c = 0x122D78 or c = 0x339635 or c = 0xFFF235 or c = 0xBE4BBE){
-		chick(1115, 108)
+		chick(1115, 108) ;prestige section
 		PixelGetColor, c, 149, 226, Alt RGB
 		chick(149, 488) ;upgrade/prestige
 		sleep, 200

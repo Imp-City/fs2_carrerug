@@ -256,6 +256,7 @@ firetillmorning(firedelay) {
 }
 MorningFire(firedelay){
     if (sunicon()) {
+		statusClient.Send("","Status: Running", 0 , 0 , width, height, 1)
 		graceStart := A_TickCount
 		GuiControl,, Debug1, At: MorningFire
         while (A_TickCount - graceStart < 1000) {
@@ -287,7 +288,7 @@ DllmoveOffset() {
     return 4
 }
 runWaveBlock(startWave, endWave, fireDelay) {
-	global wave, curendwave
+	global wave, curendwave, statusClient, width, height
 	curendwave := endWave
     GuiControl,, Debug1, At: runWaveBlock
     wave := startWave
@@ -325,7 +326,7 @@ prepRefill(ulist, perks := 1) {
 			if equipallfunction()
 				return 1
 		
-		while (A_TickCount - delay < 4500){
+		while (A_TickCount - delay < 4000){
 			sleep, 1000
 			if (deadcheck(0,1) < 0)
 				return prepRefill(ulist, 0)
@@ -382,7 +383,7 @@ premRefill(ulist, perks := 1) {
 			if equipallfunction()
 				return 1
 		
-		while (A_TickCount - delay < 4500){
+		while (A_TickCount - delay < 4000){
 			sleep, 1000
 			if (deadcheck(0,1) < 0)
 				return premRefill(ulist, 0)
