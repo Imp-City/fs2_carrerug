@@ -453,7 +453,7 @@ if (a){
 chick(173, 104)
 sleep, 200
 SendWebhookSnip("","Prestiged - " . perkName, 52, 129, 550, 230)
-sleep, 200
+sleep, 500
 return 1
 }
 
