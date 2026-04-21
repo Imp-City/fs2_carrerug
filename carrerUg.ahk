@@ -53,6 +53,10 @@ color := 0
 ;webhooks
 webhook := ""
 statusClient := ""
+
+;validity
+wave := 0
+
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
 Gui, Show, x1030 y0 w300 h60, Career Macro
@@ -61,7 +65,7 @@ Gui, Add, Button, x95 y15 w85 h22 gperksetup vperksetup, Perk setup
 Gui, Add, Button, x180 y15 w110 h22 gConfigure vConfigure, Configuration
 Gui, Add, Text, x5 y14 w290 h14 vWaiting,
 Gui, Add, Button, x10 y37 w120 h22 gQueue vQueue, Queue Lv4 Perks
-Gui, Add, Button, x130 y37 w160 h22 gMode vMode, --WIP--
+Gui, Add, Button, x130 y37 w160 h22 gsettingadjust vsettingadjust, Test adjust to Macro Settings
 Gui, Add, Text, x5 y28 w140 h13 vDebug1,
 Gui, Add, Text, x145 y28 w140 h13 vDebug3,
 Gui, Add, Text, x41 y41 w290 h13 vDebug2,
@@ -79,21 +83,16 @@ return
 #Include perkviewer.ahk
 #Include perkgui.ahk
 #Include webhooker.ahk
-Mode:
 /*
-chick(width/2,height/2)
-exitspawn(1)
-*/
-return
-
 F1::
+
 fileread, webhook, %webhookURLfile%
 if prestige()
 	if equipallfunction()
 		return
 
 return
-/*
+
 sendstatboardattempt("test stat board.")
 
 SendWebhookSnip("","Test stat board", 283, 289, 1082, 479)
@@ -109,13 +108,19 @@ sleep, 500
 statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
-*/
+
 F2::
 setfullscreen()
 return
-/*
+
 F3::
-nextsection(3)
+if (exitspawn(1,3)){
+	wheelups(1)
+	gosub, settingadjust
+	waitforplaybutton(0)
+	if (exitspawn(1,4))
+    	goto, startmacro
+}
 return
 */
 initializemacro:
@@ -155,6 +160,9 @@ chicks(457, 654, 3) ;Create Private
 closechat()
 if (waitforplaybutton(1))
     goto, startmacro
+if (wave)
+	if !findpx(671, 717, 675, 717, 0xFFFFFF, 0)
+		MsgBox, 48, Macro, GUI scale must be set to Large. Otherwise, the macro may not work properly. Pressing OK will continue the macro.
 prestige()
 sleep, 300
 gosub, equipall
@@ -163,8 +171,13 @@ if (waitforplaybutton(0))
     goto, startmacro
 wave := 1
 t:=1.33
-if (exitspawn(1))
-    goto, startmacro
+if (exitspawn(1,3)){
+	wheelups(1)
+	gosub, settingadjust
+	waitforplaybutton(0)
+	if (exitspawn(1,4))
+    	goto, startmacro
+}
 wheeldowns(11)
 if (readyup(1))
     goto, startmacro
@@ -311,10 +324,11 @@ ExitApp
 return
 
 settingadjust:
-chick(width/2,height/2)
-sleep, 100
 WinActivate, ahk_exe RobloxPlayerBeta.exe
-setfullscreen()
+if !findpx(648, 719, 715, 723, 0xFFFFFF, 30){ ;play button visible
+	chick(65, 698) ;menu without keybind
+	waitforplaybutton(1)
+}
 chick(1137, 750) ;settings
 sleep, 100
 chick(487, 184) ;options
@@ -335,35 +349,43 @@ chick(467, 447) ;toggle sprint off
 slist := [1,2,3,4,5,6,7,10,11,12]
 setdefaults(slist)
 
-Loop, 10 {
-    Send, +{F10}
-    Sleep, 100
-}
-
-sleep, 100
 send, {Esc}
 sleep, 500
 chick(518, 107) ;settings
 sleep, 200
 chick(478, 407) ;allow scrolling
-l:=0
-while (l<20) {
-	wheeldowns(3)
-	sleep, 250
+wheelups(20)
+sensitivitySet := 1
+GraphicsSet := 1
+Loop, 8 {
+	
 	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
-	if (x){
+	if (sensitivitySet and x){
 		chick(x,y+13)
 		sleep, 50
 		send 0.36
 		sleep, 50
 		send {Enter}
-		GuiControl, text, settingadjust, Success! Don't forget to set up perks!
-		break
+		sensitivitySet := 0
+	} else {
+		PixelSearch, x, y, 810, 260, 810, 560, 0x393B3D, 0, Fast RGB
+		if (GraphicsSet and x) {
+			PixelSearch, x, y, 805, y-47, 815, y-27, 0xFFFFFF, 8, Fast RGB
+			if (x){
+				chick(x,y)
+				GraphicsSet := 0
+			}
+		}
+
+		PixelSearch, x, y, 633 , 260, 634, 560, 0x9E9D9D, 6, Fast RGB
+		if (x and !findpx(1056, y, 1056, y, 0x333333)){
+			chicks(x-10,y, 10)
+		}
 	}
-	l++
-	if (l==20)
-		GuiControl, text, settingadjust, manually change sensitivity to 0.36!
+	wheeldowns(2)
+	sleep, 250
 }
+send, {Esc}
 return
 
 maxlvperk(){

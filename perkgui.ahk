@@ -156,9 +156,8 @@ Gui, Add, Edit, x55 y15 w20 h22 vsnowball, % snowball
 Gui, Add, Text, x77 y20 w50 h22 center, Tech lv4
 Gui, Add, Edit, x128 y15 w20 h22 vtechlv, % techlv
 gui, add, text, x150 y13 h13 w140 center, Webhook URL
-Gui, Add, Edit, x150 y25 w140 h17 vwebhook, % webhook
-Gui, Add, Button, x10 y37 w140 h22 gsettingadjust vsettingadjust, Set To Macro Settings
-Gui, Add, Button, x150 y42 w140 h20 gsendconfig vsendconfig, Submit
+Gui, Add, Edit, x150 y25 w140 h35 vwebhook, % webhook
+Gui, Add, Button, x10 y37 w140 h22 gsendconfig vsendconfig, Submit
 return
 
 sendconfig:
@@ -177,7 +176,7 @@ Return
 
 hideeverything(){
 	; GuiControl,, Debug1, At: hideeverything
-	GuiControl, Hide, Mode
+	GuiControl, Hide, settingadjust
     GuiControl, Hide, initializemacro
     GuiControl, Hide, Configure
     GuiControl, Hide, Perksetup

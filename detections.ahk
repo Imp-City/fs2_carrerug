@@ -8,6 +8,37 @@ findpx(x1, y1, x2, y2, color, tolerance := 0) {
     return !ErrorLevel
 }
 
+AllPixelsMatchVar(x1, y1, x2, y2, targetColor, variation := 0) {
+    if (x1 > x2) {
+        t := x1, x1 := x2, x2 := t
+    }
+    if (y1 > y2) {
+        t := y1, y1 := y2, y2 := t
+    }
+
+    tr := (targetColor >> 16) & 0xFF
+    tg := (targetColor >> 8) & 0xFF
+    tb := targetColor & 0xFF
+
+    Loop, % x2 - x1 + 1 {
+        x := x1 + A_Index - 1
+        Loop, % y2 - y1 + 1 {
+            y := y1 + A_Index - 1
+            PixelGetColor, color, %x%, %y%, RGB
+
+            r := (color >> 16) & 0xFF
+            g := (color >> 8) & 0xFF
+            b := color & 0xFF
+
+            if (Abs(r - tr) > variation
+             || Abs(g - tg) > variation
+             || Abs(b - tb) > variation)
+                return false
+        }
+    }
+    return true
+}
+
 boolean(x){
     ;GuiControl,, Debug1, At: boolean
     if (x)
