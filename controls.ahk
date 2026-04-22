@@ -196,10 +196,13 @@ nextsection(n){
 }
 
 setfullscreen(){
-    WinGetPos, X, Y, W, H, A
-    if (X > 0 || Y > 0 || W != A_ScreenWidth || H != A_ScreenHeight){
+    SetTitleMatchMode, 2
+    WinGetPos, X, Y, W, H, ahk_exe RobloxPlayerBeta.exe
+    while (X > 0 || Y > 0 || W != A_ScreenWidth || H != A_ScreenHeight){
         Send, {F11}
-    } sleep, 500
+        sleep, 1000
+        WinGetPos, X, Y, W, H, ahk_exe RobloxPlayerBeta.exe
+    }
     WinMove, ahk_exe RobloxPlayerBeta.exe,, 0, 0, 1366, 768
 }
 
