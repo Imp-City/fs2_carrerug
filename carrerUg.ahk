@@ -74,10 +74,9 @@ Gui, Add, Text, x41 y41 w290 h13 vDebug2,
 if WinExist("Career Macro") {
     WinActivate
     WinSet, AlwaysOnTop, On, Career Macro
-	CoordMode, Mouse, Screen
-	CoordMode, Pixel, Screen
 }
-
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
 t:=1.33
 return
 
