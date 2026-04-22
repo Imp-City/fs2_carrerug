@@ -111,6 +111,9 @@ readyup(forceready := 0){
         if Timer(480)
             return 1
         x := findpx(1251, 692, 1253, 706, 0xEDEDED, 10) ;rdy
+        PixelGetColor, pxc, 1252, 698, RGB Alt
+        GuiControl,, Debug1, % "At: readyup, Px:" . pxc 
+        sleep, 2000
         if (!forceready and !sunicon()) 
             return 0
         if (x){
