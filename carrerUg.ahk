@@ -320,8 +320,9 @@ F9::
 goto, GuiClose
 return
 GuiClose: ;fafa00
+Gui, Show,, Macro is closing...
 if (statusClient != "")
-	statusClient.Send("","Status: Stopped.",-1,-1,-1,-1,1)
+	statusClient.Send("","Status: Stopped. Final Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized),-1,-1,-1,-1,1)
 ExitApp
 return
 

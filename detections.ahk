@@ -110,7 +110,7 @@ readyup(forceready := 0){
     loop{
         if Timer(480)
             return 1
-        x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
+        x := findpx(1251, 692, 1253, 706, 0xEDEDED, 10) ;rdy
         if (!forceready and !sunicon()) 
             return 0
         if (x){
@@ -120,7 +120,7 @@ readyup(forceready := 0){
                 if (deadcheck(0,1) < 0)
                     return 1
                 chick(1306, 699)
-                x := findpx(1251, 692, 1253, 706, 0xEDEDED, 3) ;rdy
+                x := findpx(1251, 692, 1253, 706, 0xEDEDED, 10) ;rdy
                 if (not x){
                     return 0
                 }
