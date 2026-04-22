@@ -5,14 +5,26 @@ sendstatboardattempt(initialmsg){
         chick(834, 682) ; Next pov
         sleep, 200
         if findpx(584, 676, 585, 688, 0xFFFFFF){
-            statClient.Send("",initialmsg . " Stat board:", 283, 289, 1082, 479)
+            statClient.Send("",initialmsg . " Session Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized) . ", Stat board:", 283, 289, 1082, 479)
             return
         }
-    } statClient.Send("",initialmsg . " Failed to find stat board. Current POV:", 0, 0, width, height)
+    } statClient.Send("",initialmsg . " Failed to find stat board. Session Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized) . ", Current POV:", 0, 0, width, height)
+}
+
+FormatTimeFromMs(ms)
+{
+    totalSeconds := Floor(ms / 1000)
+
+    hours := Floor(totalSeconds / 3600)
+    minutes := Floor(Mod(totalSeconds, 3600) / 60)
+    seconds := Mod(totalSeconds, 60)
+
+    return Format("{:02}:{:02}:{:02}", hours, minutes, seconds)
 }
 
 class WebhookSnipClient
 {
+    TimeInitialized := A_TickCount
     cooldownMs := 120000
 
     __New(webhookUrl, cooldownSeconds:= 120)

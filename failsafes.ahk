@@ -86,7 +86,7 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
     updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave)
 
     if (loseLife) {
-        SendWebhookSnip("","Shop died at wave: " . wave)
+        SendWebhookSnip("","Shop died at wave: " . wave . ".")
         if (faultcheck() || killwhended)
             return -1
         if waitformorning(0, 1)

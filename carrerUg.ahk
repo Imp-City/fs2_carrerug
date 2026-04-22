@@ -56,6 +56,7 @@ statusClient := ""
 
 ;validity
 wave := 0
+runs := 0
 
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
@@ -146,7 +147,8 @@ goto, startmacro
 return
 
 startmacro:
-statusClient.send("","Status: Restarting", 0, 0 , width, height)
+runs++
+statusClient.send("","Status: Restarting. Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized), 0, 0 , width, height)
 statClient := new WebhookSnipClient(webhook)
 restartroblox()
 chick(width/2,height/2)
@@ -310,7 +312,7 @@ while (wave<10){ ;skip to wave 10
 		if isDeadPOV() or timer(20)
 			break
 	}
-	sendstatboardattempt("Run Successful.")
+	sendstatboardattempt("Run Successful. Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized))
 	goto, startmacro
 return
 
@@ -462,7 +464,9 @@ if (a){
 			break
 		if (l==10) {
 			SendWebhookSnip("","Couldnt prestige " . perkName, 0,0,width,height)
-			break
+			chick(173, 104)
+			sleep, 200
+			return 0
 		}
 	} 
 	PopFirstLine(listfile)
