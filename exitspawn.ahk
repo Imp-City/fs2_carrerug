@@ -183,6 +183,8 @@ Sleep, 200
 DllMove(1000, 1000)
 a(1200)
 wa(300)
+if !atinteractable()
+    return retrial(sprint,trials)
 send f
 sleep, 100
 return 0

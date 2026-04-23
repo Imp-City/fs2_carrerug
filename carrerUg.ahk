@@ -108,19 +108,12 @@ sleep, 500
 statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
-
+*/
 F2::
 setfullscreen()
 return
-
 F3::
-if (exitspawn(1,3)){
-	wheelups(1)
-	gosub, settingadjust
-	waitforplaybutton(0)
-	if (exitspawn(1,4))
-    	goto, startmacro
-}
+exitspawn(1,3)
 return
 */
 initializemacro:
@@ -147,7 +140,7 @@ return
 
 startmacro:
 runs++
-statusClient.send("","Status: Restarting. Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized), 0, 0 , width, height)
+statusClient.send("","Status: Restarting. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0, 0 , width, height)
 statClient := new WebhookSnipClient(webhook)
 restartroblox()
 chick(width/2,height/2)
@@ -186,11 +179,17 @@ if (waitfordawn())
 	goto, startmacro
 doortostair()
 stairtoshop()
+if !atinteractable(){
+	gosub, settingadjust
+	goto, startmacro
+}
 send, f ;exit shop
 togglemode(2,4) ;sentry set to weak
 place(width/2,height/2,4) ;sentry
-if walktoladder()
+if walktoladder(){
+	gosub, settingadjust
     goto, startmacro
+}
 if (waitfordawn())
     goto, startmacro
 
@@ -198,8 +197,10 @@ wave := 2
 if (readyup(1))
     goto, startmacro
 sleep, 10000
-if (ForcePlace(385, 147, 4 , 1 , 50))
+if (ForcePlace(385, 147, 4 , 1 , 50)){ ;sentry
+	gosub, settingadjust
     goto, startmacro
+}
 rightsentry()
 if (waitfordawn())
     goto, startmacro
@@ -311,7 +312,7 @@ while (wave<10){ ;skip to wave 10
 		if isDeadPOV() or timer(20)
 			break
 	}
-	sendstatboardattempt("Run Successful. Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized))
+	sendstatboardattempt("Run Successful.") ;stat
 	goto, startmacro
 return
 
@@ -321,7 +322,7 @@ return
 GuiClose: ;fafa00
 Gui, Show,, Macro is closing...
 if (statusClient != "")
-	statusClient.Send("","Status: Stopped. Final Run Time: " . FormatTimeFromMs(A_TickCount - statClient.TimeInitialized),-1,-1,-1,-1,1)
+	statusClient.Send("","Status: Stopped. Final Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized),-1,-1,-1,-1,1)
 ExitApp
 return
 
