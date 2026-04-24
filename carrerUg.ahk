@@ -135,6 +135,7 @@ GuiControl, Show, debug1
 GuiControl, Show, debug2
 GuiControl, Show, debug3
 statusClient := new WebhookSnipClient(webhook)
+statusClient.send("","Status: Started Successfully.")
 goto, startmacro
 return
 
