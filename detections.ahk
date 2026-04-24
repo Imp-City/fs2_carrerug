@@ -142,17 +142,17 @@ waitforplaybutton(appear){
     loop{
         if Timer(30)
             return 1
-        if faultcheck()
-            return 1
-        x := findpx(648, 719, 715, 723, 0xFFFFFF, 30)
-        if (boolean(x) == boolean(appear))
-            break 
-        sleep, 100
         if (appear)
             send, m
         Else
             chick(685, 704) ;PLAY
         sleep, 200
+        if faultcheck()
+            return 1
+        x := findpx(645, 716, 677, 724, 0xFFFFFF, 30)
+        if (boolean(x) == boolean(appear))
+            break 
+        sleep, 100
     } return 0
 }
 

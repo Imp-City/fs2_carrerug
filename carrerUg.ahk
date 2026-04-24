@@ -155,9 +155,9 @@ chicks(457, 654, 3) ;Create Private
 closechat()
 if (waitforplaybutton(1))
     goto, startmacro
-if (wave)
-	if !findpx(671, 717, 675, 717, 0xFFFFFF, 0)
-		MsgBox, 48, Macro, GUI scale must be set to Large. Otherwise, the macro may not work properly. Pressing OK will continue the macro.
+;if (wave)
+	;if !findpx(671, 717, 675, 717, 0xFFFFFF, 0)
+		;MsgBox, 48, Macro, GUI scale must be set to Large. Otherwise, the macro may not work properly. Pressing OK will continue the macro.
 prestige()
 sleep, 300
 gosub, equipall
