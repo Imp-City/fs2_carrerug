@@ -356,7 +356,7 @@ send, {Esc}
 sleep, 500
 chick(518, 107) ;settings
 sleep, 200
-chick(478, 407) ;allow scrolling
+chick(1078,170) ;allow scrolling
 wheelups(20)
 sensitivitySet := 1
 GraphicsSet := 1
@@ -381,7 +381,7 @@ Loop, 8 {
 		}
 
 		PixelSearch, x, y, 633 , 260, 634, 560, 0x9E9D9D, 6, Fast RGB
-		if (x and !findpx(1056, y, 1056, y, 0x333333)){
+		if (x and !findpx(1056, y, 1056, y, 0x333333) and findpx(x+28, y, x+28, y, 0xD9D9D9)){
 			chicks(x-10,y, 10)
 		}
 	}
