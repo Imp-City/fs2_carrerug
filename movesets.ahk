@@ -255,9 +255,9 @@ firetillmorning(firedelay) {
 	return 0
 }
 MorningFire(firedelay){
-	global statusclient
+	global statusclient, width, height
     if (sunicon()) {
-		statusClient.Send("","Status: Running. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0 , 0 , width, height, 1)
+		statusClient.Send("","Status: Running. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0, 0, width, height, 1)
 		graceStart := A_TickCount
 		GuiControl,, Debug1, At: MorningFire
         while (A_TickCount - graceStart < 1000) {
