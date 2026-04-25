@@ -75,13 +75,19 @@ DllMove(x, y) {
     DllCall("mouse_event", "UInt", 0x01, "UInt", x, "UInt", y)
 }
 
-chick(x,y){
-    ;GuiControl,, Debug1, At: chick
+chick(x := "", y := "") {
+    global width, height
+
+    if (x = "")
+        x := width/2
+    if (y = "")
+        y := height/2
+
     mousemove, x, y-1
     sleep, 35
-		Dllmove(0,1)
-		sleep, 35
-		click, Down
+    Dllmove(0,1)
+    sleep, 35
+    click, Down
     sleep, 35
     click, Up
 }
@@ -260,4 +266,16 @@ openunlocks(){
 		chick(439, 737)
 		sleep, 100
 	}
+}
+newfs2tab(){
+    Send, ^t        ; open new tab
+    Sleep, 200
+    send, https://www.roblox.com/games/133815151 
+    sleep, 10
+    send, {Enter}
+    sleep, 200
+    Send, ^+{Tab}     ; go back to previous tab
+    Sleep, 200
+    Send, ^w        ; close it
+    sleep, 2000
 }

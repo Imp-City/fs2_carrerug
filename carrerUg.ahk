@@ -108,12 +108,12 @@ sleep, 500
 statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
-*/
+
 F2::
 setfullscreen()
 return
 F3::
-exitspawn(1,3)
+newfs2tab()
 return
 */
 initializemacro:
@@ -130,7 +130,7 @@ if ErrorLevel {
 }
 fileread, webhook, %webhookURLfile%
 hideeverything()
-GuiControl, Show, waiting
+GuiControl, Show, waiting	
 GuiControl, Show, debug1
 GuiControl, Show, debug2
 GuiControl, Show, debug3
@@ -144,7 +144,7 @@ runs++
 statusClient.send("","Status: Restarting. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0, 0 , width, height)
 statClient := new WebhookSnipClient(webhook)
 restartroblox()
-chick(width/2,height/2)
+chick()
 if (privategame())
     goto, startmacro
 chicks(843, 346, 3) ;carrer mode
@@ -336,7 +336,7 @@ if !findpx(648, 719, 715, 723, 0xFFFFFF, 30){ ;play button visible
 chick(1137, 750) ;settings
 sleep, 100
 chick(487, 184) ;options
-chick(width/2,height/2)
+chick()
 wheelups(15)
 sleep 300
 

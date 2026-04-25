@@ -164,38 +164,73 @@ deadcheck(checkammo := 0, killwhended := 0, endofWave := 0) {
 
 ; ===== RESTARTERS =====
 restartroblox(){
-    sleep, 2000
+    sleep, 1000
     GuiControl,, Debug1, At: restartroblox
     while WinExist("ahk_exe RobloxPlayerBeta.exe"){
         WinKill
         sleep, 500
     } 
     SetTitleMatchMode, 2
-    if winExist("The Final Stand 2"){
-        loop{
-            WinActivate
-            mouseclick, WheelUp
-            mouseclick, WheelUp
-            WinMove, ,, 0, 0, 1366, 768
-            sleep, 2000
-            chick(995, 441) ;play button
-            wheelups(4)
-            chick(995, 441)
-            sleep, 2000
-            l:=0
-            while (l<40){ ;20 sec
-                if WinExist("ahk_exe RobloxPlayerBeta.exe"){
-                    sleep, 500
-                    WinActivate
-                    sleep, 500
-                    setfullscreen()
-                    return 1
-                }
-                sleep, 500
-                l++
+    Openfs2()
+}
+
+Openfs2() {
+    chick()
+    if WinExist("The Final Stand 2") {
+        return TryLaunchFromExistingTab()
+    }
+
+    newfs2tab()
+    return TryLaunchFromExistingTab()
+}
+
+TryLaunchFromExistingTab() {
+    Loop {
+        Loop, 3 {
+            PrepareFinalStandWindow()
+            ClickPlayButton()
+
+            if WaitForRoblox(40) {
+                return 1
             }
         }
+
+        newfs2tab()
     }
+}
+
+PrepareFinalStandWindow() {
+    Sleep, 1000
+    if WinExist("The Final Stand 2"){
+        WinActivate
+        MouseClick, WheelUp
+        MouseClick, WheelUp
+        WinMove, , , 0, 0, 1366, 768
+        Sleep, 1000
+    }
+}
+
+ClickPlayButton() {
+    chick(995, 441) ; play button
+    wheelups(4)
+    chick(995, 441)
+    Sleep, 2000
+}
+
+WaitForRoblox(maxChecks := 40) {
+    Loop, %maxChecks% {
+        if WinExist("ahk_exe RobloxPlayerBeta.exe") {
+            Sleep, 500
+            WinActivate
+            Sleep, 500
+            setfullscreen()
+            return 1
+        }
+
+        Sleep, 500
+    }
+
+    return 0
 }
 
 Timer(seconds) {

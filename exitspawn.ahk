@@ -3,7 +3,7 @@ exitspawn(sprint, trials := 1){
 GuiControl,, Debug1, At: exitspawn
 if (faultcheck())
     return 1
-chick(width/2, height/2)
+chick()
 Dllmove(0,1)
 wheelups(20)
 DllMove(0, 3000)

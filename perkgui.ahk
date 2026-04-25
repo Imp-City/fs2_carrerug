@@ -9,7 +9,7 @@ equipallfunction(){
 	global setupfile
 	global searchX, searchY, perkX, perkY, difX, difY, slotX, slotY, slotSpace
 	global width, height
-	chick(width/2,height/2)
+	chick()
 	GuiControl,, Debug2, % "EquipAll:" . boolean(a)
 	if openunlocks()
 		return 1
@@ -48,7 +48,7 @@ equipallfunction(){
 }
 
 testpos:
-chick(width/2,height/2)
+chick()
 sleep, 100
 setfullscreen()
 Gui, Submit, NoHide
