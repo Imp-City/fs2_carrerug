@@ -177,8 +177,8 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
             chick(curX, curY)
 
             Loop, 5 {
-                PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 1, Fast RGB
-                PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 1, Fast RGB
+                PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 30, Fast RGB
+                PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 30, Fast RGB
                 if (deadcheck(0,1) < 0)
                     return 1
                 if (x1 || x2) {
@@ -195,7 +195,7 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
 
 closechat(){
     ;GuiControl,, Debug1, At: closechat
-    PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 1, Fast RGB
+    PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 4, Fast RGB
     if (x)
         chick(x,y)
 }
