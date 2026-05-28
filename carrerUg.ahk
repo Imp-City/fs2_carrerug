@@ -3,6 +3,8 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
+macroTitle := "Career Macro v1.3.13"
+
 #Include exitspawn.ahk
 #Include detections.ahk
 #Include controls.ahk
@@ -49,7 +51,6 @@ recoverycycle := 0
 curendwave := 0
 Column := 1
 color := 0
-
 ;webhooks
 webhook := ""
 statusClient := ""
@@ -60,7 +61,7 @@ runs := 0
 
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
-Gui, Show, x1030 y0 w300 h60, Career Macro
+Gui, Show, x1030 y0 w300 h60, %macroTitle%
 Gui, Add, Button, x10 y15 w85 h22 ginitializemacro vinitializemacro, Start Macro
 Gui, Add, Button, x95 y15 w85 h22 gperksetup vperksetup, Perk setup
 Gui, Add, Button, x180 y15 w110 h22 gConfigure vConfigure, Configuration
