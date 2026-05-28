@@ -177,8 +177,8 @@ ForcePlace(x, y, toolnumber, axis := 0, offset := 0) {
             chick(curX, curY)
 
             Loop, 5 {
-                PixelSearch, x1, y1, 128, 101, 1237, 694, 0xEEEE02, 5, Fast RGB
-                PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 5, Fast RGB
+                PixelSearch, x1, y1, 128, 101, 1237, 694, 0x0292DA, 10, Fast RGB
+                PixelSearch, x2, y2, 0, 115, 1366, 629, 0x0265AF, 10, Fast RGB
                 if (deadcheck(0,1) < 0)
                     return 1
                 if (x1 || x2) {
