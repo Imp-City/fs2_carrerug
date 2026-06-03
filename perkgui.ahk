@@ -253,7 +253,7 @@ updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave := "") {
 }
 
 SelectPerk(PerkName){
-	SetKeyDelay, 1
+	SetKeyDelay, 10
 	SendEvent, %PerkName%
 	SetKeyDelay, 0
 }
