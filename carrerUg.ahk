@@ -32,6 +32,7 @@ setupfile := A_ScriptDir "\PerkSetup.txt"
 snowballfile := A_ScriptDir "\snowball.txt"
 techlvfile := A_ScriptDir "\techlv.txt"
 webhookURLfile := A_ScriptDir "\webhookURL.txt"
+keystrokedelayfile := A_ScriptDir "\keystrokedelay.txt"
 
 viewerFile := ""
 viewerMode := ""
@@ -58,6 +59,9 @@ statusClient := ""
 ;validity
 wave := 0
 runs := 0
+fileread, keystrokedelay, %keystrokedelayfile%
+keystrokedelay := (keystrokedelay = "" ? 1 : keystrokedelay)
+
 
 Gui, Color, 0x52fadb,  0x20a0e6
 Gui, Add, Text, x5 y0 w290 h14 vheadline, Made by Fervent. Close this window to end macro (or F9)
@@ -130,6 +134,7 @@ if ErrorLevel {
 	return
 }
 fileread, webhook, %webhookURLfile%
+
 hideeverything()
 GuiControl, Show, waiting	
 GuiControl, Show, debug1

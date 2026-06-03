@@ -147,17 +147,22 @@ return
 
 Configure:
 hideeverything()
+WinSetTitle,, , % "Perk Macro Configuration"
+GuiControl, Hide, headline
 sleep, 50
 fileread, snowball, %snowballfile%
 fileread, techlv, %techlvfile%
 fileread, webhook, %webhookURLfile%
-Gui, Add, Text, x10 y20 w45 h22 , Snowball
-Gui, Add, Edit, x55 y15 w20 h22 vsnowball, % snowball
-Gui, Add, Text, x77 y20 w50 h22 center, Tech lv4
-Gui, Add, Edit, x128 y15 w20 h22 vtechlv, % techlv
-gui, add, text, x150 y13 h13 w140 center, Webhook URL
-Gui, Add, Edit, x150 y25 w140 h35 vwebhook, % webhook
-Gui, Add, Button, x10 y37 w140 h22 gsendconfig vsendconfig, Submit
+fileread, keystrokedelay, %keystrokedelayfile%
+Gui, Add, Text, x10 y5 w45 h18 , Snowball
+Gui, Add, Edit, x55 y1 w20 h18 vsnowball, % snowball
+Gui, Add, Text, x77 y5 w50 h18 center, Tech lv4
+Gui, Add, Edit, x128 y1 w20 h18 vtechlv, % techlv
+Gui, Add, Text, x30 y23 w90 h18 center, Keystroke Delay
+Gui, Add, Edit, x128 y19 w20 h18 vkeystrokedelay, % (keystrokedelay = "" ? 1 : keystrokedelay)
+gui, add, text, x150 y0 h13 w140 center, Webhook URL
+Gui, Add, Edit, x150 y13 w140 h48 vwebhook, % webhook
+Gui, Add, Button, x10 y38 w140 h22 gsendconfig vsendconfig, Submit
 return
 
 sendconfig:
@@ -169,6 +174,8 @@ FileDelete, %techlvfile%
 FileAppend, %techlv% , %techlvfile%
 FileDelete, %webhookURLfile%
 FileAppend, %webhook% , %webhookURLfile%
+FileDelete, %keystrokedelayfile%
+FileAppend, %keystrokedelay% , %keystrokedelayfile%
 GuiControl, text, sendconfig, Submitted!
 sleep, 500
 GuiControl, text, sendconfig, Submit
@@ -253,7 +260,9 @@ updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave := "") {
 }
 
 SelectPerk(PerkName){
-	SetKeyDelay, 10
+	global keystrokedelay
+	SetKeyDelay, %keystrokedelay%
 	SendEvent, %PerkName%
 	SetKeyDelay, 0
+	sleep, 10
 }
