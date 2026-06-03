@@ -37,7 +37,7 @@ equipallfunction(){
 		;} 
 		; perk equip
 		chick(searchX, searchY)
-		send, %perkName%
+		SelectPerk(PerkName)
 		chick(perkX + difX*column, perkY + DifY*color)
 		sleep, 100
 		if (maxlvperk())
@@ -56,7 +56,7 @@ v := Inputcheck()
 GuiControl, text, testpos, % v
 if (v="Success!"){
 	chick(searchX, searchY)
-	send, %perkName%
+	SelectPerk(PerkName)
 	sleep, 50
 	chick(perkX + difX*(column), perkY + DifY*color)
 	sleep, 500
@@ -250,4 +250,10 @@ updateDeadDebug(shop, lose1, lose2, ded1, ded2, wave, curendwave := "") {
     else
         pendingDeadDebug := ", shop: " . shop . lose1 . lose2 . ", ded: " . ded1 . ded2 . ", wave: " . wave
     throttledDebugUpdate()
+}
+
+SelectPerk(PerkName){
+	SetKeyDelay, 1
+	SendEvent, %PerkName%
+	SetKeyDelay, 0
 }

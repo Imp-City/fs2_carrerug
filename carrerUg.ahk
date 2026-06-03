@@ -3,7 +3,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-macroTitle := "Career Macro v1.3.13"
+macroTitle := "Career Macro v1.3.14"
 
 #Include exitspawn.ahk
 #Include detections.ahk
@@ -448,7 +448,7 @@ if (a){
     color := parts[3]
 
 	chick(searchX, searchY)
-	send, %perkName%
+	SelectPerk(PerkName)
 	chick(perkX + difX*column, perkY + difY*color)
 	sleep, 100
 	l:=0
