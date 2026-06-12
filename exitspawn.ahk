@@ -183,10 +183,10 @@ Sleep, 200
 DllMove(1000, 1000)
 a(1200)
 wa(300)
-if !atinteractable()
+wheeldowns(1)
+if !atinteractable() || forceinteract() 
     return retrial(sprint,trials)
-send f
-sleep, 100
+wheelups(1)
 return 0
 }
 

@@ -279,3 +279,15 @@ newfs2tab(){
     Send, ^w        ; close it
     sleep, 2000
 }
+SendHold(key, duration := 50){
+	SetKeyDelay, %keystrokedelay%
+    SendEvent, {%key% down}
+    Sleep, duration
+    SendEvent, {%key% up}
+    SetKeyDelay, 0
+    sleep, 10
+}
+
+Interact(){
+    chick(683,682)
+}

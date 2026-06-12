@@ -113,14 +113,14 @@ sleep, 500
 statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
 
 return
-
+*/
 F2::
 setfullscreen()
 return
 F3::
-newfs2tab()
+exitspawn(1)
 return
-*/
+
 initializemacro:
 Gui, Submit, NoHide
 fileread, snowball, %snowballfile%
@@ -190,7 +190,7 @@ if !atinteractable(){
 	gosub, settingadjust
 	goto, startmacro
 }
-send, f ;exit shop
+Interact() ;exit shop
 togglemode(2,4) ;sentry set to weak
 place(width/2,height/2,4) ;sentry
 if walktoladder(){
@@ -218,7 +218,7 @@ if (readyup(1))
 sleep, 10000
 if rightsentrythenladder()
 	goto, startmacro
-send, f
+Interact()
 prepflw3()
 
 wave := 4
@@ -251,7 +251,7 @@ if (readyup(1))
     goto, startmacro
 shoptostair()
 stairtoupgs()
-send, f
+Interact()
 nextsection(3)
 buy()
 if (waitfordawn())
@@ -278,7 +278,7 @@ while (wave<10){ ;skip to wave 10
 	upgrade(3,3)
 	upgrade(4,3)
 	sleep, 100
-	send, f
+	Interact()
 	sleep, 100
 	upgstoshop()
 	a(400)

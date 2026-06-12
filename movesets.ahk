@@ -367,7 +367,7 @@ refill(toolnumber){
 	send, %toolnumber% ;m32
 	loop, 10{
 		sleep, 50
-		send, f
+		Interact()
 		sleep, 10
 		if (findpx(683, 682, 683, 682, 0xFF0000) || findpx(683, 682, 683, 682, 0x000000))
 			break
@@ -471,7 +471,7 @@ Launchering(steps, premStart := 30) {
 }
 
 upgradeShop(ulist){
-	send, f
+	Interact()
 	lastSection := 0
 	GuiControl,, Debug1, At: UpgradeShop
 	for i, item in ulist {
@@ -495,6 +495,6 @@ upgradeShop(ulist){
 	buy(4)
 	nextsection(-1)
 	sleep, 100
-	send, f
+	Interact()
 	sleep, 100
 }

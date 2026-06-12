@@ -201,5 +201,19 @@ closechat(){
 }
 
 atinteractable(){
-    return findpx(633, 682, 732, 683, 0xFFFFFF)
+    return findpx(633, 682, 732, 683, 0xFFFFFF, 10)
+}
+
+forceinteract(){
+    Interact()
+    sleep 50
+    Timer(0)
+    ; Loop as long as atinteractable() returns true (1)
+    while (atinteractable()) {
+        Interact()
+        Sleep 100
+        if Timer(30){
+            return 1
+        } 
+    } return 0
 }
