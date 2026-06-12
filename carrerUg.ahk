@@ -3,7 +3,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-macroTitle := "Career Macro v1.3.15"
+macroTitle := "Career Macro v1.3.16"
 
 #Include exitspawn.ahk
 #Include detections.ahk
@@ -122,7 +122,7 @@ exitspawn(1)
 return
 
 initializemacro:
-Gui, Submit, NoHide
+Gui, Submit, NoHide 
 fileread, snowball, %snowballfile%
 if ErrorLevel {
     MsgBox, 48, "Error", You haven't set configuration. Please set configuration before starting macro.
