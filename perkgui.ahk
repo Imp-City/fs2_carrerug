@@ -38,11 +38,11 @@ equipallfunction(){
 		; perk equip
 		chick(searchX, searchY)
 		SelectPerk(PerkName)
-		chick(perkX + difX*column, perkY + DifY*color)
+		chicks(perkX + difX*column, perkY + DifY*color, 2)
 		sleep, 100
 		if (maxlvperk())
 			return 1
-		chick(slotX + slotSpace*Mod(slot,6), slotY + slotSpace*Floor((slot)/6))
+		chicks(slotX + slotSpace*Mod(slot,6), slotY + slotSpace*Floor((slot)/6), 2)
 		prevslot:= slot
 	} return 0
 }
