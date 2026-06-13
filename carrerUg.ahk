@@ -367,7 +367,7 @@ wheelups(20)
 sensitivitySet := 1
 GraphicsSet := 1
 Loop, 10 {
-	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
+	PixelSearch, x,y, 1056, 124, 1056, 615, 0x333333, 0, Fast RGB
 	if (sensitivitySet and x){
 		chick(x,y+13)
 		sleep, 50
