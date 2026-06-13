@@ -3,7 +3,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-macroTitle := "Career Macro v1.3.16"
+macroTitle := "Career Macro v1.3.17"
 
 #Include exitspawn.ahk
 #Include detections.ahk
@@ -111,16 +111,15 @@ sleep, 500
 statusClient.Send("","Status: Stopped 1", 0, 0, 1366, 768)
 sleep, 500
 statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
-
 return
-*/
+
 F2::
 setfullscreen()
 return
 F3::
 exitspawn(1)
 return
-
+*/
 initializemacro:
 Gui, Submit, NoHide 
 fileread, snowball, %snowballfile%
@@ -367,8 +366,7 @@ chick(1078,170) ;allow scrolling
 wheelups(20)
 sensitivitySet := 1
 GraphicsSet := 1
-Loop, 8 {
-	
+Loop, 10 {
 	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
 	if (sensitivitySet and x){
 		chick(x,y+13)
@@ -378,7 +376,7 @@ Loop, 8 {
 		send {Enter}
 		sensitivitySet := 0
 	} else {
-		PixelSearch, x, y, 810, 260, 810, 560, 0x393B3D, 0, Fast RGB
+		PixelSearch, x, y, 810, 190, 810, 615, 0x393B3D, 0, Fast RGB
 		if (GraphicsSet and x) {
 			PixelSearch, x, y, 805, y-47, 815, y-27, 0xFFFFFF, 8, Fast RGB
 			if (x){
@@ -387,7 +385,7 @@ Loop, 8 {
 			}
 		}
 
-		PixelSearch, x, y, 633 , 260, 634, 560, 0x9E9D9D, 6, Fast RGB
+		PixelSearch, x, y, 633 , 190, 634, 615, 0x9E9D9D, 6, Fast RGB
 		if (x and !findpx(1056, y, 1056, y, 0x333333) and findpx(x+28, y, x+28, y, 0xD9D9D9)){
 			chicks(x-10,y, 10)
 		}
