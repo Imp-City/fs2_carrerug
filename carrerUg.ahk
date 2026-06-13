@@ -123,6 +123,9 @@ return
 */
 initializemacro:
 Gui, Submit, NoHide
+
+SendMode, Event
+
 fileread, snowball, %snowballfile%
 if ErrorLevel {
     MsgBox, 48, "Error", You haven't set configuration. Please set configuration before starting macro.
@@ -367,9 +370,8 @@ chick(1078,170) ;allow scrolling
 wheelups(20)
 sensitivitySet := 1
 GraphicsSet := 1
-Loop, 8 {
-	
-	PixelSearch, x,y, 1056, 124, 1056, 575, 0x333333, 0, Fast RGB
+Loop, 10 {
+	PixelSearch, x,y, 1056, 124, 1056, 615, 0x333333, 0, Fast RGB
 	if (sensitivitySet and x){
 		chick(x,y+13)
 		sleep, 50
@@ -378,7 +380,7 @@ Loop, 8 {
 		send {Enter}
 		sensitivitySet := 0
 	} else {
-		PixelSearch, x, y, 810, 260, 810, 560, 0x393B3D, 0, Fast RGB
+		PixelSearch, x, y, 810, 190, 810, 615, 0x393B3D, 0, Fast RGB
 		if (GraphicsSet and x) {
 			PixelSearch, x, y, 805, y-47, 815, y-27, 0xFFFFFF, 8, Fast RGB
 			if (x){
@@ -387,7 +389,7 @@ Loop, 8 {
 			}
 		}
 
-		PixelSearch, x, y, 633 , 260, 634, 560, 0x9E9D9D, 6, Fast RGB
+		PixelSearch, x, y, 633 , 190, 634, 615, 0x9E9D9D, 6, Fast RGB
 		if (x and !findpx(1056, y, 1056, y, 0x333333) and findpx(x+28, y, x+28, y, 0xD9D9D9)){
 			chicks(x-10,y, 10)
 		}
