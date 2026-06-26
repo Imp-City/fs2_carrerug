@@ -88,32 +88,13 @@ return
 #Include perkviewer.ahk
 #Include perkgui.ahk
 #Include webhooker.ahk
-/*
+
 F1::
 
-fileread, webhook, %webhookURLfile%
-if prestige()
-	if equipallfunction()
-		return
+closechat()
 
 return
-
-sendstatboardattempt("test stat board.")
-
-SendWebhookSnip("","Test stat board", 283, 289, 1082, 479)
-sleep, 1000
-SendWebhookSnip("","Test msg")
-
-SendWebhookSnip("","Prestiged - " . varname, 52, 129, 550, 230)
-
-statusClient.Send("","Status: Running")
-sleep, 500
-statusClient.Send("","Status: Stopped 1", 0, 0, 1366, 768)
-sleep, 500
-statusClient.Send("","Status: Stopped 2", 0, 0, 1366, 768, 1)
-
-return
-
+/*
 F2::
 setfullscreen()
 return

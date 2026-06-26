@@ -197,7 +197,7 @@ closechat(){
     ;GuiControl,, Debug1, At: closechat
     PixelSearch, x, y, 134, 27, 142, 28, 0xF7F7F8, 4, Fast RGB
     if (x)
-        chick(x,y)
+        chick(x,y+4)
 }
 
 atinteractable(){
