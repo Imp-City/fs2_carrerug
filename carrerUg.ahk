@@ -3,7 +3,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-macroTitle := "Career Macro v1.3.20"
+macroTitle := "Career Macro v1.3.21"
 
 #Include exitspawn.ahk
 #Include detections.ahk
@@ -94,13 +94,15 @@ F1::
 closechat()
 
 return
-/*
+
 F2::
 setfullscreen()
 return
 F3::
-newfs2tab()
+wheeldowns(11)
+chicks(671, 526, 3) ;ug
 return
+/*
 */
 initializemacro:
 Gui, Submit, NoHide
@@ -120,7 +122,7 @@ if ErrorLevel {
 fileread, webhook, %webhookURLfile%
 
 hideeverything()
-GuiControl, Show, waiting	
+GuiControl, Show, waiting
 GuiControl, Show, debug1
 GuiControl, Show, debug2
 GuiControl, Show, debug3
@@ -139,8 +141,8 @@ if (privategame())
     goto, startmacro
 chicks(843, 346, 3) ;carrer mode
 chick(329, 523) ;ug (to enable scrolling)
-wheeldowns(20)
-chicks(329, 523, 3) ;ug
+wheeldowns(11)
+chicks(671, 526, 3) ;ug
 chicks(457, 654, 3) ;Create Private
 closechat()
 if (waitforplaybutton(1))
