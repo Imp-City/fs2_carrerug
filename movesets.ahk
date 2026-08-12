@@ -204,11 +204,11 @@ ammotocliff(){
 	SendInput, {Space up}
 	w(7000)
 	SendInput, {Space down}
-	w(1000)
+	w(1200)
 	SendInput, {Space up}
-	nw(500)
+	ns(500)
 	wheelups(20)
-	dllmove(0,-450)
+	dllmove(0,-465)
 }
 
 firetillmorning(firedelay) {
@@ -216,7 +216,7 @@ firetillmorning(firedelay) {
 	send, 3
 	sleep, 100
 	send, e
-	sleep, 500
+	sleep, 900
 	Timer(0)
 	if (firedelay = 0)
 		Loop {
@@ -309,7 +309,7 @@ runWaveBlock(startWave, endWave, fireDelay) {
 		send, 7 ;oc remote
 		sleep, 100
 		chickstill()
-		sleep, 900
+		sleep, 800
 		send, 7 ;oc remote
 		failsafe2:=firetillmorning(fireDelay)
 		if (failsafe2<0)
@@ -435,7 +435,7 @@ premRefill(ulist, perks := 1) {
 	SendInput, {Space up}
 	nw(500)
 	wheelups(20)
-	dllmove(0,-450)
+	dllmove(0,-465)
 	if (waitfordawn(0))
 		return 1
 	sleep, 1000

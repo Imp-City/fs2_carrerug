@@ -3,7 +3,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 
-macroTitle := "Career Macro v1.3.21"
+macroTitle := "Career Macro v1.3.22"
 
 #Include exitspawn.ahk
 #Include detections.ahk
@@ -88,10 +88,11 @@ return
 #Include perkviewer.ahk
 #Include perkgui.ahk
 #Include webhooker.ahk
+/*
 
 F1::
 
-closechat()
+ns(500)
 
 return
 
@@ -99,10 +100,13 @@ F2::
 setfullscreen()
 return
 F3::
-wheeldowns(11)
-chicks(671, 526, 3) ;ug
+dllmove(0,2000)
+sleep, 500
+dllmove(0,-465)
 return
-/*
+F4::
+
+return
 */
 initializemacro:
 Gui, Submit, NoHide
