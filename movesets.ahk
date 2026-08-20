@@ -113,7 +113,7 @@ setupleftmines(){
 	global width
 	global height
 	na(1200)
-	if (techlv = 1)
+	if (techlv)
 		if (ForcePlace(width/2, height*3/4, 5))
 			return 1
 	wheelups(5)
@@ -162,7 +162,7 @@ righttripmine(toolnumber){
 	GuiControl,, Debug1, At: righttripmine
 	global width
 	global height
-	if (techlv = 1)
+	if (techlv)
 		if (ForcePlace(width*3/4, height/2, toolnumber))
 			return 1
 	l:=0
@@ -208,7 +208,7 @@ ammotocliff(){
 	SendInput, {Space up}
 	ns(500)
 	wheelups(20)
-	dllmove(0,-465)
+	dllmove(0,-470)
 }
 
 firetillmorning(firedelay) {
@@ -232,7 +232,7 @@ firetillmorning(firedelay) {
 			failsafe1:=deadcheck(0)
 			if (failsafe1<2)
 				return failsafe1 
-			dllmove(0,4)
+			dllmove(0,3)
 		}
 	else
 		Loop {
@@ -257,8 +257,8 @@ firetillmorning(firedelay) {
 MorningFire(firedelay){
 	global statusclient, width, height
     if (sunicon()) {
-		statusClient.Send("","Status: Running. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0, 0, width, height, 1)
 		graceStart := A_TickCount
+		statusClient.Send("","Status: Running. Run Time: " . FormatTimeFromMs(A_TickCount - statusClient.TimeInitialized), 0, 0, width, height, 1)
 		GuiControl,, Debug1, At: MorningFire
         while (A_TickCount - graceStart < 1000) {
 			fireWithRecovery()
@@ -268,7 +268,6 @@ MorningFire(firedelay){
         }
         ; one final shot before exiting
 		fireWithRecovery()
-        sleep, 100
 		send, 3
 	return 1
     } return 0
@@ -431,9 +430,9 @@ premRefill(ulist, perks := 1) {
 	SendInput, {Space up}
 	w(7000)
 	SendInput, {Space down}
-	w(1000)
+	w(1200)
 	SendInput, {Space up}
-	nw(500)
+	ns(500)
 	wheelups(20)
 	dllmove(0,-465)
 	if (waitfordawn(0))

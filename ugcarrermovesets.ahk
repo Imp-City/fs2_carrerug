@@ -2,11 +2,10 @@ prepflw3(){
 	GuiControl,, Debug1, At: prepflw3
 	wheelups(20)
 	wheeldowns(20)
-	nw(3500)
 }
 centerspawn(){
 	GuiControl,, Debug1, At: centerspawn
-	w(500)
+	w(1900)
 	wd(900)
 }
 walktoladder(){
