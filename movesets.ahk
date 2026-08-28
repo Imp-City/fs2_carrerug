@@ -112,6 +112,7 @@ setupleftmines(){
 	GuiControl,, Debug1, At: setupleftmines
 	global width
 	global height
+	global techlv
 	na(1200)
 	if (techlv)
 		if (ForcePlace(width/2, height*3/4, 5))
@@ -162,6 +163,7 @@ righttripmine(toolnumber){
 	GuiControl,, Debug1, At: righttripmine
 	global width
 	global height
+	global techlv
 	if (techlv)
 		if (ForcePlace(width*3/4, height/2, toolnumber))
 			return 1
