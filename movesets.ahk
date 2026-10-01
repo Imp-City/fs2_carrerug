@@ -134,14 +134,14 @@ setuprightminesandfl(){
 	global height
 	global snowball
 	nd(1800)
-	wheelups(5)
+	wheelups(4)
 	nw(1100)
 	if (righttripmine(6))
 		return 1
 	nw(300)
 	if (rightlandmine(5))
 		return 1
-	wheeldowns(5)
+	wheeldowns(4)
 	nw(1700)
 	na(800)
 	if (snowball){
@@ -164,13 +164,14 @@ righttripmine(toolnumber){
 	global width
 	global height
 	global techlv
+
 	if (techlv)
-		if (ForcePlace(width*3/4, height/2, toolnumber))
+		if (ForcePlace(width*4/6, height/2, toolnumber))
 			return 1
 	l:=0
 	nw(180)
 	while (l<5){
-		if (ForcePlace(width-1, height/2, toolnumber))
+		if (ForcePlace(width*4/5, height/2, toolnumber))
 			return 1
 		nw(180)
 		l++
@@ -187,13 +188,13 @@ rightlandmine(toolnumber){
 	l:=0
 	
 	while (l<3){
-		if (ForcePlace(565- 10*l, 431, toolnumber))
+		if (ForcePlace(545- 10*l, 431, toolnumber))
 			return 1
 		nw(200)
 		l++
 	}
 	nw(40)
-	if (ForcePlace(539, 430, toolnumber))
+	if (ForcePlace(519, 430, toolnumber))
 		return 1
 	return 0
 }

@@ -93,14 +93,15 @@ return
 F1::
 setfullscreen()
 return
-/*
+
 F2::
-setfullscreen()
+exitspawn(1,3)
 return
+
 F3::
-dllmove(0,2000)
-sleep, 500
-dllmove(0,-465)
+shoptomines()
+setuprightminesandfl()
+/*
 return
 F4::
 
