@@ -1,4 +1,5 @@
 EquipAll:
+	setfullscreen()
 	if equipallfunction()
 		goto, startmacro
 return

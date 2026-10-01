@@ -89,13 +89,11 @@ return
 #Include perkgui.ahk
 #Include webhooker.ahk
 
-/*
+
 F1::
-
-exitspawn(1,2)
-
+setfullscreen()
 return
-
+/*
 F2::
 setfullscreen()
 return
